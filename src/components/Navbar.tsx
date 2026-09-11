@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Terminal, Activity, Mail, Sparkles } from "lucide-react";
+import { Activity, Mail, Sparkles } from "lucide-react";
 import { GithubIcon } from "@/components/GithubIcon";
 import { PROFILE_DATA } from "@/data/profile";
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { searchLocalKnowledge, generateLocalRAGResponse } from "@/lib/rag-helper";
 
 export interface ChatMessage {
   id: string;
@@ -15,6 +16,23 @@ export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
+  };
+
+  const simulateLocalStream = async (userText: string, assistantId: string) => {
+    const context = searchLocalKnowledge(userText);
+    const fullAnswer = generateLocalRAGResponse(userText, context);
+    const words = fullAnswer.split(" ");
+    let accumulated = "";
+
+    for (let i = 0; i < words.length; i++) {
+      accumulated += (i === 0 ? "" : " ") + words[i];
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === assistantId ? { ...msg, content: accumulated } : msg
+        )
+      );
+      await new Promise((r) => setTimeout(r, 18));
+    }
   };
 
   const sendMessage = useCallback(
@@ -49,14 +67,17 @@ export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          // If running on static host (e.g. GitHub Pages without server route), run local client stream
+          await simulateLocalStream(userText, assistantId);
+          return;
         }
 
         const reader = response.body?.getReader();
         const decoder = new TextDecoder();
 
         if (!reader) {
-          throw new Error("No readable stream");
+          await simulateLocalStream(userText, assistantId);
+          return;
         }
 
         let accumulated = "";
@@ -74,19 +95,9 @@ export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
             )
           );
         }
-      } catch (err) {
-        console.error("Chat error:", err);
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === assistantId
-              ? {
-                  ...msg,
-                  content:
-                    "Sorry, I encountered an issue retrieving the response. Please try again or check the system logs.",
-                }
-              : msg
-          )
-        );
+      } catch {
+        // Fallback to client-side RAG simulator
+        await simulateLocalStream(userText, assistantId);
       } finally {
         setIsLoading(false);
       }
@@ -110,3 +121,4 @@ export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
     sendMessage,
   };
 }
+
