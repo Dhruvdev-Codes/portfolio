@@ -10,12 +10,14 @@ import { SkillsMatrix } from "@/components/SkillsMatrix";
 import { CertificationsSection } from "@/components/CertificationsSection";
 import { ContactSection } from "@/components/ContactSection";
 import { AIChatDrawer } from "@/components/AIChatDrawer";
+import { ResumeModal } from "@/components/ResumeModal";
 import { NetworkBackground } from "@/components/NetworkBackground";
 import { Footer } from "@/components/Footer";
 import { Sparkles } from "lucide-react";
 
 export default function Home() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-slate-50 dark:bg-[#12161f] text-slate-900 dark:text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-700 dark:selection:text-cyan-300 antialiased overflow-x-hidden transition-colors duration-200">
@@ -23,11 +25,17 @@ export default function Home() {
       <NetworkBackground />
 
       {/* Top Navigation */}
-      <Navbar onOpenTerminal={() => setIsTerminalOpen(true)} />
+      <Navbar
+        onOpenTerminal={() => setIsTerminalOpen(true)}
+        onOpenResume={() => setIsResumeOpen(true)}
+      />
 
       {/* Main Content */}
       <main className="relative z-10">
-        <Hero onOpenTerminal={() => setIsTerminalOpen(true)} />
+        <Hero
+          onOpenTerminal={() => setIsTerminalOpen(true)}
+          onOpenResume={() => setIsResumeOpen(true)}
+        />
         <ProjectsSection />
         <ResearchSection />
         <EdgeAIShowcase />
@@ -37,7 +45,10 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <Footer onOpenTerminal={() => setIsTerminalOpen(true)} />
+      <Footer
+        onOpenTerminal={() => setIsTerminalOpen(true)}
+        onOpenResume={() => setIsResumeOpen(true)}
+      />
 
       {/* Floating AI Terminal Button */}
       {!isTerminalOpen && (
@@ -53,6 +64,12 @@ export default function Home() {
         </button>
       )}
 
+      {/* Interactive Academic CV / Resume Modal */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
+      />
+
       {/* AI Chat Drawer */}
       <AIChatDrawer
         isOpen={isTerminalOpen}
@@ -61,6 +78,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 

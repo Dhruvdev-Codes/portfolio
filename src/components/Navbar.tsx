@@ -1,16 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Activity, Mail, Sparkles, Menu, X } from "lucide-react";
+import { Activity, Mail, Sparkles, Menu, X, FileText } from "lucide-react";
 import { GithubIcon } from "@/components/GithubIcon";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { PROFILE_DATA } from "@/data/profile";
 
 interface NavbarProps {
   onOpenTerminal: () => void;
+  onOpenResume?: () => void;
 }
 
-export function Navbar({ onOpenTerminal }: NavbarProps) {
+export function Navbar({ onOpenTerminal, onOpenResume }: NavbarProps) {
   const [latency, setLatency] = useState(22);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -95,6 +96,19 @@ export function Navbar({ onOpenTerminal }: NavbarProps) {
           {/* Single Icon Theme Toggle */}
           <ThemeToggle />
 
+          {/* CV / Resume Modal Launcher */}
+          {onOpenResume && (
+            <button
+              onClick={onOpenResume}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-50 dark:bg-cyan-950/60 hover:bg-cyan-100 dark:hover:bg-cyan-900/60 border border-cyan-500/40 text-cyan-700 dark:text-cyan-300 text-xs font-mono font-semibold transition-all cursor-pointer shadow-sm"
+              title="Open Academic CV & Resume"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">CV / Resume</span>
+              <span className="sm:hidden">CV</span>
+            </button>
+          )}
+
           {/* AI Terminal Launcher */}
           <button
             onClick={onOpenTerminal}
@@ -158,6 +172,19 @@ export function Navbar({ onOpenTerminal }: NavbarProps) {
               <span className="text-xs text-slate-500 dark:text-slate-400">Theme:</span>
               <ThemeToggle />
             </div>
+
+            {onOpenResume && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenResume();
+                }}
+                className="w-full py-2 px-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/20 text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>View Full CV / Resume</span>
+              </button>
+            )}
 
             <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-1">
               <div className="flex items-center gap-2">

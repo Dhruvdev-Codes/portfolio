@@ -1,14 +1,15 @@
 "use client";
 
-import { Mail, MapPin, ArrowUp, Sparkles, Shield } from "lucide-react";
+import { Mail, MapPin, ArrowUp, Sparkles, Shield, FileText } from "lucide-react";
 import { GithubIcon } from "@/components/GithubIcon";
 import { PROFILE_DATA } from "@/data/profile";
 
 interface FooterProps {
   onOpenTerminal: () => void;
+  onOpenResume?: () => void;
 }
 
-export function Footer({ onOpenTerminal }: FooterProps) {
+export function Footer({ onOpenTerminal, onOpenResume }: FooterProps) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -28,7 +29,7 @@ export function Footer({ onOpenTerminal }: FooterProps) {
             <p className="text-slate-600 dark:text-slate-400 text-xs font-sans max-w-md leading-relaxed">
               M.Tech CSE Scholar specializing in Information & Network Security, Ad-Hoc Wireless Protocols, Distributed Systems, and Cloud Architecture at Netaji Subhas University of Technology (NSUT), New Delhi.
             </p>
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <button
                 onClick={onOpenTerminal}
                 className="flex items-center gap-1.5 text-xs text-cyan-700 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300 transition-colors cursor-pointer font-semibold"
@@ -36,6 +37,16 @@ export function Footer({ onOpenTerminal }: FooterProps) {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Launch Interactive AI Terminal</span>
               </button>
+
+              {onOpenResume && (
+                <button
+                  onClick={onOpenResume}
+                  className="flex items-center gap-1.5 text-xs text-teal-700 dark:text-teal-400 hover:text-teal-800 dark:hover:text-teal-300 transition-colors cursor-pointer font-semibold"
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>View Full CV / Resume</span>
+                </button>
+              )}
             </div>
           </div>
 

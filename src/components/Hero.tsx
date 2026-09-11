@@ -1,14 +1,15 @@
 "use client";
 
-import { Layers, BookOpen, Mail, Shield, Sparkles } from "lucide-react";
+import { Layers, BookOpen, Mail, Shield, Sparkles, FileText } from "lucide-react";
 import { GithubIcon } from "@/components/GithubIcon";
 import { PROFILE_DATA } from "@/data/profile";
 
 interface HeroProps {
   onOpenTerminal: () => void;
+  onOpenResume?: () => void;
 }
 
-export function Hero({ onOpenTerminal }: HeroProps) {
+export function Hero({ onOpenTerminal, onOpenResume }: HeroProps) {
   return (
     <section id="about" className="relative pt-32 pb-16 md:pt-38 md:pb-20 overflow-hidden">
       {/* Background Accent Glows (Teal / Cyan) */}
@@ -57,11 +58,21 @@ export function Hero({ onOpenTerminal }: HeroProps) {
               <span>Explore Projects</span>
             </a>
 
+            {onOpenResume && (
+              <button
+                onClick={onOpenResume}
+                className="flex items-center gap-2 px-5 py-3 rounded-lg bg-white dark:bg-[#182030] hover:bg-slate-100 dark:hover:bg-[#1e273a] text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-[#26354d] hover:border-cyan-500/60 transition-all shadow-sm cursor-pointer"
+              >
+                <FileText className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                <span>View CV / Resume</span>
+              </button>
+            )}
+
             <a
               href="#research"
               className="flex items-center gap-2 px-5 py-3 rounded-lg bg-white dark:bg-[#182030] hover:bg-slate-100 dark:hover:bg-[#1e273a] text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-[#26354d] hover:border-cyan-500/60 transition-all shadow-sm"
             >
-              <BookOpen className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+              <BookOpen className="w-4 h-4 text-teal-600 dark:text-teal-400" />
               <span>Research Framework</span>
             </a>
 
