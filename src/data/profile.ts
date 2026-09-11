@@ -15,7 +15,6 @@ export const PROFILE_DATA = {
   specialization: "Information Security, Ad-Hoc Networks & Systems",
   institution: "Netaji Subhas University of Technology (NSUT), New Delhi",
   previousInstitution: "Acropolis Institute of Technology and Research (AITR), Indore",
-  rollNo: "2026PIS7730",
   email: "dhruvupadhyay708937@gmail.com",
   academicEmail: "dhruv.upadhyay.pg26@nsut.ac.in",
   phone: "+91 7489221051",

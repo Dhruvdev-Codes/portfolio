@@ -181,7 +181,7 @@ export function generateLocalRAGResponse(query: string, context: string): string
     q.includes("mtech") ||
     q.includes("btech")
   ) {
-    return "Dhruv's academic background includes:\n\n• Master of Technology (M.Tech) in Computer Science & Engineering (Information Security)\n  Netaji Subhas University of Technology (NSUT), New Delhi (2024 – 2026)\n  Roll Number: 2026PIS7730\n  Key Focus: Wireless Systems Security, Cryptography, Distributed Systems, Cloud Architecture.\n\n• Bachelor of Technology (B.Tech) in Computer Science & Engineering\n  Acropolis Institute of Technology and Research (AITR), Indore (2021 – 2025)\n  Solid foundations in Data Structures, OS Internals, Networking, and Database Systems.";
+    return "Dhruv's academic background includes:\n\n• Master of Technology (M.Tech) in Computer Science & Engineering (Information Security)\n  Netaji Subhas University of Technology (NSUT), New Delhi (2024 – 2026)\n  Key Focus: Wireless Systems Security, Cryptography, Distributed Systems, Cloud Architecture.\n\n• Bachelor of Technology (B.Tech) in Computer Science & Engineering\n  Acropolis Institute of Technology and Research (AITR), Indore (2021 – 2025)\n  Solid foundations in Data Structures, OS Internals, Networking, and Database Systems.";
   }
 
   // 8. General About Dhruv

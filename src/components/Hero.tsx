@@ -22,8 +22,6 @@ export function Hero({ onOpenTerminal }: HeroProps) {
             <span className="w-2 h-2 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-ping" />
             <span className="text-slate-500 dark:text-slate-400">Scholar:</span>
             <span className="text-cyan-600 dark:text-cyan-400 font-semibold">{PROFILE_DATA.institution}</span>
-            <span className="text-slate-300 dark:text-[#2a374f] hidden sm:inline">|</span>
-            <span className="text-slate-500 dark:text-slate-400 font-mono hidden sm:inline">Roll: {PROFILE_DATA.rollNo}</span>
           </div>
 
           {/* Clean, Large Bold Heading */}
