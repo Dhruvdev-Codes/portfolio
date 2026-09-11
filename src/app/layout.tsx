@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,11 +18,9 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#12161f",
 };
 
 export const metadata: Metadata = {
-
   title: "Dhruv Upadhyay | M.Tech CSE Scholar & Systems Engineer | NSUT Delhi",
   description:
     "Portfolio and Interactive AI Assistant of Dhruv Upadhyay (M.Tech CSE Scholar at NSUT Delhi). Specializing in Ad-Hoc Network Link Predictability, Information Security, Low-Latency Distributed Systems, and AWS Cloud Architecture.",
@@ -53,12 +52,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var stored = localStorage.getItem('theme-preference');
+                  var darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                  if (stored === 'dark' || (!stored && darkQuery.matches) || (stored === 'system' && darkQuery.matches)) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.classList.remove('light');
+                  } else {
+                    document.documentElement.classList.add('light');
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-[#12161f] text-slate-100 antialiased selection:bg-cyan-500/30 selection:text-cyan-300`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-slate-50 dark:bg-[#12161f] text-slate-900 dark:text-slate-100 antialiased selection:bg-cyan-500/30 selection:text-cyan-600 dark:selection:text-cyan-300`}
       >
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
 }
+

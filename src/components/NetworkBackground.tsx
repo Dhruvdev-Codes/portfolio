@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTheme } from "@/context/ThemeContext";
 
 export function NetworkBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -81,11 +83,15 @@ export function NetworkBackground() {
     }
 
     let nodes: Node[] = [];
-    const colors = ["#06b6d4", "#14b8a6", "#38bdf8", "#22d3ee"];
 
     const init = () => {
       const isMobile = width < 768;
       const count = isMobile ? 28 : 55;
+      const isDark = document.documentElement.classList.contains("dark");
+      const darkColors = ["#06b6d4", "#14b8a6", "#38bdf8", "#22d3ee"];
+      const lightColors = ["#0284c7", "#0d9488", "#0369a1", "#0f766e"];
+      const activeColors = isDark ? darkColors : lightColors;
+
       nodes = [];
       for (let i = 0; i < count; i++) {
         nodes.push({
@@ -94,7 +100,7 @@ export function NetworkBackground() {
           vx: (Math.random() - 0.5) * (isMobile ? 0.35 : 0.5),
           vy: (Math.random() - 0.5) * (isMobile ? 0.35 : 0.5),
           radius: Math.random() * 1.5 + (isMobile ? 1.2 : 1),
-          color: colors[Math.floor(Math.random() * colors.length)],
+          color: activeColors[Math.floor(Math.random() * activeColors.length)],
           alpha: Math.random() * 0.4 + 0.3,
         });
       }
@@ -106,6 +112,7 @@ export function NetworkBackground() {
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
+      const isDark = document.documentElement.classList.contains("dark");
 
       // Draw nodes
       for (let i = 0; i < nodes.length; i++) {
@@ -130,7 +137,7 @@ export function NetworkBackground() {
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
         ctx.fillStyle = n.color;
-        ctx.globalAlpha = n.alpha;
+        ctx.globalAlpha = isDark ? n.alpha : n.alpha * 0.7;
         ctx.fill();
       }
 
@@ -143,7 +150,7 @@ export function NetworkBackground() {
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
             ctx.strokeStyle = nodes[i].color;
-            ctx.globalAlpha = (1 - d / maxDist) * 0.22;
+            ctx.globalAlpha = (1 - d / maxDist) * (isDark ? 0.22 : 0.18);
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
@@ -155,8 +162,8 @@ export function NetworkBackground() {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(pointer.x, pointer.y);
-            ctx.strokeStyle = "#06b6d4";
-            ctx.globalAlpha = (1 - md / 150) * 0.35;
+            ctx.strokeStyle = isDark ? "#06b6d4" : "#0284c7";
+            ctx.globalAlpha = (1 - md / 150) * (isDark ? 0.35 : 0.28);
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -178,20 +185,20 @@ export function NetworkBackground() {
       window.removeEventListener("touchend", onTouchEnd);
       cancelAnimationFrame(animId);
     };
-  }, []);
+  }, [resolvedTheme]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#12161f]">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-slate-50 dark:bg-[#12161f] transition-colors duration-200">
       {/* Ambient gradient glowing orbs with teal & cyan accents */}
-      <div className="absolute top-[-10%] left-[-10%] w-[320px] sm:w-[520px] h-[320px] sm:h-[520px] rounded-full bg-teal-500/10 blur-[100px] sm:blur-[140px] animate-pulse pointer-events-none" />
-      <div className="absolute top-[35%] right-[-5%] w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] rounded-full bg-cyan-500/12 blur-[120px] sm:blur-[160px] animate-pulse [animation-duration:8s] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[10%] w-[380px] sm:w-[600px] h-[380px] sm:h-[600px] rounded-full bg-sky-600/10 blur-[110px] sm:blur-[150px] animate-pulse [animation-duration:10s] pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[320px] sm:w-[520px] h-[320px] sm:h-[520px] rounded-full bg-teal-500/5 dark:bg-teal-500/10 blur-[100px] sm:blur-[140px] animate-pulse pointer-events-none" />
+      <div className="absolute top-[35%] right-[-5%] w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] rounded-full bg-cyan-500/8 dark:bg-cyan-500/12 blur-[120px] sm:blur-[160px] animate-pulse [animation-duration:8s] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[10%] w-[380px] sm:w-[600px] h-[380px] sm:h-[600px] rounded-full bg-sky-600/6 dark:bg-sky-600/10 blur-[110px] sm:blur-[150px] animate-pulse [animation-duration:10s] pointer-events-none" />
 
-      {/* Cyberpunk dot grid */}
+      {/* Grid Pattern */}
       <div
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        className="absolute inset-0 opacity-[0.05] dark:opacity-[0.04] pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, #38bdf8 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
           backgroundSize: "32px 32px",
         }}
       />

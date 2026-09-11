@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 :root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+.dark {
   --background: #12161f;
   --foreground: #f1f5f9;
 }
@@ -18,24 +23,37 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Custom terminal scrollbars with cyan/teal accents */
+/* Custom terminal scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+.dark ::-webkit-scrollbar-track {
   background: #12161f;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e2638;
+  background: #94a3b8;
   border-radius: 3px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #1e2638;
+}
+
 ::-webkit-scrollbar-thumb:hover {
+  background: #0284c7;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
   background: #0ea5e9;
 }
 
@@ -51,5 +69,6 @@ body {
     text-wrap: balance;
   }
 }
+
 
 
