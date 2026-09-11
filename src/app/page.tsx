@@ -8,6 +8,7 @@ import { ResearchSection } from "@/components/ResearchSection";
 import { EdgeAIShowcase } from "@/components/EdgeAIShowcase";
 import { SkillsMatrix } from "@/components/SkillsMatrix";
 import { CertificationsSection } from "@/components/CertificationsSection";
+import { ContactSection } from "@/components/ContactSection";
 import { AIChatDrawer } from "@/components/AIChatDrawer";
 import { NetworkBackground } from "@/components/NetworkBackground";
 import { Footer } from "@/components/Footer";
@@ -32,6 +33,7 @@ export default function Home() {
         <EdgeAIShowcase />
         <SkillsMatrix />
         <CertificationsSection />
+        <ContactSection />
       </main>
 
       {/* Footer */}
@@ -59,6 +61,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 

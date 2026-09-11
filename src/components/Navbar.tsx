@@ -38,6 +38,7 @@ export function Navbar({ onOpenTerminal }: NavbarProps) {
     { href: "#simulations", label: "// Simulations" },
     { href: "#skills", label: "// Skills" },
     { href: "#credentials", label: "// Credentials" },
+    { href: "#contact", label: "// Contact" },
   ];
 
   return (

@@ -49,6 +49,7 @@ export function Footer({ onOpenTerminal }: FooterProps) {
               <li><a href="#simulations" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">03 // Simulation Lab</a></li>
               <li><a href="#skills" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">04 // Skills Matrix</a></li>
               <li><a href="#credentials" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">05 // Credentials</a></li>
+              <li><a href="#contact" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">06 // Contact Gateway</a></li>
             </ul>
           </div>
 
