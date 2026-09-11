@@ -45,7 +45,7 @@ npm install
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open (https://dhruvdev-codes.github.io/portfolio/) in your browser.
 
 ### 3. (Optional) Configure Vector Search & OpenAI
 Create a `.env.local` file:
