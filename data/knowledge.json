@@ -1,0 +1,56 @@
+[
+  {
+    "id": "profile-bio",
+    "category": "biography",
+    "title": "Dhruv Upadhyay - M.Tech CSE Profile Overview",
+    "content": "Dhruv Upadhyay is a Computer Science & Engineering scholar pursuing M.Tech in CSE (Specialization in Information Security & Wireless Systems) at Netaji Subhas University of Technology (NSUT), New Delhi (Roll: 2026PIS7730). He graduated with B.Tech in CSE from Acropolis Institute of Technology and Research (AITR), Indore (2021-2025). He specializes in ad-hoc network link predictability, distributed systems, web engineering, and cloud architecture. Email: dhruvupadhyay708937@gmail.com / dhruv.upadhyay.pg26@nsut.ac.in | Phone: +91 7489221051 | GitHub: github.com/Dhruvdev-Codes."
+  },
+  {
+    "id": "research-adhoc-paper",
+    "category": "research",
+    "title": "Research: Link Predictability in Ad-Hoc Networks for Secure & Robust Communications",
+    "content": "Authored by Dhruv Upadhyay, Dept. of CSE, NSUT Delhi. Problem: Decentralized wireless systems (MANETs/VANETs) suffer link failures from dynamic mobility and physical shielding. Reactive protocols (AODV/DSR) only trigger route repair post-failure, causing packet surges and latency spikes. Proposed Framework: Proactive topology management combining kinematic forecasting, time-series RSSI exponential smoothing (r_hat_t = alpha*r_t + (1-alpha)*r_hat_{t-1}) and Kalman filtering, explainable machine learning link lifetime models, lightweight AEAD cryptography, and behavioral trust evaluation to secure ad-hoc routes."
+  },
+  {
+    "id": "education-nsut-mtech",
+    "category": "education",
+    "title": "M.Tech in CSE - Netaji Subhas University of Technology (NSUT)",
+    "content": "Program: Master of Technology in Computer Science & Engineering (Information Security). Coursework: Wireless Network Security, Cloud Computing Internals, Advanced Data Structures & Algorithms, Cyber Forensics, Cryptography, Distributed Systems."
+  },
+  {
+    "id": "education-aitr-btech",
+    "category": "education",
+    "title": "B.Tech in CSE - Acropolis Institute of Technology and Research (AITR)",
+    "content": "Degree: Bachelor of Technology in Computer Science and Engineering (2021-2025), Indore. Core fundamentals: OOP, DSA, DBMS, Operating Systems, Computer Networks."
+  },
+  {
+    "id": "certifications-aws-google",
+    "category": "certifications",
+    "title": "Professional Certifications & Cloud Badges",
+    "content": "1. AWS Academy Graduate – AWS Academy Cloud Architecting. 2. AWS Academy Graduate – AWS Academy Cloud Foundations. 3. Google Cybersecurity Professional Certificate (Network security, intrusion detection, packet analysis, incident response, Python). 4. Google Cloud Digital Training."
+  },
+  {
+    "id": "project-workvibe",
+    "category": "projects",
+    "title": "WorkVibe – Mentor-Mentee Collaborative Platform",
+    "content": "Full-stack networking platform engineered with JavaScript, Node.js, Express, and MongoDB. Features real-time mentor-mentee interaction, role-based access control, responsive Tailwind UI, and indexed database queries with sub-15ms search latency."
+  },
+  {
+    "id": "project-skillxchange",
+    "category": "projects",
+    "title": "SkillXchange – Peer Knowledge & Skill Exchange Platform",
+    "content": "Campus-exclusive collaboration platform inspired by Discord and LinkedIn for peer technical discussions, hackathon team formation, and skill exchange. Tech Stack: JavaScript, Node.js, Express, MongoDB, Tailwind CSS."
+  },
+  {
+    "id": "project-travelworld",
+    "category": "projects",
+    "title": "Travel World – Tours & Travel Platform",
+    "content": "Responsive web platform with dynamic itinerary management, travel package booking workflows, and normalized MySQL relational schema for high-throughput query handling."
+  },
+  {
+    "id": "skills-matrix",
+    "category": "skills",
+    "title": "Technical Skills Matrix",
+    "content": "Languages: C++, Python, JavaScript (ES6+), TypeScript, Java, SQL, Bash. Web & Backend: React, Next.js, Node.js, Express, Tailwind CSS. Databases: MongoDB, MySQL, Upstash Vector / Redis. Cloud & DevOps: AWS (Cloud Architecting), Docker, Linux / Unix Internals, Git/GitHub, n8n, Power BI. Core: Distributed Systems, Wireless Network Security, Signal Smoothing, Lightweight AEAD Cryptography, OOP, DSA, DBMS, OS."
+  }
+]
