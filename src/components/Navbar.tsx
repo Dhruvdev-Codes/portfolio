@@ -83,17 +83,22 @@ export function Navbar({ onOpenTerminal }: NavbarProps) {
           ))}
         </nav>
 
-        {/* Action Buttons & Mobile Toggle */}
-        <div className="flex items-center gap-2 sm:gap-2.5">
+        {/* Action Buttons & Theme Controls */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Edge Latency Indicator */}
-          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#182030] border border-slate-200 dark:border-[#222e44] text-[11px] font-mono text-slate-600 dark:text-slate-400">
+          <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-[#182030] border border-slate-200 dark:border-[#222e44] text-[11px] font-mono text-slate-600 dark:text-slate-400">
             <Activity className="w-3 h-3 text-teal-500 dark:text-teal-400 animate-pulse" />
             <span>Edge</span>
             <span className="text-cyan-600 dark:text-cyan-400 font-semibold">{latency}ms</span>
           </div>
 
-          {/* Theme Switcher Toggle */}
-          <ThemeToggle />
+          {/* Theme Switcher: Segmented on desktop, dropdown on small mobile */}
+          <div className="hidden sm:block">
+            <ThemeToggle variant="segmented" />
+          </div>
+          <div className="block sm:hidden">
+            <ThemeToggle variant="dropdown" />
+          </div>
 
           {/* AI Terminal Launcher */}
           <button
