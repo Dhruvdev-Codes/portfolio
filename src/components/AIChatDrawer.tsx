@@ -12,9 +12,7 @@ interface AIChatDrawerProps {
 export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, setMessages } = useChatStream({
-    api: "/api/chat",
-  });
+  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, setMessages } = useChatStream();
 
   const promptSuggestions = [
     "What is Dhruv's research topic and mathematical formulation?",

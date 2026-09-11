@@ -9,7 +9,7 @@ export interface ChatMessage {
   content: string;
 }
 
-export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
+export function useChatStream({ api = "" }: { api?: string } = {}) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +31,7 @@ export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
           msg.id === assistantId ? { ...msg, content: accumulated } : msg
         )
       );
-      await new Promise((r) => setTimeout(r, 18));
+      await new Promise((r) => setTimeout(r, 16));
     }
   };
 
@@ -60,6 +60,11 @@ export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
       setMessages((prev) => [...prev, initialAssistantMsg]);
 
       try {
+        if (!api) {
+          await simulateLocalStream(userText, assistantId);
+          return;
+        }
+
         const response = await fetch(api, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -67,7 +72,6 @@ export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
         });
 
         if (!response.ok) {
-          // If running on static host (e.g. GitHub Pages without server route), run local client stream
           await simulateLocalStream(userText, assistantId);
           return;
         }
@@ -96,7 +100,6 @@ export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
           );
         }
       } catch {
-        // Fallback to client-side RAG simulator
         await simulateLocalStream(userText, assistantId);
       } finally {
         setIsLoading(false);
