@@ -92,13 +92,8 @@ export function Navbar({ onOpenTerminal }: NavbarProps) {
             <span className="text-cyan-600 dark:text-cyan-400 font-semibold">{latency}ms</span>
           </div>
 
-          {/* Theme Switcher: Segmented on desktop, dropdown on small mobile */}
-          <div className="hidden sm:block">
-            <ThemeToggle variant="segmented" />
-          </div>
-          <div className="block sm:hidden">
-            <ThemeToggle variant="dropdown" />
-          </div>
+          {/* Single Icon Theme Toggle */}
+          <ThemeToggle />
 
           {/* AI Terminal Launcher */}
           <button
@@ -160,8 +155,8 @@ export function Navbar({ onOpenTerminal }: NavbarProps) {
 
           <div className="pt-3 border-t border-slate-200 dark:border-[#1e2738] space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-500 dark:text-slate-400">Appearance:</span>
-              <ThemeToggle variant="segmented" />
+              <span className="text-xs text-slate-500 dark:text-slate-400">Theme:</span>
+              <ThemeToggle />
             </div>
 
             <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-1">
