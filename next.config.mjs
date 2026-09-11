@@ -1,25 +1,23 @@
 /** @type {import('next').NextConfig} */
-const isGithubActions = process.env.GITHUB_ACTIONS === "true";
-let assetPrefix = "";
-let basePath = "";
+const isProd = process.env.NODE_ENV === "production";
 
-if (isGithubActions) {
-  const repo = process.env.GITHUB_REPOSITORY ? process.env.GITHUB_REPOSITORY.replace(/.*?\//, "") : "portfolio";
-  if (repo !== "dhruvdev-codes.github.io") {
-    assetPrefix = `/${repo}/`;
-    basePath = `/${repo}`;
-  }
-}
+// For GitHub Pages deployment under https://dhruvdev-codes.github.io/portfolio
+const defaultBasePath = "/portfolio";
+const basePath =
+  process.env.NEXT_PUBLIC_BASE_PATH !== undefined
+    ? process.env.NEXT_PUBLIC_BASE_PATH
+    : (isProd ? defaultBasePath : "");
 
 const nextConfig = {
   output: "export",
   images: {
     unoptimized: true,
   },
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH !== undefined ? process.env.NEXT_PUBLIC_BASE_PATH : (isGithubActions ? basePath : ""),
-  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH !== undefined ? (process.env.NEXT_PUBLIC_BASE_PATH ? `${process.env.NEXT_PUBLIC_BASE_PATH}/` : "") : (isGithubActions ? assetPrefix : ""),
+  basePath: basePath,
+  assetPrefix: basePath ? `${basePath}/` : undefined,
   trailingSlash: true,
 };
 
 export default nextConfig;
+
 
