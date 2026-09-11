@@ -7,10 +7,17 @@
   --foreground: #f1f5f9;
 }
 
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom terminal scrollbars with cyan/teal accents */
@@ -32,9 +39,17 @@ body {
   background: #0ea5e9;
 }
 
+/* Touch optimization for mobile */
+@media (hover: none) and (pointer: coarse) {
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
+
 

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -13,7 +13,15 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#12161f",
+};
+
 export const metadata: Metadata = {
+
   title: "Dhruv Upadhyay | M.Tech CSE Scholar & Systems Engineer | NSUT Delhi",
   description:
     "Portfolio and Interactive AI Assistant of Dhruv Upadhyay (M.Tech CSE Scholar at NSUT Delhi). Specializing in Ad-Hoc Network Link Predictability, Information Security, Low-Latency Distributed Systems, and AWS Cloud Architecture.",

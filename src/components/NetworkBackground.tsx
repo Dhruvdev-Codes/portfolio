@@ -12,32 +12,63 @@ export function NetworkBackground() {
     if (!ctx) return;
 
     let animId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-    const mouse = { x: -1000, y: -1000, active: false };
+    let width = 0;
+    let height = 0;
+    const pointer = { x: -1000, y: -1000, active: false };
 
-    const onResize = () => {
+    const updateSize = () => {
       if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.scale(dpr, dpr);
       init();
     };
 
     const onMouseMove = (e: MouseEvent) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-      mouse.active = true;
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      pointer.active = true;
     };
 
     const onMouseLeave = () => {
-      mouse.active = false;
-      mouse.x = -1000;
-      mouse.y = -1000;
+      pointer.active = false;
+      pointer.x = -1000;
+      pointer.y = -1000;
     };
 
-    window.addEventListener("resize", onResize);
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        pointer.x = e.touches[0].clientX;
+        pointer.y = e.touches[0].clientY;
+        pointer.active = true;
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        pointer.x = e.touches[0].clientX;
+        pointer.y = e.touches[0].clientY;
+        pointer.active = true;
+      }
+    };
+
+    const onTouchEnd = () => {
+      pointer.active = false;
+      pointer.x = -1000;
+      pointer.y = -1000;
+    };
+
+    window.addEventListener("resize", updateSize);
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseleave", onMouseLeave);
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
 
     interface Node {
       x: number;
@@ -54,22 +85,23 @@ export function NetworkBackground() {
 
     const init = () => {
       const isMobile = width < 768;
-      const count = isMobile ? 25 : 52;
+      const count = isMobile ? 28 : 55;
       nodes = [];
       for (let i = 0; i < count; i++) {
         nodes.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.45),
-          vy: (Math.random() - 0.5) * (isMobile ? 0.3 : 0.45),
-          radius: Math.random() * 1.5 + 1,
+          vx: (Math.random() - 0.5) * (isMobile ? 0.35 : 0.5),
+          vy: (Math.random() - 0.5) * (isMobile ? 0.35 : 0.5),
+          radius: Math.random() * 1.5 + (isMobile ? 1.2 : 1),
           color: colors[Math.floor(Math.random() * colors.length)],
           alpha: Math.random() * 0.4 + 0.3,
         });
       }
     };
 
-    init();
+    updateSize();
+
     const maxDist = 135;
 
     const render = () => {
@@ -83,11 +115,11 @@ export function NetworkBackground() {
         if (n.x < 0 || n.x > width) n.vx *= -1;
         if (n.y < 0 || n.y > height) n.vy *= -1;
 
-        if (mouse.active) {
-          const dx = mouse.x - n.x, dy = mouse.y - n.y;
+        if (pointer.active) {
+          const dx = pointer.x - n.x, dy = pointer.y - n.y;
           const dist = Math.hypot(dx, dy);
           if (dist < 160 && dist > 0) {
-            const f = (1 - dist / 160) * 0.02;
+            const f = (1 - dist / 160) * 0.025;
             n.vx += (dx / dist) * f;
             n.vy += (dy / dist) * f;
           }
@@ -111,20 +143,20 @@ export function NetworkBackground() {
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
             ctx.strokeStyle = nodes[i].color;
-            ctx.globalAlpha = (1 - d / maxDist) * 0.2;
+            ctx.globalAlpha = (1 - d / maxDist) * 0.22;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }
 
-        if (mouse.active) {
-          const md = Math.hypot(mouse.x - nodes[i].x, mouse.y - nodes[i].y);
-          if (md < 160) {
+        if (pointer.active) {
+          const md = Math.hypot(pointer.x - nodes[i].x, pointer.y - nodes[i].y);
+          if (md < 150) {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(mouse.x, mouse.y);
+            ctx.lineTo(pointer.x, pointer.y);
             ctx.strokeStyle = "#06b6d4";
-            ctx.globalAlpha = (1 - md / 160) * 0.3;
+            ctx.globalAlpha = (1 - md / 150) * 0.35;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -138,9 +170,12 @@ export function NetworkBackground() {
     render();
 
     return () => {
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", updateSize);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseleave", onMouseLeave);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
       cancelAnimationFrame(animId);
     };
   }, []);
@@ -148,9 +183,9 @@ export function NetworkBackground() {
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#12161f]">
       {/* Ambient gradient glowing orbs with teal & cyan accents */}
-      <div className="absolute top-[-10%] left-[-10%] w-[520px] h-[520px] rounded-full bg-teal-500/10 blur-[140px] animate-pulse pointer-events-none" />
-      <div className="absolute top-[35%] right-[-5%] w-[550px] h-[550px] rounded-full bg-cyan-500/12 blur-[160px] animate-pulse [animation-duration:8s] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] rounded-full bg-sky-600/10 blur-[150px] animate-pulse [animation-duration:10s] pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[320px] sm:w-[520px] h-[320px] sm:h-[520px] rounded-full bg-teal-500/10 blur-[100px] sm:blur-[140px] animate-pulse pointer-events-none" />
+      <div className="absolute top-[35%] right-[-5%] w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] rounded-full bg-cyan-500/12 blur-[120px] sm:blur-[160px] animate-pulse [animation-duration:8s] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[10%] w-[380px] sm:w-[600px] h-[380px] sm:h-[600px] rounded-full bg-sky-600/10 blur-[110px] sm:blur-[150px] animate-pulse [animation-duration:10s] pointer-events-none" />
 
       {/* Cyberpunk dot grid */}
       <div

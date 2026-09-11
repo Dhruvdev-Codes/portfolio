@@ -41,13 +41,16 @@ export default function Home() {
       {!isTerminalOpen && (
         <button
           onClick={() => setIsTerminalOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 bg-[#151c2a]/90 hover:bg-[#1b2436] text-white border border-[#222e44] hover:border-cyan-500/60 px-4 py-3 rounded-full shadow-2xl backdrop-blur-md transition-all font-mono text-xs group cursor-pointer"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 flex items-center gap-2 sm:gap-2.5 bg-[#151c2a]/95 hover:bg-[#1b2436] text-white border border-[#222e44] hover:border-cyan-500/60 px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-full shadow-2xl backdrop-blur-md transition-all font-mono text-xs group cursor-pointer active:scale-95"
+          aria-label="Open Dhruv AI Research Agent"
         >
           <Sparkles className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform" />
-          <span className="font-semibold">Ask Dhruv&apos;s AI Agent</span>
+          <span className="font-semibold hidden sm:inline">Ask Dhruv&apos;s AI Agent</span>
+          <span className="font-semibold sm:hidden">Ask AI Agent</span>
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
         </button>
       )}
+
 
       {/* AI Chat Drawer */}
       <AIChatDrawer

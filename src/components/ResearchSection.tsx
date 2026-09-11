@@ -82,8 +82,8 @@ export function ResearchSection() {
             <h4 className="text-xs font-mono uppercase tracking-wider text-slate-300 mb-4 font-bold">
               Empirical Evaluation: Proposed Framework vs Reactive Baseline (AODV)
             </h4>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left font-mono text-xs border border-[#222e44] rounded-lg">
+            <div className="overflow-x-auto pb-2">
+              <table className="w-full min-w-[560px] text-left font-mono text-xs border border-[#222e44] rounded-lg">
                 <thead className="bg-[#1a2334] text-slate-300 border-b border-[#222e44]">
                   <tr>
                     <th className="py-3 px-4 font-semibold">Evaluation Metric</th>
@@ -104,6 +104,7 @@ export function ResearchSection() {
                 </tbody>
               </table>
             </div>
+
           </div>
         </div>
       </div>
