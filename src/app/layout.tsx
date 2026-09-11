@@ -47,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-zinc-950 text-zinc-100 antialiased selection:bg-emerald-500/30 selection:text-emerald-300`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-[#12161f] text-slate-100 antialiased selection:bg-cyan-500/30 selection:text-cyan-300`}
       >
         {children}
       </body>

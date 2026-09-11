@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
-import { ResearchSection } from "@/components/ResearchSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
+import { ResearchSection } from "@/components/ResearchSection";
 import { EdgeAIShowcase } from "@/components/EdgeAIShowcase";
 import { SkillsMatrix } from "@/components/SkillsMatrix";
 import { CertificationsSection } from "@/components/CertificationsSection";
@@ -17,7 +17,7 @@ export default function Home() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-zinc-950 text-zinc-100 selection:bg-emerald-500/30 selection:text-emerald-300 antialiased overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#12161f] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-300 antialiased overflow-x-hidden">
       {/* Dynamic Animated Wireless Mesh & Ambient Background */}
       <NetworkBackground />
 
@@ -27,8 +27,8 @@ export default function Home() {
       {/* Main Content */}
       <main className="relative z-10">
         <Hero onOpenTerminal={() => setIsTerminalOpen(true)} />
-        <ResearchSection />
         <ProjectsSection />
+        <ResearchSection />
         <EdgeAIShowcase />
         <SkillsMatrix />
         <CertificationsSection />
@@ -41,11 +41,11 @@ export default function Home() {
       {!isTerminalOpen && (
         <button
           onClick={() => setIsTerminalOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 bg-zinc-900/90 hover:bg-zinc-800 text-zinc-100 border border-zinc-700 hover:border-emerald-500 px-4 py-3 rounded-full shadow-2xl backdrop-blur-md transition-all font-mono text-xs group cursor-pointer"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 bg-[#151c2a]/90 hover:bg-[#1b2436] text-white border border-[#222e44] hover:border-cyan-500/60 px-4 py-3 rounded-full shadow-2xl backdrop-blur-md transition-all font-mono text-xs group cursor-pointer"
         >
-          <Sparkles className="w-4 h-4 text-emerald-400 group-hover:rotate-12 transition-transform" />
+          <Sparkles className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform" />
           <span className="font-semibold">Ask Dhruv&apos;s AI Agent</span>
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
         </button>
       )}
 
@@ -57,6 +57,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 

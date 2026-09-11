@@ -1,6 +1,7 @@
 "use client";
 
-import { Terminal, BookOpen, Layers } from "lucide-react";
+import { Layers, BookOpen, Mail, Shield, Sparkles } from "lucide-react";
+import { GithubIcon } from "@/components/GithubIcon";
 import { PROFILE_DATA } from "@/data/profile";
 
 interface HeroProps {
@@ -9,72 +10,111 @@ interface HeroProps {
 
 export function Hero({ onOpenTerminal }: HeroProps) {
   return (
-    <section className="relative pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
-      {/* Background Accent Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-emerald-500/10 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute top-1/3 left-1/4 -translate-y-1/2 w-[400px] h-[250px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
+    <section id="about" className="relative pt-32 pb-16 md:pt-38 md:pb-20 overflow-hidden">
+      {/* Background Accent Glows (Teal / Cyan) */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[350px] bg-cyan-500/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/3 left-1/4 -translate-y-1/2 w-[450px] h-[280px] bg-teal-500/10 blur-[130px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl">
           {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300 mb-6">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span className="text-zinc-400">Status:</span>
-            <span className="text-emerald-400 font-medium">M.Tech CSE Scholar @ NSUT Delhi</span>
-            <span className="text-zinc-600">|</span>
-            <span className="text-zinc-400 hidden sm:inline">2026PIS7730</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#182030] border border-cyan-500/30 text-xs font-mono text-slate-300 mb-6 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <span className="text-slate-400">Scholar:</span>
+            <span className="text-cyan-400 font-semibold">{PROFILE_DATA.institution}</span>
+            <span className="text-[#2a374f] hidden sm:inline">|</span>
+            <span className="text-slate-400 font-mono hidden sm:inline">Roll: {PROFILE_DATA.rollNo}</span>
           </div>
 
-          {/* Main Title & Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-100 mb-6 leading-tight">
-            Engineering Resilient Network Systems,{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
-              Ad-Hoc Protocols
-            </span>{" "}
-            & Scalable Software.
+          {/* Clean, Large Bold Heading */}
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-4 leading-tight font-sans">
+            {PROFILE_DATA.name}
           </h1>
 
-          <p className="text-base sm:text-lg text-zinc-400 leading-relaxed mb-8 max-w-3xl font-sans">
-            I am <strong className="text-zinc-200">{PROFILE_DATA.name}</strong>, an M.Tech CSE student specializing in{" "}
-            <span className="text-zinc-200 font-medium">Information & Network Security</span> at Netaji Subhas University of Technology (NSUT), New Delhi. My research centers on proactive link predictability for ad-hoc wireless routing (MANET/VANET) through kinematic modeling, RSSI signal filtering, and lightweight AEAD authentication.
-          </p>
+          {/* Subtitle */}
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-sky-400 mb-6 tracking-tight font-sans">
+            Software Developer | Cyber Security Engineer
+          </h2>
 
-          {/* CTAs */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-12 font-mono text-xs sm:text-sm">
-            <button
-              onClick={onOpenTerminal}
-              className="flex items-center gap-2 px-5 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold transition-all shadow-lg shadow-emerald-950/40 hover:shadow-emerald-900/60 cursor-pointer"
+          {/* Specialty Tags */}
+          <div className="flex flex-wrap items-center gap-2 mb-8 font-mono text-xs">
+            <span className="px-2.5 py-1 rounded-md bg-[#161d2b] border border-[#222e44] text-slate-300">
+              Ad-Hoc Wireless Link Predictability
+            </span>
+            <span className="px-2.5 py-1 rounded-md bg-[#161d2b] border border-[#222e44] text-slate-300">
+              Distributed Cloud Architecture
+            </span>
+            <span className="px-2.5 py-1 rounded-md bg-[#161d2b] border border-[#222e44] text-slate-300">
+              AEAD Network Cryptography
+            </span>
+          </div>
+
+          {/* Action CTAs */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10 font-mono text-xs sm:text-sm">
+            <a
+              href="#projects"
+              className="flex items-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-slate-950 font-bold transition-all shadow-lg shadow-cyan-950/50 hover:shadow-cyan-900/70 cursor-pointer"
             >
-              <Terminal className="w-4 h-4" />
-              <span>Query AI Research Terminal</span>
-            </button>
+              <Layers className="w-4 h-4" />
+              <span>Explore Projects</span>
+            </a>
 
             <a
               href="#research"
-              className="flex items-center gap-2 px-5 py-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 hover:border-zinc-600 transition-all"
+              className="flex items-center gap-2 px-5 py-3 rounded-lg bg-[#182030] hover:bg-[#1e273a] text-slate-200 border border-[#26354d] hover:border-cyan-500/60 transition-all"
             >
-              <BookOpen className="w-4 h-4 text-emerald-400" />
-              <span>Read Dissertation</span>
+              <BookOpen className="w-4 h-4 text-cyan-400" />
+              <span>Research Framework</span>
             </a>
 
-            <a
-              href="#systems"
-              className="flex items-center gap-2 px-5 py-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 hover:border-zinc-700 transition-all"
+            <button
+              onClick={onOpenTerminal}
+              className="flex items-center gap-2 px-5 py-3 rounded-lg bg-[#182030] hover:bg-[#1e273a] text-cyan-300 border border-cyan-500/30 hover:border-cyan-400 transition-all cursor-pointer group"
             >
-              <Layers className="w-4 h-4 text-cyan-400" />
-              <span>Systems & Projects</span>
+              <Sparkles className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform" />
+              <span>Ask AI Agent</span>
+            </button>
+          </div>
+
+          {/* Social & Contact Bar */}
+          <div className="flex flex-wrap items-center gap-4 mb-10 text-xs font-mono text-slate-400 pt-2 border-t border-[#1e2738]/60">
+            <span className="text-slate-500">Connect:</span>
+            <a
+              href={PROFILE_DATA.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-slate-300 hover:text-cyan-400 transition-colors"
+            >
+              <GithubIcon className="w-4 h-4 text-cyan-400" />
+              <span>GitHub</span>
+            </a>
+            <a
+              href={PROFILE_DATA.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-slate-300 hover:text-cyan-400 transition-colors"
+            >
+              <Shield className="w-4 h-4 text-cyan-400" />
+              <span>LinkedIn</span>
+            </a>
+            <a
+              href={`mailto:${PROFILE_DATA.email}`}
+              className="flex items-center gap-1.5 text-slate-300 hover:text-cyan-400 transition-colors"
+            >
+              <Mail className="w-4 h-4 text-teal-400" />
+              <span>{PROFILE_DATA.email}</span>
             </a>
           </div>
 
-          {/* Quick Metrics Grid */}
+          {/* Metrics Display */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
             {PROFILE_DATA.metrics.map((metric, idx) => (
               <div
                 key={idx}
-                className="p-3.5 rounded-lg bg-zinc-900/60 border border-zinc-800/80 backdrop-blur-sm"
+                className="p-3.5 rounded-lg bg-[#161d2b]/80 border border-[#222e44] backdrop-blur-sm hover:border-cyan-500/40 transition-colors"
               >
-                <div className="text-[11px] text-zinc-500 mb-1">{metric.label}</div>
-                <div className="text-sm font-semibold text-zinc-200 truncate">{metric.value}</div>
+                <div className="text-[11px] text-slate-400 mb-1">{metric.label}</div>
+                <div className="text-sm font-bold text-cyan-300 truncate">{metric.value}</div>
               </div>
             ))}
           </div>
@@ -83,3 +123,4 @@ export function Hero({ onOpenTerminal }: HeroProps) {
     </section>
   );
 }
+

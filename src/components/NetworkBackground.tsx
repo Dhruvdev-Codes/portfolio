@@ -50,11 +50,11 @@ export function NetworkBackground() {
     }
 
     let nodes: Node[] = [];
-    const colors = ["#10b981", "#06b6d4", "#3b82f6", "#a855f7"];
+    const colors = ["#06b6d4", "#14b8a6", "#38bdf8", "#22d3ee"];
 
     const init = () => {
       const isMobile = width < 768;
-      const count = isMobile ? 25 : 50;
+      const count = isMobile ? 25 : 52;
       nodes = [];
       for (let i = 0; i < count; i++) {
         nodes.push({
@@ -70,7 +70,7 @@ export function NetworkBackground() {
     };
 
     init();
-    const maxDist = 130;
+    const maxDist = 135;
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
@@ -111,8 +111,8 @@ export function NetworkBackground() {
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
             ctx.strokeStyle = nodes[i].color;
-            ctx.globalAlpha = (1 - d / maxDist) * 0.16;
-            ctx.lineWidth = 0.75;
+            ctx.globalAlpha = (1 - d / maxDist) * 0.2;
+            ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }
@@ -123,8 +123,8 @@ export function NetworkBackground() {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(mouse.x, mouse.y);
-            ctx.strokeStyle = "#10b981";
-            ctx.globalAlpha = (1 - md / 160) * 0.25;
+            ctx.strokeStyle = "#06b6d4";
+            ctx.globalAlpha = (1 - md / 160) * 0.3;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -146,17 +146,17 @@ export function NetworkBackground() {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
-      {/* Ambient gradient glowing orbs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-emerald-500/10 blur-[140px] animate-pulse pointer-events-none" />
-      <div className="absolute top-[35%] right-[-5%] w-[550px] h-[550px] rounded-full bg-cyan-500/10 blur-[160px] animate-pulse [animation-duration:8s] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] rounded-full bg-blue-500/10 blur-[150px] animate-pulse [animation-duration:10s] pointer-events-none" />
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#12161f]">
+      {/* Ambient gradient glowing orbs with teal & cyan accents */}
+      <div className="absolute top-[-10%] left-[-10%] w-[520px] h-[520px] rounded-full bg-teal-500/10 blur-[140px] animate-pulse pointer-events-none" />
+      <div className="absolute top-[35%] right-[-5%] w-[550px] h-[550px] rounded-full bg-cyan-500/12 blur-[160px] animate-pulse [animation-duration:8s] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] rounded-full bg-sky-600/10 blur-[150px] animate-pulse [animation-duration:10s] pointer-events-none" />
 
       {/* Cyberpunk dot grid */}
       <div
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
+        className="absolute inset-0 opacity-[0.04] pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, #f4f4f5 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 1px 1px, #38bdf8 1px, transparent 0)`,
           backgroundSize: "32px 32px",
         }}
       />
@@ -164,3 +164,4 @@ export function NetworkBackground() {
     </div>
   );
 }
+
