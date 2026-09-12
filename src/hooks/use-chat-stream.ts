@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { searchLocalKnowledge, generateLocalRAGResponse } from "@/lib/rag-helper";
+import { handleChatRequest } from "@/lib/omniroute-agent";
 
 export interface ChatMessage {
   id: string;
@@ -19,36 +19,47 @@ export function useChatStream({ api = "" }: { api?: string } = {}) {
   };
 
   const simulateLocalStream = async (userText: string, assistantId: string) => {
-    const context = searchLocalKnowledge(userText);
-    const fullAnswer = generateLocalRAGResponse(userText, context);
-    const words = fullAnswer.split(" ");
-    let accumulated = "";
+    try {
+      const { text } = await handleChatRequest(userText);
+      const chunks = text.split(/(\s+)/);
+      let accumulated = "";
 
-    for (let i = 0; i < words.length; i++) {
-      accumulated += (i === 0 ? "" : " ") + words[i];
+      for (let i = 0; i < chunks.length; i++) {
+        accumulated += chunks[i];
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === assistantId ? { ...msg, content: accumulated } : msg
+          )
+        );
+        if (chunks[i].trim().length > 0) {
+          await new Promise((r) => setTimeout(r, 14));
+        }
+      }
+    } catch {
       setMessages((prev) =>
         prev.map((msg) =>
-          msg.id === assistantId ? { ...msg, content: accumulated } : msg
+          msg.id === assistantId
+            ? {
+                ...msg,
+                content:
+                  "I am Dhruv AI — ready to assist with tech discussions, AI and cloud systems, or anything about Dhruv's research and software projects. What's on your mind today?",
+              }
+            : msg
         )
       );
-      await new Promise((r) => setTimeout(r, 16));
     }
   };
 
   const sendMessage = useCallback(
     async (userText: string) => {
-      if (!userText.trim() || isLoading) return;
+      const trimmed = userText.trim();
+      if (!trimmed || isLoading) return;
 
       const userMsg: ChatMessage = {
         id: "msg-" + Date.now(),
         role: "user",
-        content: userText.trim(),
+        content: trimmed,
       };
-
-      const newMessages = [...messages, userMsg];
-      setMessages(newMessages);
-      setInput("");
-      setIsLoading(true);
 
       const assistantId = "msg-" + (Date.now() + 1);
       const initialAssistantMsg: ChatMessage = {
@@ -57,22 +68,24 @@ export function useChatStream({ api = "" }: { api?: string } = {}) {
         content: "",
       };
 
-      setMessages((prev) => [...prev, initialAssistantMsg]);
+      setMessages((prev) => [...prev, userMsg, initialAssistantMsg]);
+      setInput("");
+      setIsLoading(true);
 
       try {
         if (!api) {
-          await simulateLocalStream(userText, assistantId);
+          await simulateLocalStream(trimmed, assistantId);
           return;
         }
 
         const response = await fetch(api, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: newMessages }),
+          body: JSON.stringify({ message: trimmed }),
         });
 
         if (!response.ok) {
-          await simulateLocalStream(userText, assistantId);
+          await simulateLocalStream(trimmed, assistantId);
           return;
         }
 
@@ -80,12 +93,11 @@ export function useChatStream({ api = "" }: { api?: string } = {}) {
         const decoder = new TextDecoder();
 
         if (!reader) {
-          await simulateLocalStream(userText, assistantId);
+          await simulateLocalStream(trimmed, assistantId);
           return;
         }
 
         let accumulated = "";
-
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
@@ -100,17 +112,19 @@ export function useChatStream({ api = "" }: { api?: string } = {}) {
           );
         }
       } catch {
-        await simulateLocalStream(userText, assistantId);
+        await simulateLocalStream(trimmed, assistantId);
       } finally {
         setIsLoading(false);
       }
     },
-    [api, isLoading, messages]
+    [api, isLoading]
   );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    sendMessage(input);
+    if (input.trim()) {
+      sendMessage(input);
+    }
   };
 
   return {
@@ -124,4 +138,5 @@ export function useChatStream({ api = "" }: { api?: string } = {}) {
     sendMessage,
   };
 }
+
 

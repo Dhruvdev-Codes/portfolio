@@ -1,4 +1,19 @@
 import knowledgeData from "../../data/knowledge.json";
+import {
+  getConversationalResponse,
+  getGeneralKnowledgeResponse,
+  getDynamicConversationalFallback,
+} from "./general-knowledge";
+
+export const DHRUV_AI_SYSTEM_PROMPT = `You are Dhruv AI, an interactive, highly intelligent, and conversational personal AI agent representing Dhruv (an M.Tech / researcher in ad-hoc wireless systems at NSUT Delhi, cloud/AWS practitioner, and software engineer).
+
+### Personality & Tone
+- **Conversational & Human-like:** Speak naturally, fluently, and warmly like ChatGPT or Gemini. Avoid rigid, repetitive boilerplate phrasing or robotic templates.
+- **Adaptive Knowledge:** 
+  1. For casual chat (e.g., "hi", "how are you"), respond naturally as a friendly human.
+  2. For general knowledge queries (e.g., "what is ChatGPT?", "explain quantum computing"), answer them clearly and accurately just like a general-purpose AI assistant.
+  3. For questions about Dhruv, use your provided knowledge base (research at NSUT Delhi, AWS certifications, projects like WorkVibe or SkillXchange, skills, systems).
+- **Graceful Professional Pivot:** If the user asks a general question, answer it fully and naturally, and then smoothly connect it back to Dhruv's expertise *only when relevant*, instead of blocking or giving an error message. Never use the exact same canned sentence structure repeatedly.`;
 
 export function searchLocalKnowledge(query: string): string {
   const words = query
@@ -32,28 +47,9 @@ export function generateLocalRAGResponse(query: string, context: string): string
   const q = trimmed.toLowerCase();
 
   // 1. Casual Greetings & Conversational Small Talk
-  if (/^(hi|hello|hey|hey there|greetings|howdy|good morning|good afternoon|good evening)\b/i.test(q)) {
-    return "Hello! Great to meet you. I'm Dhruv's AI assistant. I'm here to converse with you and share details about Dhruv's research at NSUT Delhi, full-stack & systems projects, AWS credentials, or technical skillset. What would you like to explore today?";
-  }
-
-  if (/^(how are you|how r u|how are you doing|how's it going|how is it going|wassup|what's up|sup)\b/i.test(q)) {
-    return "I'm doing wonderful, thank you for asking! I'm ready to walk you through Dhruv's latest research on ad-hoc wireless link predictability, systems architecture, or answer any questions about his work. How are things with you today?";
-  }
-
-  if (/^(nice to meet you|pleasure to meet you|glad to meet you)\b/i.test(q)) {
-    return "It's a real pleasure meeting you as well! Feel free to ask me anything about Dhruv's background, research, or projects whenever you're ready.";
-  }
-
-  if (/^(who are you|what are you|what is your name|introduce yourself)\b/i.test(q)) {
-    return "I'm an interactive AI assistant representing Dhruv Upadhyay. My purpose is to help you learn all about Dhruv's academic journey as an M.Tech scholar at NSUT Delhi, his work on MANET/VANET link predictability, full-stack engineering projects like WorkVibe and SkillXchange, and his AWS cloud certifications. Feel free to ask me anything!";
-  }
-
-  if (/^(thanks|thank you|thx|appreciate it|much appreciated)\b/i.test(q)) {
-    return "You're very welcome! Let me know if there's anything else about Dhruv's work, research papers, or background that you'd like to dive into.";
-  }
-
-  if (/^(bye|goodbye|see you|cya|take care|have a good day)\b/i.test(q)) {
-    return "It was great chatting with you! Have a fantastic day ahead, and don't hesitate to reach back out or connect with Dhruv directly via email or GitHub.";
+  const conversationalReply = getConversationalResponse(q);
+  if (conversationalReply) {
+    return conversationalReply;
   }
 
 
@@ -80,42 +76,7 @@ export function generateLocalRAGResponse(query: string, context: string): string
     return "Dhruv is always excited to connect regarding research, software engineering roles, or technical collaborations! Here is how you can get in touch:\n\n• Email: dhruvupadhyay708937@gmail.com\n• Academic Email: dhruv.upadhyay.pg26@nsut.ac.in\n• Phone: +91 7489221051\n• GitHub: https://github.com/Dhruvdev-Codes\n• Location: New Delhi / Indore, India";
   }
 
-  // 3. Research & Mathematical Formulations
-  if (
-    q.includes("research") ||
-    q.includes("thesis") ||
-    q.includes("paper") ||
-    q.includes("dissertation") ||
-    q.includes("manet") ||
-    q.includes("vanet") ||
-    q.includes("adhoc") ||
-    q.includes("ad-hoc") ||
-    q.includes("link predict") ||
-    q.includes("let") ||
-    q.includes("rssi") ||
-    q.includes("smoothing") ||
-    q.includes("formula") ||
-    q.includes("math") ||
-    q.includes("latency") ||
-    q.includes("aodv")
-  ) {
-    if (q.includes("formula") || q.includes("math") || q.includes("let") || q.includes("equation")) {
-      return "Dhruv's research utilizes three key mathematical formulations for ad-hoc link resilience:\n\n1. Signal Smoothing (EMA):\n   r̂_t = α · r_t + (1 - α) · r̂_{t-1}\n   (Dampens transient multipath fading and noise in RSSI measurements)\n\n2. Kinematic Link Expiration Time (LET):\n   LET = (-ab + √( (a² + b²)·R² - (ad - bc)² )) / (a² + b²)\n   (Calculates exact remaining route lifetime based on relative velocity vectors and transmission radius R)\n\n3. Dynamic Node Trust Scoring:\n   T_node(t) = w₁·S_success + w₂·S_delay - w₃·S_drop\n   (Proactively isolates Byzantine and black-hole routing nodes in decentralized topologies).";
-    }
-
-    if (q.includes("rssi") || q.includes("signal") || q.includes("kalman") || q.includes("ema")) {
-      return "To tackle erratic RSSI fluctuations caused by shadowing and multipath interference, Dhruv implemented an Exponential Moving Average (EMA) and Kalman signal filtering pipeline. This creates smooth, reliable trend lines for Link Expiration Time (LET) calculations, avoiding false route break triggers and slashing control overhead.";
-    }
-
-    if (q.includes("latency") || q.includes("overhead") || q.includes("benchmark") || q.includes("aodv") || q.includes("result")) {
-      return "Compared to standard reactive protocols like AODV, Dhruv's proactive link predictability framework achieves notable empirical gains:\n• Route Breakage Rate: Reduced from 8.9/min down to 3.2/min\n• Control Packet Overhead: Cut by ~61% (from 36.8 KB/s to 14.2 KB/s)\n• p99 Latency: Dropped from 94ms to 28ms\n• High-Mobility Throughput: Boosted from 2.9 Mbps to 4.8 Mbps.";
-    }
-
-    return "Dhruv's M.Tech research at Netaji Subhas University of Technology (NSUT) is titled:\n'Link Predictability in Ad-Hoc Networks: Frameworks for Secure and Robust Communications'.\n\nTraditional ad-hoc protocols (like AODV) only discover route failures after a link has already severed, causing latency spikes and packet storms. Dhruv's framework proactively forecasts topological shifts using kinematic velocity models, time-series RSSI exponential smoothing, lightweight AEAD cryptography, and behavioral trust scoring—achieving a 61% reduction in control overhead and sub-28ms route repair times.";
-  }
-
-
-  // 4. Projects Breakdown
+  // 3. Projects Breakdown (Checked before generic research keywords)
   if (
     q.includes("project") ||
     q.includes("workvibe") ||
@@ -140,6 +101,40 @@ export function generateLocalRAGResponse(query: string, context: string): string
     }
 
     return "Dhruv has engineered several standout systems and full-stack projects:\n\n1. Adaptive MANET/VANET Link Predictor: Kinematic trajectory modeling & signal filtering in Python/C++ with 96.4% packet delivery ratio.\n2. WorkVibe: Full-stack mentor-mentee collaboration platform with sub-15ms search latency in Node.js & MongoDB.\n3. SkillXchange: Campus peer skill marketplace and hackathon teaming engine.\n4. Travel World: High-performance travel portal built with MySQL 3NF architecture and a 99/100 Lighthouse score.\n\nWhich project would you like to explore in more detail?";
+  }
+
+  // 4. Research & Mathematical Formulations
+  if (
+    q.includes("research") ||
+    /\bthesis\b/i.test(q) ||
+    /\bpaper\b/i.test(q) ||
+    q.includes("dissertation") ||
+    q.includes("manet") ||
+    q.includes("vanet") ||
+    q.includes("adhoc") ||
+    q.includes("ad-hoc") ||
+    q.includes("link predict") ||
+    /\blet\b/i.test(q) ||
+    q.includes("rssi") ||
+    q.includes("smoothing") ||
+    q.includes("formula") ||
+    /\bmath\b/i.test(q) ||
+    q.includes("routing") ||
+    q.includes("aodv")
+  ) {
+    if (q.includes("formula") || q.includes("math") || q.includes("let") || q.includes("equation")) {
+      return "Dhruv's research utilizes three key mathematical formulations for ad-hoc link resilience:\n\n1. Signal Smoothing (EMA):\n   r̂_t = α · r_t + (1 - α) · r̂_{t-1}\n   (Dampens transient multipath fading and noise in RSSI measurements)\n\n2. Kinematic Link Expiration Time (LET):\n   LET = (-ab + √( (a² + b²)·R² - (ad - bc)² )) / (a² + b²)\n   (Calculates exact remaining route lifetime based on relative velocity vectors and transmission radius R)\n\n3. Dynamic Node Trust Scoring:\n   T_node(t) = w₁·S_success + w₂·S_delay - w₃·S_drop\n   (Proactively isolates Byzantine and black-hole routing nodes in decentralized topologies).";
+    }
+
+    if (q.includes("rssi") || q.includes("signal") || q.includes("kalman") || q.includes("ema")) {
+      return "To tackle erratic RSSI fluctuations caused by shadowing and multipath interference, Dhruv implemented an Exponential Moving Average (EMA) and Kalman signal filtering pipeline. This creates smooth, reliable trend lines for Link Expiration Time (LET) calculations, avoiding false route break triggers and slashing control overhead.";
+    }
+
+    if (q.includes("latency") || q.includes("overhead") || q.includes("benchmark") || q.includes("aodv") || q.includes("result")) {
+      return "Compared to standard reactive protocols like AODV, Dhruv's proactive link predictability framework achieves notable empirical gains:\n• Route Breakage Rate: Reduced from 8.9/min down to 3.2/min\n• Control Packet Overhead: Cut by ~61% (from 36.8 KB/s to 14.2 KB/s)\n• p99 Latency: Dropped from 94ms to 28ms\n• High-Mobility Throughput: Boosted from 2.9 Mbps to 4.8 Mbps.";
+    }
+
+    return "Dhruv's M.Tech research at Netaji Subhas University of Technology (NSUT) is titled:\n'Link Predictability in Ad-Hoc Networks: Frameworks for Secure and Robust Communications'.\n\nTraditional ad-hoc protocols (like AODV) only discover route failures after a link has already severed, causing latency spikes and packet storms. Dhruv's framework proactively forecasts topological shifts using kinematic velocity models, time-series RSSI exponential smoothing, lightweight AEAD cryptography, and behavioral trust scoring—achieving a 61% reduction in control overhead and sub-28ms route repair times.";
   }
 
   // 5. Certifications & Credentials
@@ -195,11 +190,17 @@ export function generateLocalRAGResponse(query: string, context: string): string
     return "Dhruv Upadhyay is an M.Tech CSE scholar at Netaji Subhas University of Technology (NSUT), New Delhi, specializing in Information Security, Wireless Ad-Hoc Networks, and Distributed Cloud Systems. He pairs deep theoretical knowledge in routing predictability and cryptography with proven engineering expertise across AWS cloud architecture, modern Next.js/Node.js web platforms, and high-performance databases.";
   }
 
-  // 9. Context match from Knowledge Base
+  // 9. General Technical & AI Knowledge (ChatGPT/Gemini capability)
+  const generalKnowledgeReply = getGeneralKnowledgeResponse(q);
+  if (generalKnowledgeReply) {
+    return generalKnowledgeReply;
+  }
+
+  // 10. Context match from Knowledge Base
   if (context && context.trim().length > 0) {
     return `Here is what I found in Dhruv's technical knowledge base regarding your question:\n\n${context.trim()}\n\nIs there a specific detail or architectural aspect you'd like to dive deeper into?`;
   }
 
-  // 10. Graceful, Conversational Fallback
-  return `That's an interesting question! While I focus specifically on Dhruv's professional background, research in ad-hoc wireless systems at NSUT Delhi, AWS certifications, and software projects like WorkVibe or SkillXchange, I'd be more than happy to help you with any of those areas. What would you like to know more about?`;
+  // 11. Dynamic Conversational Synthesis Fallback (No robotic canned templates)
+  return getDynamicConversationalFallback(trimmed);
 }

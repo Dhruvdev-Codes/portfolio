@@ -13,13 +13,21 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, setMessages } = useChatStream();
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    setMessages,
+    sendMessage,
+  } = useChatStream();
 
   const promptSuggestions = [
     "What is Dhruv's research topic and mathematical formulation?",
     "Explain the architecture of WorkVibe and SkillXchange.",
+    "What is ChatGPT and how do LLMs work?",
     "What are Dhruv's AWS and security credentials?",
-    "How does Dhruv reduce route repair latency in MANETs?",
   ];
 
   useEffect(() => {
@@ -87,8 +95,9 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
                     {promptSuggestions.map((prompt, idx) => (
                       <button
                         key={idx}
-                        onClick={() => setInput(prompt)}
-                        className="w-full text-left p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-[#161d2b] dark:hover:bg-[#1d2738] text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300 border border-slate-200 dark:border-[#222e44] text-[11px] cursor-pointer transition-colors"
+                        onClick={() => sendMessage(prompt)}
+                        disabled={isLoading}
+                        className="w-full text-left p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-[#161d2b] dark:hover:bg-[#1d2738] text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300 border border-slate-200 dark:border-[#222e44] text-[11px] cursor-pointer transition-colors disabled:opacity-50"
                       >
                         ▸ {prompt}
                       </button>
@@ -130,7 +139,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
               ref={inputRef}
               value={input}
               onChange={handleInputChange}
-              placeholder="Ask about research, systems, or AWS..."
+              placeholder="Ask about AI, systems, AWS, or research..."
               className="flex-1 bg-white dark:bg-[#111722] border border-slate-200 dark:border-[#222e44] rounded-lg px-3 py-2.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-cyan-500 font-sans"
             />
             <button
