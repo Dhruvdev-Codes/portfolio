@@ -3,17 +3,9 @@
  * Hybrid Guardrail Pattern: Intent Routing & Contextual Bridging
  */
 
-import { searchLocalKnowledge, generateLocalRAGResponse } from "./rag-helper";
+import { searchLocalKnowledge, generateLocalRAGResponse, DHRUV_AI_SYSTEM_PROMPT } from "./rag-helper";
 
-export const DHRUV_AI_SYSTEM_PROMPT = `You are Dhruv AI, an interactive, highly intelligent, and conversational personal AI agent representing Dhruv (an M.Tech / researcher in ad-hoc wireless systems at NSUT Delhi, cloud/AWS practitioner, and software engineer).
-
-### Personality & Tone
-- **Conversational & Human-like:** Speak naturally, fluently, and warmly like ChatGPT or Gemini. Avoid rigid, repetitive boilerplate phrasing or robotic templates.
-- **Adaptive Knowledge:** 
-  1. For casual chat (e.g., "hi", "how are you"), respond naturally as a friendly human.
-  2. For general knowledge queries (e.g., "what is ChatGPT?", "explain quantum computing"), answer them clearly and accurately just like a general-purpose AI assistant.
-  3. For questions about Dhruv, use your provided knowledge base (research at NSUT Delhi, AWS certifications, projects like WorkVibe or SkillXchange, skills, systems).
-- **Graceful Professional Pivot:** If the user asks a general question, answer it fully and naturally, and then smoothly connect it back to Dhruv's expertise *only when relevant*, instead of blocking or giving an error message. Never use the exact same canned sentence structure repeatedly.`;
+export { DHRUV_AI_SYSTEM_PROMPT };
 
 export type QueryIntent = "greeting_casual" | "general_knowledge" | "portfolio_rag" | "dynamic_conversational";
 
@@ -25,37 +17,30 @@ export function checkIfGreeting(userMessage: string): boolean {
     /^(who are you|what are you|what is your name|who made you|who created you)\b/i.test(q) ||
     /^(thanks|thank you|thx|cheers|appreciate it|much appreciated)\b/i.test(q) ||
     /^(bye|goodbye|see you|cya|take care|have a good day)\b/i.test(q) ||
-    /^(tell me a joke|make me laugh|got any jokes)\b/i.test(q)
+    /^(tell me a joke|make me laugh|got any jokes)\b/i.test(q) ||
+    q.includes("which ai model") ||
+    q.includes("what ai model") ||
+    q.includes("what model do you use") ||
+    q.includes("which model do you use") ||
+    q.includes("what model are you") ||
+    q.includes("which model are you") ||
+    q.includes("what llm") ||
+    q.includes("which llm")
   );
-}
-
-export function checkIfGeneralInquiry(userMessage: string): boolean {
-  const q = userMessage.trim().toLowerCase();
-  const keywords = [
-    "what is chatgpt", "what is gpt", "what is an llm", "what is llm",
-    "what is quantum computing", "qubit", "what is machine learning", "what is deep learning",
-    "what is ai", "artificial intelligence", "what is docker", "what is kubernetes",
-    "what is cloud computing", "what is aws", "what is azure", "what is gcp",
-    "what is cryptography", "what is blockchain", "what is manet", "what is vanet",
-    "what is react", "what is nextjs", "what is nodejs", "rest vs graphql",
-    "sql vs nosql", "what is mongodb", "what is redis", "kalman filter", "big o"
-  ];
-
-  if (keywords.some((kw) => q.includes(kw))) return true;
-
-  if (/^(what is|what are|explain|how does|how do|why is|difference between)\s+/i.test(q)) {
-    if (q.includes("dhruv") || q.includes("workvibe") || q.includes("skillxchange") || q.includes("travel world") || q.includes("nsut")) {
-      return false;
-    }
-    return true;
-  }
-  return false;
 }
 
 export function checkIfPortfolioQuery(userMessage: string): boolean {
   const q = userMessage.trim().toLowerCase();
-  const portfolioPattern = /\b(dhruv|upadhyay|research|thesis|dissertation|manet|vanet|link predict|let formula|rssi|kalman|workvibe|skillxchange|travel world|nsut|aitr|aws|certifications?|credentials?|google cybersecurity|resume|cv|portfolio)\b/i;
-  return portfolioPattern.test(q) || q.includes("contact") || q.includes("github") || q.includes("email");
+  const portfolioPattern = /\b(dhruv|dhruv's|upadhyay|nsut|aitr|workvibe|skillxchange|travel world|let formula|link predict|rssi|kalman|aead|dissertation|thesis|research|certifications?|credentials?|google cybersecurity|resume|cv|portfolio)\b/i;
+  return portfolioPattern.test(q) || q.includes("contact") || q.includes("github") || q.includes("email") || q.includes("hire dhruv");
+}
+
+export function checkIfGeneralInquiry(userMessage: string): boolean {
+  const q = userMessage.trim().toLowerCase();
+  if (checkIfPortfolioQuery(userMessage)) return false;
+
+  const generalPattern = /^(what is|what are|explain|how does|how do|why is|difference between|compare|which|write|code|solve|calculate|what)\b/i;
+  return generalPattern.test(q) || q.includes("transformer") || q.includes("chatgpt") || q.includes("llm") || q.includes("binary search") || q.includes("quicksort") || q.includes("docker") || q.includes("react");
 }
 
 export function routeUserQuery(userMessage: string, context?: string): {
@@ -64,8 +49,8 @@ export function routeUserQuery(userMessage: string, context?: string): {
   response: string;
 } {
   const isGreeting = checkIfGreeting(userMessage);
-  const isGeneral = checkIfGeneralInquiry(userMessage);
   const isPortfolio = checkIfPortfolioQuery(userMessage);
+  const isGeneral = checkIfGeneralInquiry(userMessage);
 
   if (isGreeting) {
     return {
@@ -75,7 +60,16 @@ export function routeUserQuery(userMessage: string, context?: string): {
     };
   }
 
-  if (isGeneral && !isPortfolio) {
+  if (isPortfolio) {
+    const retrievalContext = context || searchLocalKnowledge(userMessage);
+    return {
+      intent: "portfolio_rag",
+      bypassVectorSearch: false,
+      response: generateLocalRAGResponse(userMessage, retrievalContext),
+    };
+  }
+
+  if (isGeneral) {
     return {
       intent: "general_knowledge",
       bypassVectorSearch: true,
@@ -83,11 +77,10 @@ export function routeUserQuery(userMessage: string, context?: string): {
     };
   }
 
-  const retrievalContext = context || searchLocalKnowledge(userMessage);
   return {
-    intent: isPortfolio ? "portfolio_rag" : "dynamic_conversational",
-    bypassVectorSearch: false,
-    response: generateLocalRAGResponse(userMessage, retrievalContext),
+    intent: "dynamic_conversational",
+    bypassVectorSearch: true,
+    response: generateLocalRAGResponse(userMessage, ""),
   };
 }
 

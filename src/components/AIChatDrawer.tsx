@@ -21,7 +21,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
     isLoading,
     setMessages,
     sendMessage,
-  } = useChatStream();
+  } = useChatStream({ api: "/api/chat" });
 
   const promptSuggestions = [
     "What is Dhruv's research topic and mathematical formulation?",

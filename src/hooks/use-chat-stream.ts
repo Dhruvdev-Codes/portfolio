@@ -9,7 +9,7 @@ export interface ChatMessage {
   content: string;
 }
 
-export function useChatStream({ api = "" }: { api?: string } = {}) {
+export function useChatStream({ api = "/api/chat" }: { api?: string } = {}) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -81,7 +81,13 @@ export function useChatStream({ api = "" }: { api?: string } = {}) {
         const response = await fetch(api, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: trimmed }),
+          body: JSON.stringify({
+            message: trimmed,
+            messages: [...messages, userMsg].map((m) => ({
+              role: m.role,
+              content: m.content,
+            })),
+          }),
         });
 
         if (!response.ok) {
@@ -117,7 +123,7 @@ export function useChatStream({ api = "" }: { api?: string } = {}) {
         setIsLoading(false);
       }
     },
-    [api, isLoading]
+    [api, isLoading, messages]
   );
 
   const handleSubmit = (e: React.FormEvent) => {

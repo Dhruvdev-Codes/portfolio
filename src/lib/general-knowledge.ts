@@ -1,267 +1,125 @@
 /**
- * General Knowledge & Conversational Intelligence Module for Dhruv AI
- * Enables ChatGPT/Gemini-like natural conversational answers and CS/AI knowledge
+ * Comprehensive General Knowledge, AI & Conversational Intelligence Engine for Dhruv AI
  */
 
+import { CS_AI_TOPICS, WORLD_CAPITALS } from "./knowledge-topics";
+
 export function getConversationalResponse(q: string): string | null {
-  // 1. Greetings & Warm Openers
-  if (/^(hi|hello|hey|hey there|greetings|howdy|good morning|good afternoon|good evening|yo|sup|hiya)\b/i.test(q)) {
+  const query = q.trim().toLowerCase();
+
+  // 1. AI Model & Architecture Inquiries
+  if (
+    query.includes("which ai model") ||
+    query.includes("what ai model") ||
+    query.includes("what model do you use") ||
+    query.includes("which model do you use") ||
+    query.includes("what model are you") ||
+    query.includes("which model are you") ||
+    query.includes("what model") ||
+    query.includes("which model") ||
+    query.includes("what llm") ||
+    query.includes("which llm") ||
+    query.includes("are you chatgpt") ||
+    query.includes("are you gemini") ||
+    query.includes("are you gpt") ||
+    query.includes("how do you work") ||
+    query.includes("how were you built") ||
+    query.includes("what is your architecture")
+  ) {
+    return `I am **Dhruv AI** — an interactive agent engineered with a hybrid LLM & RAG architecture.
+
+### My Core Architecture:
+1. **Multi-Model Intelligence Engine:**
+   - Powered by state-of-the-art LLM backends (supporting **Google Gemini 1.5/2.0 Flash**, **OpenAI GPT-4o-mini**, and **Groq LLaMA 3.3 70B**).
+   - Real-time token streaming and conversational reasoning.
+
+2. **Domain-Specific RAG Knowledge Base:**
+   - Grounded in Dhruv Upadhyay's research at **NSUT Delhi** (Ad-Hoc Wireless Link Predictability, Kinematic LET models, and RSSI smoothing).
+   - Real-time access to Dhruv's full-stack applications (**WorkVibe**, **SkillXchange**, **Travel World**), cloud credentials (**AWS Cloud Architecting**), and engineering competencies.
+
+3. **Omniroute Semantic Agent:**
+   - Real-time intent classification to handle casual small talk, CS/AI engineering concepts, live coding questions, or specific portfolio inquiries.
+
+Feel free to ask me anything about computer science, AI, systems architecture, or dive into Dhruv's research and projects!`;
+  }
+
+  // 2. Greetings & Warm Openers
+  if (/^(hi|hello|hey|hey there|greetings|howdy|good morning|good afternoon|good evening|yo|sup|hiya)\b/i.test(query)) {
     const greetings = [
-      "Hello! Great to connect with you. I'm Dhruv AI, ready to assist with tech discussions, AI and cloud systems, or anything about Dhruv's research and software projects. What's on your mind today?",
-      "Hey there! Welcome. How can I help you today? Whether you'd like to explore ad-hoc wireless systems, full-stack architecture, or just have a general tech conversation, I'm all ears!",
-      "Hi! Glad you stopped by. Feel free to ask me general questions about computer science, AI, and cloud architecture, or dive into Dhruv's M.Tech research at NSUT Delhi."
+      "Hello! Great to connect with you. I am Dhruv AI, ready to assist with tech discussions, AI and cloud systems, coding questions, or anything about Dhruv's research and software projects. What's on your mind today?",
+      "Hey there! Welcome. How can I help you today? Whether you'd like to explore ad-hoc wireless systems, solve a coding problem, or just have a general conversation, I'm all ears!",
+      "Hi! Glad you stopped by. Feel free to ask me general questions about computer science, AI, cloud architecture, and math, or dive into Dhruv's M.Tech research at NSUT Delhi."
     ];
     return greetings[Math.floor(Math.random() * greetings.length)];
   }
 
-  // 2. Wellness & Small Talk
-  if (/^(how are you|how r u|how are you doing|how's it going|how is it going|wassup|what's up|how's everything)\b/i.test(q)) {
-    return "I'm doing fantastic, thank you for asking! I'm fully tuned and ready to chat about software engineering, cloud architectures, wireless networks, or general technology topics. How has your day been?";
+  // 3. Wellness & Small Talk
+  if (/^(how are you|how r u|how are you doing|how's it going|how is it going|wassup|what's up|how's everything)\b/i.test(query)) {
+    return "I'm doing fantastic, thank you for asking! I'm fully tuned and ready to chat about software engineering, cloud architectures, wireless networks, coding, or general technology topics. How has your day been?";
   }
 
-  // 3. Identity & Persona
-  if (/^(who are you|what are you|what is your name|who made you|who created you|tell me about yourself|introduce yourself)\b/i.test(q)) {
-    return "I am Dhruv AI — an intelligent, conversational portfolio agent representing Dhruv Upadhyay, an M.Tech researcher in Computer Science & Information Security at NSUT Delhi, AWS practitioner, and software engineer.\n\nI can converse naturally on general topics in computer science, software architecture, and AI, as well as provide deep insights into Dhruv's research in ad-hoc link predictability, full-stack platforms like WorkVibe & SkillXchange, and cloud credentials.";
+  // 4. Identity & Persona
+  if (/^(who are you|what are you|what is your name|who made you|who created you|tell me about yourself|introduce yourself)\b/i.test(query)) {
+    return `I am **Dhruv AI** — an intelligent, conversational portfolio agent representing **Dhruv Upadhyay**, an M.Tech researcher in Computer Science & Engineering (Information Security) at **Netaji Subhas University of Technology (NSUT), New Delhi**, AWS practitioner, and software engineer.
+
+I can converse naturally on general topics in computer science, software architecture, programming, and AI, as well as provide deep insights into Dhruv's research in ad-hoc link predictability, full-stack platforms like WorkVibe & SkillXchange, and cloud credentials.`;
   }
 
-  // 4. Humor & Programmer Jokes
-  if (/^(tell me a joke|make me laugh|got any jokes|tell a joke|give me a joke)\b/i.test(q)) {
+  // 5. Humor & Programmer Jokes
+  if (/^(tell me a joke|make me laugh|got any jokes|tell a joke|give me a joke)\b/i.test(query)) {
     const jokes = [
       "Why do programmers prefer dark mode? Because light attracts bugs! 😄 Speaking of debugging, Dhruv's link predictability models preemptively eliminate routing bugs before routes fail.",
       "There are 10 types of people in the world: those who understand binary, and those who don't! 💻",
-      "Why did the Wi-Fi router break up with the ad-hoc node? Because it had too many dynamic connection issues and zero predictability! 📶"
+      "Why did the Wi-Fi router break up with the ad-hoc node? Because it had too many dynamic connection issues and zero predictability! 📶",
+      "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?' 🍺",
+      "Why do Java developers wear glasses? Because they don't C#! 👓"
     ];
     return jokes[Math.floor(Math.random() * jokes.length)];
   }
 
-  // 5. Gratitude
-  if (/^(thanks|thank you|thx|cheers|appreciate it|much appreciated|thank you so much)\b/i.test(q)) {
-    return "You're very welcome! Always happy to help. Let me know if there's anything else you'd like to explore, whether it's software engineering, cloud concepts, or Dhruv's research.";
+  // 6. Gratitude
+  if (/^(thanks|thank you|thx|cheers|appreciate it|much appreciated|thank you so much)\b/i.test(query)) {
+    return "You're very welcome! Always happy to help. Let me know if there's anything else you'd like to explore, whether it's software engineering, cloud concepts, coding, or Dhruv's research.";
   }
 
-  // 6. Compliments
-  if (/(you are awesome|you're cool|nice work|good job|smart|great bot|impressive)\b/i.test(q)) {
-    return "Thank you so much! I aim to be as helpful and insightful as possible. If you'd like to test my knowledge on distributed systems, wireless networks, or Dhruv's AWS projects, feel free to ask!";
+  // 7. Compliments
+  if (/(you are awesome|you're cool|nice work|good job|smart|great bot|impressive|well done)\b/i.test(query)) {
+    return "Thank you so much! I aim to be as helpful, accurate, and insightful as possible. If you'd like to test my knowledge on distributed systems, wireless networks, algorithms, or Dhruv's AWS projects, feel free to ask!";
   }
 
-  // 7. Goodbyes
-  if (/^(bye|goodbye|see you|cya|take care|have a good day|good night|farewell)\b/i.test(q)) {
+  // 8. Goodbyes
+  if (/^(bye|goodbye|see you|cya|take care|have a good day|good night|farewell)\b/i.test(query)) {
     return "Goodbye! It was a pleasure chatting with you. Have a great day ahead, and feel free to return anytime or connect with Dhruv directly via email or GitHub!";
   }
 
   return null;
 }
 
+
 export function getGeneralKnowledgeResponse(q: string): string | null {
-  // 1. ChatGPT, LLMs & Generative AI
-  if (
-    q.includes("chatgpt") ||
-    q.includes("what is gpt") ||
-    q.includes("llm") ||
-    q.includes("large language model") ||
-    q.includes("transformer") ||
-    q.includes("generative ai") ||
-    q.includes("prompt engineering") ||
-    q.includes("rag")
-  ) {
-    return `**ChatGPT & Large Language Models (LLMs):**
+  const query = q.toLowerCase();
 
-ChatGPT is an advanced conversational AI model developed by OpenAI, built upon the **Transformer architecture** (introduced in "Attention Is All You Need", 2017).
+  // Check CS/AI Topics
+  if (query.includes("transformer") || query.includes("attention")) return CS_AI_TOPICS.transformer;
+  if (query.includes("chatgpt") || query.includes("what is gpt") || query.includes("llm") || query.includes("large language model") || query.includes("how do llms work")) return CS_AI_TOPICS.llm;
+  if (query.includes("rag") || query.includes("retrieval augmented") || query.includes("vector search") || query.includes("vector database") || query.includes("embeddings")) return CS_AI_TOPICS.rag;
+  if (query.includes("binary search")) return CS_AI_TOPICS.binary_search;
+  if (query.includes("quicksort") || query.includes("mergesort") || query.includes("sorting algorithm") || query.includes("quick sort") || query.includes("merge sort")) return CS_AI_TOPICS.sorting;
+  if (query.includes("big o") || query.includes("time complexity") || query.includes("space complexity") || query.includes("asymptotic")) return CS_AI_TOPICS.big_o;
+  if (query.includes("docker") || query.includes("kubernetes") || query.includes("k8s") || query.includes("container")) return CS_AI_TOPICS.docker_k8s;
+  if (query.includes("rest vs graphql") || query.includes("graphql") || query.includes("grpc") || query.includes("websocket")) return CS_AI_TOPICS.apis;
+  if (query.includes("sql vs nosql") || query.includes("cap theorem") || query.includes("mongodb") || query.includes("redis") || query.includes("acid")) return CS_AI_TOPICS.databases;
+  if (query.includes("quantum computing") || query.includes("qubit") || query.includes("superposition") || query.includes("entanglement")) return CS_AI_TOPICS.quantum;
+  if (query.includes("photosynthesis") || query.includes("cellular respiration")) return CS_AI_TOPICS.photosynthesis;
+  if (query.includes("airplane") || query.includes("how do airplanes fly") || query.includes("aerodynamics") || query.includes("flight")) return CS_AI_TOPICS.flight;
 
-• **How it Works:** 
-  1. **Pre-training:** Trained on vast datasets to predict next tokens using self-attention mechanisms.
-  2. **Fine-Tuning & RLHF:** Reinforcement Learning from Human Feedback aligns the model for helpful, nuanced responses.
-  3. **RAG (Retrieval-Augmented Generation):** Connects external vector stores with the model to fetch real-time grounded facts.
-
-*Dhruv works with vector search systems (like Upstash Vector) and AI streaming pipelines in modern full-stack systems.*`;
-  }
-
-  // 2. Quantum Computing
-  if (
-    q.includes("quantum computing") ||
-    q.includes("quantum computer") ||
-    q.includes("qubit") ||
-    q.includes("superposition") ||
-    q.includes("quantum entanglement")
-  ) {
-    return `**Quantum Computing Overview:**
-
-Quantum computing harnesses principles of quantum mechanics to solve certain computationally intractable problems exponentially faster than classical computers.
-
-• **Core Principles:**
-  - **Qubits:** Can exist in linear combinations of 0 and 1 simultaneously via **Superposition**.
-  - **Entanglement:** Qubits correlate instantaneously across space, enabling massive parallel state representation.
-  - **Quantum Algorithms:** Shor's algorithm for factoring primes and Grover's algorithm for database search.
-
-*In information security, quantum advancements motivate the shift to Post-Quantum Cryptography (PQC) and lightweight AEAD encryption — topics directly explored in Dhruv's Information Security research at NSUT Delhi.*`;
-  }
-
-  // 3. Cloud Computing & AWS
-  if (
-    q.includes("cloud computing") ||
-    q.includes("what is aws") ||
-    q.includes("what is azure") ||
-    q.includes("what is gcp") ||
-    q.includes("serverless")
-  ) {
-    return `**Cloud Computing & AWS Architecture:**
-
-Cloud computing provides on-demand computational power, storage, and networking over the internet with elastic scaling and pay-as-you-go pricing.
-
-• **Core AWS Building Blocks:**
-  - **Compute & Serverless:** Amazon EC2, AWS Lambda, ECS/EKS containers.
-  - **Networking & Security:** VPC subnet isolation, Internet Gateways, Route Tables, and IAM role-based access.
-  - **Storage & Databases:** S3 object storage, DynamoDB, and RDS relational instances.
-
-*Dhruv is an AWS Academy Graduate (Cloud Architecting & Cloud Foundations) with practical experience designing resilient multi-tier cloud architectures.*`;
-  }
-
-  // 4. Docker & Kubernetes
-  if (
-    q.includes("docker") ||
-    q.includes("kubernetes") ||
-    q.includes("k8s") ||
-    q.includes("container") ||
-    q.includes("microservice")
-  ) {
-    return `**Containerization (Docker) & Orchestration (Kubernetes):**
-
-• **Docker:** Packages apps and dependencies into lightweight containers using Linux kernel cgroups and namespaces, ensuring consistent execution across dev, test, and production environments.
-• **Kubernetes (K8s):** Automates container scheduling, auto-scaling, rolling rollouts, and self-healing across distributed clusters.
-• **Microservices:** Splits monolithic codebases into autonomous services communicating over high-speed REST or gRPC APIs.
-
-*Dhruv integrates Docker containers and modular services into scalable web backends and network simulation setups.*`;
-  }
-
-  // 5. Machine Learning & AI
-  if (
-    q.includes("machine learning") ||
-    q.includes("deep learning") ||
-    q.includes("neural network") ||
-    q.includes("supervised") ||
-    q.includes("reinforcement learning")
-  ) {
-    return `**Machine Learning (ML) & Predictive Modeling:**
-
-Machine Learning enables computational systems to extract statistical patterns from empirical data and make decisions without explicit rules.
-
-• **Core Categories:** Supervised learning (regression/classification), Unsupervised learning (clustering/embeddings), and Reinforcement learning (policy optimization).
-• **Time-Series & Filtering:** Techniques like Kalman Filters and Exponential Smoothing process noisy sequential observations for robust dynamic estimation.
-
-*In his ad-hoc wireless systems research, Dhruv utilizes time-series kinematic forecasting, Kalman filtering, and signal smoothing to predict link lifetime and route resilience.*`;
-  }
-
-  // 6. Cybersecurity & Cryptography
-  if (
-    q.includes("cryptography") ||
-    q.includes("cybersecurity") ||
-    q.includes("encryption") ||
-    q.includes("symmetric") ||
-    q.includes("asymmetric") ||
-    q.includes("zero trust") ||
-    q.includes("wireshark")
-  ) {
-    return `**Cybersecurity & Modern Cryptography:**
-
-• **Symmetric vs Asymmetric:** Symmetric ciphers (AES, ChaCha20) provide high-throughput data encryption; asymmetric algorithms (RSA, ECC) enable secure key exchange and authentication.
-• **Authenticated Encryption (AEAD):** Guarantees both confidentiality and ciphertext integrity simultaneously.
-• **Security Posture:** Zero Trust models, packet-level network inspection, and intrusion prevention.
-
-*Dhruv holds the Google Cybersecurity Professional Certificate and specializes in Information Security at NSUT Delhi, focusing on lightweight cryptographic protocols and Byzantine fault resilience.*`;
-  }
-
-  // 7. Ad-Hoc Wireless Networks (MANET / VANET)
-  if (
-    q.includes("manet") ||
-    q.includes("vanet") ||
-    q.includes("ad-hoc network") ||
-    q.includes("adhoc network") ||
-    q.includes("mesh network") ||
-    q.includes("routing protocol")
-  ) {
-    return `**Mobile Ad-Hoc Networks (MANETs & VANETs):**
-
-MANETs and VANETs are decentralized, self-configuring wireless networks where mobile nodes dynamically forward packets without fixed base stations.
-
-• **Routing Challenge:** High node mobility causes frequent link failures. Reactive protocols (AODV, DSR) only recover after route breaks, causing severe packet loss and high latency.
-• **Proactive Link Predictability:** Calculates kinematic Link Expiration Time ($LET$) and filters RSSI signal fluctuations to trigger proactive route caching before disconnection occurs.
-
-*This is the core of Dhruv's M.Tech research at NSUT Delhi, cutting control overhead by 61% and reducing route repair latency to 28ms.*`;
-  }
-
-  // 8. Data Structures & Algorithms
-  if (
-    q.includes("data structure") ||
-    q.includes("algorithm") ||
-    q.includes("big o") ||
-    q.includes("time complexity") ||
-    q.includes("dynamic programming") ||
-    q.includes("binary search") ||
-    q.includes("dijkstra")
-  ) {
-    return `**Data Structures & Algorithms (DSA):**
-
-• **Asymptotic Complexity (Big-O):** Quantifies computational time and memory scalability as input size grows ($O(1)$, $O(\log N)$, $O(N)$, $O(N \log N)$, $O(N^2)$).
-• **Essential Structures:** Hash tables, balanced search trees, priority queues, and graph adjacency representations.
-• **Algorithmic Strategies:** Dynamic programming for optimal subproblem resolution, graph traversals (Dijkstra, BFS/DFS), and greedy heuristic algorithms.
-
-*Dhruv applies algorithmic optimization in C++ and Python for low-latency database queries and high-speed network simulations.*`;
-  }
-
-  // 9. Web Development & Full-Stack Tech
-  if (
-    q.includes("react") ||
-    q.includes("nextjs") ||
-    q.includes("next.js") ||
-    q.includes("nodejs") ||
-    q.includes("node.js") ||
-    q.includes("rest api") ||
-    q.includes("graphql") ||
-    q.includes("websocket")
-  ) {
-    return `**Modern Full-Stack Engineering:**
-
-• **Next.js & React:** Next.js App Router provides hybrid rendering (SSR, SSG, streaming Server Components) for maximal performance, instant page loads, and top SEO.
-• **Node.js & Express:** Event-driven, non-blocking I/O runtime tailored for building real-time microservices and REST APIs.
-• **Real-Time Data:** WebSockets provide bidirectional streaming channels for instant chat, live updates, and state synchronization.
-
-*Dhruv has architected full-stack platforms including WorkVibe (mentorship platform with sub-15ms search latency) and SkillXchange (campus peer exchange network).*`;
-  }
-
-  // 10. Databases & Storage
-  if (
-    q.includes("database") ||
-    q.includes("sql vs nosql") ||
-    q.includes("nosql") ||
-    q.includes("mongodb") ||
-    q.includes("mysql") ||
-    q.includes("redis") ||
-    q.includes("vector database") ||
-    q.includes("acid")
-  ) {
-    return `**Databases: Relational vs Document & In-Memory Stores:**
-
-• **Relational (MySQL / PostgreSQL):** Strict ACID guarantees, normalized 3NF schemas, foreign key constraints, and relational joins.
-• **Document (MongoDB):** Flexible BSON documents, horizontal sharding, and compound indexing for rapid queries.
-• **In-Memory & Vector (Redis / Upstash):** Ultra-fast caching, key-value lookup, and vector embeddings for semantic similarity search.
-
-*Dhruv has engineered systems using both normalized MySQL schemas (Travel World) and indexed MongoDB architectures (WorkVibe).*`;
-  }
-
-  // 11. Mathematics & Signal Processing
-  if (
-    q.includes("kalman") ||
-    q.includes("exponential moving average") ||
-    q.includes("signal smoothing") ||
-    q.includes("fourier") ||
-    q.includes("signal processing")
-  ) {
-    return `**Signal Processing & Filtering (Kalman & EMA):**
-
-• **Exponential Moving Average (EMA):** Computes \\( \\hat{r}_t = \\alpha \\cdot r_t + (1 - \\alpha) \\cdot \\hat{r}_{t-1} \\) to filter high-frequency noise while preserving true underlying trends.
-• **Kalman Filter:** Recursive Bayesian state estimator that tracks dynamic linear systems under Gaussian measurement noise.
-
-*Dhruv integrates Kalman and EMA signal smoothing into his MANET simulation framework to ensure reliable Link Expiration Time calculations despite fading channel noise.*`;
+  // Check World Capitals
+  if (query.includes("capital of") || query.includes("what is the capital")) {
+    for (const [country, cap] of Object.entries(WORLD_CAPITALS)) {
+      if (query.includes(country)) {
+        return `The capital of **${country.charAt(0).toUpperCase() + country.slice(1)}** is **${cap}**.`;
+      }
+    }
   }
 
   return null;
@@ -269,7 +127,72 @@ MANETs and VANETs are decentralized, self-configuring wireless networks where mo
 
 export function getDynamicConversationalFallback(userQuery: string): string {
   const q = userQuery.trim();
-  
+  const lower = q.toLowerCase();
+
+  // 1. Math / Linear Equation solver (e.g., "solve 2x + 5 = 15")
+  const linearMatch = lower.match(/(?:solve|what is|calculate)?\s*([0-9]+)\s*x\s*([\+\-])\s*([0-9]+)\s*=\s*([0-9]+)/i);
+  if (linearMatch) {
+    const a = parseFloat(linearMatch[1]);
+    const op = linearMatch[2];
+    const b = parseFloat(linearMatch[3]);
+    const c = parseFloat(linearMatch[4]);
+    const rhs = op === "+" ? c - b : c + b;
+    const x = rhs / a;
+    return `### **Solution:**
+
+Given equation:
+$$${a}x ${op} ${b} = ${c}$$
+
+**Step-by-step derivation:**
+1. ${op === "+" ? `Subtract ${b} from both sides` : `Add ${b} to both sides`}:
+   $$${a}x = ${c} ${op === "+" ? "-" : "+"} ${b} = ${rhs}$$
+2. Divide both sides by ${a}:
+   $$x = \\frac{${rhs}}{${a}} = \\mathbf{${x}}$$
+
+**Final Answer:** $x = ${x}$`;
+  }
+
+  // 2. Arithmetic expressions (e.g., "what is 25 * 4")
+  const arithMatch = lower.match(/(?:what is|calculate|evaluate)\s*([0-9]+(?:\.[0-9]+)?)\s*([\+\-\*\/])\s*([0-9]+(?:\.[0-9]+)?)/i);
+  if (arithMatch) {
+    const n1 = parseFloat(arithMatch[1]);
+    const op = arithMatch[2];
+    const n2 = parseFloat(arithMatch[3]);
+    let result = 0;
+    if (op === "+") result = n1 + n2;
+    if (op === "-") result = n1 - n2;
+    if (op === "*") result = n1 * n2;
+    if (op === "/") result = n2 !== 0 ? n1 / n2 : NaN;
+    return `### **Calculation:**
+$$${n1} ${op} ${n2} = \\mathbf{${result}}$$`;
+  }
+
+  // 3. Coding Request Pattern
+  if (
+    lower.startsWith("write") ||
+    lower.startsWith("code") ||
+    lower.startsWith("implement") ||
+    lower.includes("function")
+  ) {
+    if (lower.includes("palindrome")) {
+      return `### **Palindrome Checker (Python):**
+
+\`\`\`python
+def is_palindrome(s: str) -> bool:
+    cleaned = "".join(ch.lower() for ch in s if ch.isalnum())
+    return cleaned == cleaned[::-1]
+
+# Examples:
+print(is_palindrome("A man, a plan, a canal: Panama"))  # True
+print(is_palindrome("race a car"))                      # False
+\`\`\`
+
+- **Time Complexity:** $\\mathcal{O}(n)$
+- **Space Complexity:** $\\mathcal{O}(n)$`;
+    }
+  }
+
+  // 4. General Structured Response
   const words = q
     .replace(/[^a-zA-Z0-9\s]/g, "")
     .split(/\s+/)
@@ -277,24 +200,14 @@ export function getDynamicConversationalFallback(userQuery: string): string {
 
   const topicHint = words.slice(0, 3).join(" ");
 
-  const intros = [
-    `That is an insightful area to explore!`,
-    `Great question regarding ${topicHint ? `"${topicHint}"` : "this topic"}!`,
-    `Thanks for asking! That touches on an exciting dimension of modern computer science and engineering.`,
-    `That's a thoughtful question.`
-  ];
+  return `### **Insights on ${topicHint ? `"${topicHint}"` : "your question"}:**
 
-  const randomIntro = intros[Math.floor(Math.random() * intros.length)];
+${q.endsWith("?") ? `Regarding **"${q}"**:` : `Regarding **${q}**:`}
 
-  return `${randomIntro}
+• **Core Principle:** In modern computer science and engineering, breaking down complex systems into modular, well-defined components is essential for scalability, performance, and maintainability.
+• **System Perspective:** From distributed architectures to optimized algorithms, considering trade-offs between latency, throughput, and consistency is key.
 
-As Dhruv's AI assistant, I can help you explore:
-• **Ad-Hoc Wireless Networks & Research:** Kinematic Link Expiration Time ($LET$), RSSI smoothing, and AODV protocol optimization.
-• **Cloud & AWS Systems:** Multi-tier VPC architecture, IAM security, and serverless backends.
-• **Full-Stack Engineering:** High-performance web applications (WorkVibe, SkillXchange, Travel World), database indexing, and REST/WebSocket APIs.
-• **General CS & AI Concepts:** Cryptography, algorithms, containerization, or modern machine learning.
-
-Would you like to explore a specific technical aspect of this, or see how it connects with Dhruv's projects and research at NSUT Delhi?`;
+---
+*I am **Dhruv AI**, equipped to assist with general technical explanations, code implementations, or specific inquiries into Dhruv Upadhyay's research at NSUT Delhi.* How can I assist you further on this?`;
 }
-
 

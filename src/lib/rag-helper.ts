@@ -8,19 +8,35 @@ import {
 export const DHRUV_AI_SYSTEM_PROMPT = `You are Dhruv AI, an interactive, highly intelligent, and conversational personal AI agent representing Dhruv (an M.Tech / researcher in ad-hoc wireless systems at NSUT Delhi, cloud/AWS practitioner, and software engineer).
 
 ### Personality & Tone
-- **Conversational & Human-like:** Speak naturally, fluently, and warmly like ChatGPT or Gemini. Avoid rigid, repetitive boilerplate phrasing or robotic templates.
+- **Conversational & Human-like:** Speak naturally, fluently, and warmly like ChatGPT or Gemini. Format responses with clean Markdown, bullet points, and code blocks where helpful.
 - **Adaptive Knowledge:** 
-  1. For casual chat (e.g., "hi", "how are you"), respond naturally as a friendly human.
-  2. For general knowledge queries (e.g., "what is ChatGPT?", "explain quantum computing"), answer them clearly and accurately just like a general-purpose AI assistant.
-  3. For questions about Dhruv, use your provided knowledge base (research at NSUT Delhi, AWS certifications, projects like WorkVibe or SkillXchange, skills, systems).
-- **Graceful Professional Pivot:** If the user asks a general question, answer it fully and naturally, and then smoothly connect it back to Dhruv's expertise *only when relevant*, instead of blocking or giving an error message. Never use the exact same canned sentence structure repeatedly.`;
+  1. For casual chat, respond naturally and warmly.
+  2. For general knowledge queries (coding, math, science, algorithms, tech, world facts), answer them accurately, comprehensively, and clearly like a top-tier AI assistant.
+  3. If asked about AI models ("which AI model do you use", "what model are you"), explain that you are Dhruv AI, running on modern LLM engines (Google Gemini, OpenAI GPT-4o, Groq LLaMA) paired with a real-time portfolio RAG system.
+  4. For questions about Dhruv, draw upon verified facts:
+     - **M.Tech in CSE (Information Security)** at Netaji Subhas University of Technology (NSUT), New Delhi.
+     - **B.Tech in CSE** from Acropolis Institute of Technology and Research (AITR), Indore.
+     - **Research:** Link Predictability in Ad-Hoc Networks (MANET/VANET) for Secure & Robust Communications. Kinematic Link Expiration Time (LET) formula, Exponential RSSI smoothing, Kalman filtering, lightweight AEAD cryptography, and behavioral trust scoring. 61% route break overhead reduction.
+     - **Projects:** Adaptive MANET Simulator (C++/Python), WorkVibe (mentorship network with sub-15ms search latency), SkillXchange (peer marketplace), Travel World (responsive travel booking).
+     - **Certifications:** 2x AWS Academy Graduate (Cloud Architecting & Cloud Foundations), Google Cybersecurity Professional Certificate, Google Cloud Digital Training.
+     - **Skills:** C++, Python, JavaScript, TypeScript, Next.js, React, Node.js, Express, MongoDB, MySQL, Redis, AWS (VPC, IAM, EC2, S3), Docker, Linux, Git.
+     - **Contact:** dhruvupadhyay708937@gmail.com, NSUT: dhruv.upadhyay.pg26@nsut.ac.in, Phone: +91 7489221051, GitHub: github.com/Dhruvdev-Codes.`;
+
+const GENERIC_STOP_WORDS = new Set([
+  "what", "when", "where", "which", "with", "about", "tell", "does",
+  "have", "from", "this", "that", "your", "could", "would", "should",
+  "model", "models", "used", "uses", "using", "make", "made", "good",
+  "best", "work", "works", "system", "systems", "give", "help", "like"
+]);
 
 export function searchLocalKnowledge(query: string): string {
   const words = query
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
-    .filter((w) => w.length > 2 && !["what", "when", "where", "which", "with", "about", "tell", "does", "have", "from"].includes(w));
+    .filter((w) => w.length > 2 && !GENERIC_STOP_WORDS.has(w));
+
+  if (words.length === 0) return "";
 
   const scored = knowledgeData.map((doc) => {
     const docFull = `${doc.title} ${doc.content} ${doc.category}`.toLowerCase();
@@ -28,179 +44,187 @@ export function searchLocalKnowledge(query: string): string {
     for (const w of words) {
       if (docFull.includes(w)) {
         score += 1;
-        if (doc.title.toLowerCase().includes(w)) score += 1.5;
-        if (doc.category.toLowerCase().includes(w)) score += 1.2;
+        if (doc.title.toLowerCase().includes(w)) score += 2.0;
+        if (doc.category.toLowerCase().includes(w)) score += 1.5;
       }
     }
     return { doc, score };
   });
 
   scored.sort((a, b) => b.score - a.score);
-  const matched = scored.filter((s) => s.score > 0).slice(0, 2).map((s) => s.doc);
+  const matched = scored.filter((s) => s.score >= 2.0).slice(0, 2).map((s) => s.doc);
 
   if (matched.length === 0) return "";
   return matched.map((d) => d.content).join("\n\n");
 }
 
-export function generateLocalRAGResponse(query: string, context: string): string {
+
+export function generateLocalRAGResponse(query: string, context?: string): string {
   const trimmed = query.trim();
   const q = trimmed.toLowerCase();
 
-  // 1. Casual Greetings & Conversational Small Talk
-  const conversationalReply = getConversationalResponse(q);
-  if (conversationalReply) {
-    return conversationalReply;
-  }
+  // 1. Conversational / AI model inquiries
+  const convReply = getConversationalResponse(trimmed);
+  if (convReply) return convReply;
 
+  // 2. General Knowledge & CS/AI Concepts
+  const gkReply = getGeneralKnowledgeResponse(trimmed);
+  if (gkReply) return gkReply;
 
-  // 2. Contact & Collaboration Details
+  // 3. Contact & Reach Out
   if (
     q.includes("contact") ||
-    q.includes("reach") ||
-    q.includes("hire") ||
     q.includes("email") ||
     q.includes("phone") ||
-    q.includes("call") ||
+    q.includes("reach") ||
+    q.includes("hire") ||
     q.includes("linkedin") ||
     q.includes("github")
   ) {
-    if (q.includes("email") || q.includes("mail")) {
-      return "You can reach Dhruv directly at:\n• Personal Email: dhruvupadhyay708937@gmail.com\n• Academic Email (NSUT): dhruv.upadhyay.pg26@nsut.ac.in\n\nHe is always open to discussing research collaborations, cloud engineering, or full-stack opportunities!";
-    }
-    if (q.includes("github") || q.includes("repo") || q.includes("code")) {
-      return "Dhruv's code repositories and open-source contributions are hosted on GitHub:\n👉 https://github.com/Dhruvdev-Codes\n\nYou'll find his MANET simulator, full-stack web platforms, and backend systems there!";
-    }
-    if (q.includes("phone") || q.includes("mobile") || q.includes("number")) {
-      return "You can reach Dhruv by phone at +91 7489221051, or drop him an email at dhruvupadhyay708937@gmail.com.";
-    }
-    return "Dhruv is always excited to connect regarding research, software engineering roles, or technical collaborations! Here is how you can get in touch:\n\n• Email: dhruvupadhyay708937@gmail.com\n• Academic Email: dhruv.upadhyay.pg26@nsut.ac.in\n• Phone: +91 7489221051\n• GitHub: https://github.com/Dhruvdev-Codes\n• Location: New Delhi / Indore, India";
+    return `### **Get in Touch with Dhruv Upadhyay:**
+
+• **Personal Email:** [dhruvupadhyay708937@gmail.com](mailto:dhruvupadhyay708937@gmail.com)
+• **Academic Email:** [dhruv.upadhyay.pg26@nsut.ac.in](mailto:dhruv.upadhyay.pg26@nsut.ac.in)
+• **Phone:** +91 7489221051
+• **GitHub:** [github.com/Dhruvdev-Codes](https://github.com/Dhruvdev-Codes)
+• **Location:** New Delhi / Indore, India
+
+Dhruv is actively open to research collaborations, software engineering roles, and cloud systems engineering opportunities.`;
   }
 
-  // 3. Projects Breakdown (Checked before generic research keywords)
+  // 4. Research & Mathematical Formulation
+  if (
+    q.includes("research") ||
+    q.includes("thesis") ||
+    q.includes("dissertation") ||
+    q.includes("let formula") ||
+    q.includes("link predict") ||
+    q.includes("exponential smoothing") ||
+    q.includes("rssi") ||
+    q.includes("aead") ||
+    q.includes("kalman") ||
+    q.includes("manet") ||
+    q.includes("vanet")
+  ) {
+    return `### **Dhruv's M.Tech Research — Ad-Hoc Link Predictability:**
+
+**Title:** *Link Predictability in Ad-Hoc Networks: Frameworks for Secure and Robust Communications*  
+**Affiliation:** Netaji Subhas University of Technology (NSUT), New Delhi
+
+#### **Core Problem:**
+Standard ad-hoc routing protocols (AODV, DSR) only trigger route repair *after* link breakage occurs, leading to high latency spikes (94ms p99) and routing storm overheads.
+
+#### **Mathematical Formulations:**
+1. **RSSI Exponential Smoothing:**
+   $$\\hat{r}_t = \\alpha \\cdot r_t + (1 - \\alpha) \\cdot \\hat{r}_{t-1}$$
+   Mitigates transient multipath fading and environmental signal shadowing.
+
+2. **Kinematic Link Expiration Time ($LET$):**
+   $$LET = \\frac{-ab + \\sqrt{(a^2 + b^2)R^2 - (ad - bc)^2}}{a^2 + b^2}$$
+   Predicts exact disconnection time based on velocity vectors and transmission radius $R$.
+
+3. **Continuous Behavioral Trust Scoring:**
+   $$T_{\\text{node}}(t) = w_1 \\cdot S_{\\text{success}} + w_2 \\cdot S_{\\text{delay}} - w_3 \\cdot S_{\\text{drop}}$$
+   Preemptively isolates Byzantine and black-hole nodes.
+
+#### **Key Benchmarks:**
+- **Route Breakage Rate:** Reduced from **8.9/min (AODV)** to **3.2/min** (**-61%**).
+- **Control Packet Overhead:** Decreased from **36.8 KB/s** to **14.2 KB/s**.
+- **p99 Latency:** Dropped from **94ms** down to **28ms**.`;
+  }
+
+
+
+  // 5. Projects & Systems
   if (
     q.includes("project") ||
     q.includes("workvibe") ||
     q.includes("skillxchange") ||
-    q.includes("travel") ||
-    q.includes("simulator")
+    q.includes("travel world") ||
+    q.includes("built") ||
+    q.includes("apps")
   ) {
-    if (q.includes("workvibe")) {
-      return "WorkVibe is a full-stack mentor-mentee collaboration platform designed by Dhruv:\n• Tech Stack: Node.js, Express, MongoDB, Tailwind CSS, JWT authentication.\n• Problem Solved: Eliminates fragmented academic advising with structured scheduling and direct role-based networking.\n• Key Engineering: Targeted MongoDB index optimization reduced mentor search query latency from 120ms to under 15ms, supporting 1,000+ concurrent sessions.";
-    }
+    return `### **Key Engineering Projects Built by Dhruv:**
 
-    if (q.includes("skillxchange")) {
-      return "SkillXchange is a campus-exclusive peer knowledge and skill exchange platform:\n• Tech Stack: JavaScript, Node.js, Express, MongoDB, Tailwind CSS.\n• Problem Solved: Helps students find project partners and hackathon teammates based on verified skill matrices.\n• Architecture: Channel-based project rooms with room-level pub/sub boundaries, sub-20ms query latency, and anti-spam message rate limiting.";
-    }
+1. **Adaptive MANET/VANET Link Predictor & Simulator (C++ & Python):**
+   - Implements kinematic trajectory modeling, Kalman filtering, and proactive route pre-caching.
+   - Reduced routing control overhead by **61%** with a **96.4% Packet Delivery Ratio**.
 
-    if (q.includes("travel")) {
-      return "Travel World is a high-throughput travel and tourism itinerary web application:\n• Tech Stack: HTML5, CSS3, modern JavaScript, relational MySQL.\n• Problem Solved: Solves slow client re-rendering during complex multi-destination tour queries on mobile connections.\n• Key Metrics: Built with a 3NF normalized schema and lightweight asset bundling, earning a 99/100 Google Lighthouse performance score with sub-45 KB bundle size.";
-    }
+2. **WorkVibe — Mentor-Mentee Collaborative Network:**
+   - Full-stack web application built with JavaScript, Node.js, Express, and MongoDB.
+   - Features role-based access control and composite database indexing achieving **sub-15ms search latency**.
 
-    if (q.includes("simulator") || q.includes("predictor")) {
-      return "The Adaptive MANET/VANET Link Predictor is a systems simulation engine engineered in Python, C++, and NumPy. It generates dynamic node mobility patterns (Gauss-Markov & Random Waypoint), filters noise with Kalman and EMA RSSI processing, and preemptively switches routes before physical signal loss occurs.";
-    }
+3. **SkillXchange — Campus Peer Skill Marketplace:**
+   - Campus community platform inspired by Discord and LinkedIn for peer technical matchmaking.
+   - Built with Node.js, MongoDB aggregation pipelines, and Tailwind CSS.
 
-    return "Dhruv has engineered several standout systems and full-stack projects:\n\n1. Adaptive MANET/VANET Link Predictor: Kinematic trajectory modeling & signal filtering in Python/C++ with 96.4% packet delivery ratio.\n2. WorkVibe: Full-stack mentor-mentee collaboration platform with sub-15ms search latency in Node.js & MongoDB.\n3. SkillXchange: Campus peer skill marketplace and hackathon teaming engine.\n4. Travel World: High-performance travel portal built with MySQL 3NF architecture and a 99/100 Lighthouse score.\n\nWhich project would you like to explore in more detail?";
+4. **Travel World — Itinerary & Booking Platform:**
+   - Responsive tourism portal with normalized MySQL 3NF relational schema and a **99 Lighthouse performance score**.`;
   }
 
-  // 4. Research & Mathematical Formulations
+  // 6. Certifications & Credentials
   if (
-    q.includes("research") ||
-    /\bthesis\b/i.test(q) ||
-    /\bpaper\b/i.test(q) ||
-    q.includes("dissertation") ||
-    q.includes("manet") ||
-    q.includes("vanet") ||
-    q.includes("adhoc") ||
-    q.includes("ad-hoc") ||
-    q.includes("link predict") ||
-    /\blet\b/i.test(q) ||
-    q.includes("rssi") ||
-    q.includes("smoothing") ||
-    q.includes("formula") ||
-    /\bmath\b/i.test(q) ||
-    q.includes("routing") ||
-    q.includes("aodv")
-  ) {
-    if (q.includes("formula") || q.includes("math") || q.includes("let") || q.includes("equation")) {
-      return "Dhruv's research utilizes three key mathematical formulations for ad-hoc link resilience:\n\n1. Signal Smoothing (EMA):\n   r̂_t = α · r_t + (1 - α) · r̂_{t-1}\n   (Dampens transient multipath fading and noise in RSSI measurements)\n\n2. Kinematic Link Expiration Time (LET):\n   LET = (-ab + √( (a² + b²)·R² - (ad - bc)² )) / (a² + b²)\n   (Calculates exact remaining route lifetime based on relative velocity vectors and transmission radius R)\n\n3. Dynamic Node Trust Scoring:\n   T_node(t) = w₁·S_success + w₂·S_delay - w₃·S_drop\n   (Proactively isolates Byzantine and black-hole routing nodes in decentralized topologies).";
-    }
-
-    if (q.includes("rssi") || q.includes("signal") || q.includes("kalman") || q.includes("ema")) {
-      return "To tackle erratic RSSI fluctuations caused by shadowing and multipath interference, Dhruv implemented an Exponential Moving Average (EMA) and Kalman signal filtering pipeline. This creates smooth, reliable trend lines for Link Expiration Time (LET) calculations, avoiding false route break triggers and slashing control overhead.";
-    }
-
-    if (q.includes("latency") || q.includes("overhead") || q.includes("benchmark") || q.includes("aodv") || q.includes("result")) {
-      return "Compared to standard reactive protocols like AODV, Dhruv's proactive link predictability framework achieves notable empirical gains:\n• Route Breakage Rate: Reduced from 8.9/min down to 3.2/min\n• Control Packet Overhead: Cut by ~61% (from 36.8 KB/s to 14.2 KB/s)\n• p99 Latency: Dropped from 94ms to 28ms\n• High-Mobility Throughput: Boosted from 2.9 Mbps to 4.8 Mbps.";
-    }
-
-    return "Dhruv's M.Tech research at Netaji Subhas University of Technology (NSUT) is titled:\n'Link Predictability in Ad-Hoc Networks: Frameworks for Secure and Robust Communications'.\n\nTraditional ad-hoc protocols (like AODV) only discover route failures after a link has already severed, causing latency spikes and packet storms. Dhruv's framework proactively forecasts topological shifts using kinematic velocity models, time-series RSSI exponential smoothing, lightweight AEAD cryptography, and behavioral trust scoring—achieving a 61% reduction in control overhead and sub-28ms route repair times.";
-  }
-
-  // 5. Certifications & Credentials
-  if (
-    q.includes("cert") ||
-    q.includes("credential") ||
-    q.includes("badge") ||
+    q.includes("certification") ||
+    q.includes("credentials") ||
     q.includes("aws") ||
-    q.includes("google") ||
-    q.includes("cybersecurity")
+    q.includes("google cybersecurity") ||
+    q.includes("badge")
   ) {
-    return "Dhruv holds several industry certifications and credentials:\n\n1. AWS Academy Graduate – Cloud Architecting (Amazon Web Services): Multi-tier VPC design, High Availability, IAM, S3, RDS, and cost optimization.\n2. AWS Academy Graduate – Cloud Foundations (Amazon Web Services): Core cloud computing, security models, and cloud economics.\n3. Google Cybersecurity Professional Certificate (Google): Network security, packet inspection with Wireshark, intrusion detection, incident response, and Python automation.\n4. Google Cloud Digital Training (Google Cloud): GCP infrastructure fundamentals and cloud architecture.\n5. Campus Ambassador – UDGAM E-Summit (E-Cell, IIT Guwahati): Technical outreach and community leadership.";
+    return `### **Professional Certifications & Credentials:**
+
+1. **AWS Academy Graduate — AWS Academy Cloud Architecting (Amazon Web Services):**
+   - Multi-tier VPC design, High Availability, IAM least-privilege security, S3, RDS, and cost optimization.
+2. **AWS Academy Graduate — AWS Academy Cloud Foundations (Amazon Web Services):**
+   - Core cloud architecture, compute, networking, security, and cloud economics.
+3. **Google Cybersecurity Professional Certificate (Google):**
+   - Network security, packet inspection (Wireshark), intrusion detection, Python automation, and incident response.
+4. **Google Cloud Digital Training (Google Cloud):**
+   - GCP infrastructure, big data services, and cloud compliance.`;
   }
 
-  // 6. Skills & Technical Stack
+  // 7. Skills & Tech Stack
   if (
     q.includes("skill") ||
-    q.includes("stack") ||
-    q.includes("technolog") ||
-    q.includes("language") ||
-    q.includes("database") ||
+    q.includes("tech stack") ||
+    q.includes("languages") ||
     q.includes("tools") ||
     q.includes("c++") ||
     q.includes("python")
   ) {
-    return "Dhruv's technical expertise spans systems, cloud architecture, and modern full-stack development:\n\n• Programming Languages: C++, Python, JavaScript (ES6+), TypeScript, Java, SQL, Bash/Shell\n• Systems & Security: Wireless Ad-Hoc Routing (MANET/VANET), Lightweight AEAD Cryptography, Network Protocols, OS Internals, DSA\n• Cloud & DevOps: AWS (VPC, IAM, EC2, S3, RDS), Docker, Linux/Unix Administration, Git, GitHub Actions, n8n, Power BI\n• Web & Databases: Next.js (App Router), React, Node.js, Express, MongoDB, MySQL, Redis, Tailwind CSS";
+    return `### **Dhruv's Technical Skills Matrix:**
+
+• **Languages:** C++, Python, JavaScript (ES6+), TypeScript, Java, SQL, Bash
+• **Web & Backend:** Next.js (App Router, RSC), React, Node.js, Express, Tailwind CSS
+• **Databases & Vector:** MongoDB, MySQL, Upstash Vector / Redis
+• **Cloud & DevOps:** AWS (Cloud Architecting), Docker, Linux/Unix Internals, Git/GitHub Actions
+• **Systems & Research:** Ad-Hoc Routing (MANET/VANET), Lightweight AEAD Cryptography, Kalman Signal Filtering, Kinematic Trajectory Modeling`;
   }
 
-  // 7. Education & Academic Background
+  // 8. Education & Academic Background
   if (
     q.includes("education") ||
-    q.includes("college") ||
-    q.includes("university") ||
     q.includes("nsut") ||
     q.includes("aitr") ||
-    q.includes("degree") ||
-    q.includes("bachelor") ||
-    q.includes("master") ||
-    q.includes("mtech") ||
-    q.includes("btech")
+    q.includes("college") ||
+    q.includes("university") ||
+    q.includes("degree")
   ) {
-    return "Dhruv's academic background includes:\n\n• Master of Technology (M.Tech) in Computer Science & Engineering (Information Security)\n  Netaji Subhas University of Technology (NSUT), New Delhi (2024 – 2026)\n  Key Focus: Wireless Systems Security, Cryptography, Distributed Systems, Cloud Architecture.\n\n• Bachelor of Technology (B.Tech) in Computer Science & Engineering\n  Acropolis Institute of Technology and Research (AITR), Indore (2021 – 2025)\n  Solid foundations in Data Structures, OS Internals, Networking, and Database Systems.";
+    return `### **Dhruv Upadhyay's Education:**
+
+1. **Master of Technology (M.Tech) in CSE (Information Security):**
+   - **Netaji Subhas University of Technology (NSUT), New Delhi** (2025 - Present)
+   - Specialized coursework: Wireless Network Security, Cloud Computing Internals, Advanced Algorithms, Cyber Forensics.
+
+2. **Bachelor of Technology (B.Tech) in Computer Science & Engineering:**
+   - **Acropolis Institute of Technology and Research (AITR), Indore** (2021 - 2025)
+   - Strong foundational focus: Data Structures & Algorithms, Operating Systems, Database Management, Computer Networks.`;
   }
 
-  // 8. General About Dhruv
-  if (
-    q.includes("dhruv") ||
-    q.includes("about him") ||
-    q.includes("bio") ||
-    q.includes("profile") ||
-    q.includes("background")
-  ) {
-    return "Dhruv Upadhyay is an M.Tech CSE scholar at Netaji Subhas University of Technology (NSUT), New Delhi, specializing in Information Security, Wireless Ad-Hoc Networks, and Distributed Cloud Systems. He pairs deep theoretical knowledge in routing predictability and cryptography with proven engineering expertise across AWS cloud architecture, modern Next.js/Node.js web platforms, and high-performance databases.";
-  }
-
-  // 9. General Technical & AI Knowledge (ChatGPT/Gemini capability)
-  const generalKnowledgeReply = getGeneralKnowledgeResponse(q);
-  if (generalKnowledgeReply) {
-    return generalKnowledgeReply;
-  }
-
-  // 10. Context match from Knowledge Base
+  // 9. If high-confidence context was retrieved
   if (context && context.trim().length > 0) {
     return `Here is what I found in Dhruv's technical knowledge base regarding your question:\n\n${context.trim()}\n\nIs there a specific detail or architectural aspect you'd like to dive deeper into?`;
   }
 
-  // 11. Dynamic Conversational Synthesis Fallback (No robotic canned templates)
+  // 10. Dynamic Synthesizer Fallback
   return getDynamicConversationalFallback(trimmed);
 }

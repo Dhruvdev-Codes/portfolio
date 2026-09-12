@@ -4,45 +4,57 @@ import { handleChatRequest, checkIfGreeting, checkIfGeneralInquiry, checkIfPortf
 async function runInteractiveTests() {
   const testCases = [
     {
-      category: "1. Casual Chat & Small Talk",
+      category: "1. AI Model Architecture Inquiry (User screenshot issue)",
+      query: "which ai model do you use",
+    },
+    {
+      category: "2. Casual Chat & Small Talk",
       query: "Hi, how are you doing today?",
     },
     {
-      category: "2. Identity / Who are you",
+      category: "3. Identity / Persona",
       query: "Who are you and what can you help me with?",
     },
     {
-      category: "3. Programmer Humor",
+      category: "4. Programmer Humor",
       query: "Tell me a joke!",
     },
     {
-      category: "4. General Knowledge: ChatGPT & LLMs",
+      category: "5. General Knowledge: ChatGPT & LLMs",
       query: "What is ChatGPT and how do LLMs work?",
     },
     {
-      category: "5. General Knowledge: Quantum Computing",
-      query: "Explain quantum computing and its impact on cryptography",
+      category: "6. Coding Request: Binary Search",
+      query: "Explain and write binary search in python",
     },
     {
-      category: "6. General Knowledge: Docker & Containers",
-      query: "What is Docker and how does containerization work?",
+      category: "7. Coding Request: Palindrome",
+      query: "Write a python function to check if a string is a palindrome",
     },
     {
-      category: "7. Dhruv Portfolio: M.Tech Research",
+      category: "8. Mathematical Problem Solving",
+      query: "Solve 2x + 5 = 15",
+    },
+    {
+      category: "9. General Science: Photosynthesis",
+      query: "How does photosynthesis work in plants?",
+    },
+    {
+      category: "10. World Knowledge: Capitals",
+      query: "What is the capital of France?",
+    },
+    {
+      category: "11. Dhruv Portfolio: M.Tech Research",
       query: "What is Dhruv's research topic and mathematical formulation at NSUT?",
     },
     {
-      category: "8. Dhruv Portfolio: AWS Certifications",
+      category: "12. Dhruv Portfolio: AWS Certifications",
       query: "What AWS and cloud certifications does Dhruv hold?",
     },
     {
-      category: "9. Dhruv Portfolio: Projects (WorkVibe)",
+      category: "13. Dhruv Portfolio: Projects (WorkVibe)",
       query: "Explain the architecture of WorkVibe and how Dhruv optimized database latency.",
     },
-    {
-      category: "10. Dynamic Open-Ended Inquiry (No Rigid Template)",
-      query: "How does photosynthesis work in plants?",
-    }
   ];
 
   console.log("================================================================================");
@@ -72,3 +84,4 @@ async function runInteractiveTests() {
 }
 
 runInteractiveTests();
+
