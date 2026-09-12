@@ -156,6 +156,59 @@ $$6\\text{CO}_2 + 6\\text{H}_2\\text{O} + \\text{light} \\longrightarrow \\text{
 Aircraft generate flight through four balanced forces: **Lift**, **Weight**, **Thrust**, and **Drag**.
 
 - **Lift Generation:** Airfoils curve oncoming air downward. By **Bernoulli's Principle** (pressure differential) and **Newton's Third Law** (downward air deflection), an equal upward reaction force (Lift) is created.`,
+
+  oop: `### **Object-Oriented Programming (OOP) Four Pillars:**
+
+1. **Encapsulation:** Bundling data (attributes) and methods that operate on the data into a single unit (class), while hiding internal representation (private/protected).
+2. **Abstraction:** Exposing only essential high-level features while hiding complex background implementation details (e.g., interfaces and abstract base classes).
+3. **Inheritance:** Mechanism where a child class derives attributes and behaviors from a parent class, fostering code reusability and hierarchical structure.
+4. **Polymorphism:** Ability for different classes to be treated through the same interface (Method Overriding at runtime, Method Overloading at compile time).`,
+
+  machine_learning: `### **Machine Learning (ML) Paradigms:**
+
+1. **Supervised Learning:** Training models on labeled pairs $(X, y)$ to learn mapping $f(X) \\to y$. Examples: Linear/Logistic Regression, Random Forests, Gradient Boosted Trees (XGBoost), Neural Networks.
+2. **Unsupervised Learning:** Discovering latent patterns and clusters in unlabeled data $X$. Examples: K-Means Clustering, Principal Component Analysis (PCA), Autoencoders.
+3. **Reinforcement Learning (RL):** Agents learn optimal policies $\\pi(a|s)$ by interacting with an environment to maximize cumulative reward signals via Markov Decision Processes (MDPs).
+4. **Evaluation Metrics:** Accuracy, Precision, Recall, F1-Score, ROC-AUC, and Mean Squared Error (MSE).`,
+
+  networking: `### **Computer Networking & Protocols:**
+
+• **OSI 7-Layer Model:**
+  1. Physical $\\to$ 2. Data Link $\\to$ 3. Network (IP) $\\to$ 4. Transport (TCP/UDP) $\\to$ 5. Session $\\to$ 6. Presentation $\\to$ 7. Application (HTTP/DNS).
+• **TCP vs. UDP:**
+  - **TCP:** Connection-oriented (3-way handshake SYN $\\to$ SYN-ACK $\\to$ ACK), reliable, ordered packet delivery with flow/congestion control.
+  - **UDP:** Connectionless, low-latency, unordered datagram delivery (used for gaming, streaming, DNS, VoIP).
+• **DNS (Domain Name System):** Translates human-readable domain names (e.g., \`google.com\`) into IP addresses (\`142.250.190.46\`).
+• **HTTPS:** Encrypted HTTP over TLS/SSL (utilizing asymmetric public/private key exchange and symmetric AES payload encryption).`,
+
+  os_kernel: `### **Operating Systems Internals:**
+
+1. **Process vs. Thread:**
+   - **Process:** Independent execution unit with its own virtual address space, file descriptors, and memory allocation.
+   - **Thread:** Lightweight execution unit within a process sharing the same address space, heap, and static data.
+2. **Virtual Memory & Paging:** Translates virtual addresses to physical RAM frames via Page Tables and the Memory Management Unit (MMU).
+3. **Deadlocks (Coffman Conditions):** Mutual Exclusion, Hold and Wait, No Preemption, Circular Wait.`,
+
+  recursion: `### **Recursion in Computer Science:**
+
+A recursive function is one that solves a problem by calling itself on smaller subproblems until reaching a **base case**.
+
+\`\`\`python
+# Classic Factorial: n! = n * (n - 1)!
+def factorial(n: int) -> int:
+    if n <= 1:  # Base case
+        return 1
+    return n * factorial(n - 1)  # Recursive step
+
+# Fibonacci with Memoization: O(n)
+def fib(n: int, memo: dict = {}) -> int:
+    if n in memo: return memo[n]
+    if n <= 1: return n
+    memo[n] = fib(n - 1, memo) + fib(n - 2, memo)
+    return memo[n]
+\`\`\`
+
+• **Key Rule:** Every recursive solution must have a well-defined base case to avoid a \`StackOverflowError\` / recursion limit.`,
 };
 
 export const WORLD_CAPITALS: Record<string, string> = {

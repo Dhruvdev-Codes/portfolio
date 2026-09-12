@@ -117,6 +117,11 @@ export function getGeneralKnowledgeResponse(q: string): string | null {
   if (query.includes("quantum computing") || query.includes("qubit") || query.includes("superposition") || query.includes("entanglement")) return CS_AI_TOPICS.quantum;
   if (query.includes("photosynthesis") || query.includes("cellular respiration")) return CS_AI_TOPICS.photosynthesis;
   if (query.includes("airplane") || query.includes("how do airplanes fly") || query.includes("aerodynamics") || query.includes("flight")) return CS_AI_TOPICS.flight;
+  if (query.includes("oop") || query.includes("object oriented") || query.includes("encapsulation") || query.includes("polymorphism") || query.includes("inheritance")) return CS_AI_TOPICS.oop;
+  if (query.includes("machine learning") || query.includes("what is ml") || query.includes("supervised learning") || query.includes("reinforcement learning")) return CS_AI_TOPICS.machine_learning;
+  if (query.includes("tcp") || query.includes("udp") || query.includes("osi model") || query.includes("dns") || query.includes("how does internet work")) return CS_AI_TOPICS.networking;
+  if (query.includes("process vs thread") || query.includes("deadlock") || query.includes("virtual memory") || query.includes("paging")) return CS_AI_TOPICS.os_kernel;
+  if (query.includes("recursion") || query.includes("recursive") || query.includes("factorial") || query.includes("fibonacci")) return CS_AI_TOPICS.recursion;
 
   // Check World Capitals
   if (query.includes("capital of") || query.includes("what is the capital")) {

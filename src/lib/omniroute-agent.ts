@@ -40,18 +40,23 @@ export function checkIfPortfolioQuery(userMessage: string): boolean {
   const directEntities = /\b(dhruv|dhruv's|upadhyay|nsut|aitr|syncscribe|workvibe|skillxchange|travel world)\b/i;
   if (directEntities.test(q)) return true;
 
-  // 2. Specific proprietary research keywords
+  // 2. Portfolio owner & identity inquiries (e.g., "who's portfolio is this", "whose website is this")
+  const portfolioIdentity =
+    /\b(whose portfolio|who's portfolio|who is this portfolio|whose website|who's website|who made this website|who built this portfolio|who created this website|about this portfolio|owner of this portfolio|author of this portfolio)\b/i;
+  if (portfolioIdentity.test(q)) return true;
+
+  // 3. Specific proprietary research keywords
   const portfolioTopics = /\b(let formula|link predict|rssi kalman|aead routing|manet simulator)\b/i;
   if (portfolioTopics.test(q)) return true;
 
-  // 3. Explicit inquiries into the candidate / author / his credentials
+  // 4. Explicit inquiries into the candidate / author / his credentials
   const hasAuthorContext = /\b(his|author|creator|candidate|student|engineer|developer)\b/i.test(q);
   const isContextualPortfolioQuery =
     hasAuthorContext &&
     /\b(research|thesis|dissertation|project|projects|resume|cv|portfolio|certification|certifications|credentials?|experience|education)\b/i.test(q);
   if (isContextualPortfolioQuery) return true;
 
-  // 4. Contact or hiring inquiries specifically targeting Dhruv
+  // 5. Contact or hiring inquiries specifically targeting Dhruv
   const isHireOrContact =
     /\b(hire|contact|reach|email)\b/i.test(q) &&
     /\b(dhruv|him|candidate|portfolio|nsut)\b/i.test(q);

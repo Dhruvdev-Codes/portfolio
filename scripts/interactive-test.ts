@@ -29,11 +29,19 @@ async function runInteractiveTests() {
       query: "which ai model do you use and what is your routing strategy?",
     },
     {
-      category: "2. User Screenshot Case: Exact query 'which ai model do you use'",
-      query: "which ai model do you use",
+      category: "2. User Screenshot Case: Exact query 'who\'s portfolio is this'",
+      query: "who's portfolio is this",
     },
     {
-      category: "3. Router Strategy & Fallback Cascade",
+      category: "3. User Screenshot Case: Exact query 'whose portfolio is this'",
+      query: "whose portfolio is this",
+    },
+    {
+      category: "4. Identity & Creator: 'who is dhruv'",
+      query: "who is dhruv",
+    },
+    {
+      category: "5. Router Strategy & Fallback Cascade",
       query: "Configure a routing combo named dev-mtech-router with an automated fallback strategy.",
     },
     {

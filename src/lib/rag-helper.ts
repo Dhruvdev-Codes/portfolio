@@ -78,7 +78,36 @@ export function generateLocalRAGResponse(query: string, context?: string): strin
   const gkReply = getGeneralKnowledgeResponse(trimmed);
   if (gkReply) return gkReply;
 
-  // 3. Contact & Reach Out (only when explicitly asking about Dhruv/contacting)
+  // 3. Portfolio Ownership & About Dhruv
+  if (
+    q.includes("whose portfolio") ||
+    q.includes("who's portfolio") ||
+    q.includes("whose website") ||
+    q.includes("who's website") ||
+    q.includes("who is dhruv") ||
+    q.includes("about dhruv") ||
+    q.includes("tell me about dhruv") ||
+    q.includes("who created this website") ||
+    q.includes("who built this") ||
+    q.includes("who made this") ||
+    q.includes("owner of this") ||
+    q.includes("author of this")
+  ) {
+    return `This is the official portfolio and engineering showcase of **Dhruv Upadhyay**!
+
+### **About Dhruv Upadhyay:**
+• **Scholar:** Master of Technology (M.Tech) in CSE (Information Security) at **Netaji Subhas University of Technology (NSUT), New Delhi** (2025–Present).
+• **Undergraduate:** Bachelor of Technology (B.Tech) in CSE from Acropolis Institute of Technology and Research (AITR), Indore.
+• **Core Research & Systems Focus:**
+  - **Ad-Hoc Routing & Security:** Kinematic Link Expiration Time ($LET$) modeling, Kalman signal filtering, Byzantine node isolation.
+  - **Cloud & Backend Architecture:** AWS Academy Graduate (Cloud Architecting & Foundations), High-concurrency Node.js / Express services, MongoDB indexing.
+  - **Full-Stack Web:** Next.js (App Router, RSC), React, TypeScript, Tailwind CSS.
+• **Flagship Projects:** *Adaptive MANET/VANET Link Predictor*, *WorkVibe / SyncScribe*, *SkillXchange*, and *Travel World*.
+
+You can ask me about his research formulations, software projects, AWS certifications, or ask any general coding, math, and science questions!`;
+  }
+
+  // 4. Contact & Reach Out (only when explicitly asking about Dhruv/contacting)
   if (
     q.includes("contact dhruv") ||
     q.includes("dhruv's contact") ||
