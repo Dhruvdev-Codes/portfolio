@@ -35,8 +35,29 @@ export function checkIfGreeting(userMessage: string): boolean {
 
 export function checkIfPortfolioQuery(userMessage: string): boolean {
   const q = userMessage.trim().toLowerCase();
-  const portfolioPattern = /\b(dhruv|dhruv's|upadhyay|nsut|aitr|workvibe|skillxchange|travel world|let formula|link predict|rssi|kalman|aead|dissertation|thesis|research|certifications?|credentials?|google cybersecurity|resume|cv|portfolio)\b/i;
-  return portfolioPattern.test(q) || q.includes("contact") || q.includes("github") || q.includes("email") || q.includes("hire dhruv");
+
+  // 1. Direct entity matches (Dhruv, NSUT, AITR, SyncScribe, WorkVibe, SkillXchange, Travel World)
+  const directEntities = /\b(dhruv|dhruv's|upadhyay|nsut|aitr|syncscribe|workvibe|skillxchange|travel world)\b/i;
+  if (directEntities.test(q)) return true;
+
+  // 2. Specific proprietary research keywords
+  const portfolioTopics = /\b(let formula|link predict|rssi kalman|aead routing|manet simulator)\b/i;
+  if (portfolioTopics.test(q)) return true;
+
+  // 3. Explicit inquiries into the candidate / author / his credentials
+  const hasAuthorContext = /\b(his|author|creator|candidate|student|engineer|developer)\b/i.test(q);
+  const isContextualPortfolioQuery =
+    hasAuthorContext &&
+    /\b(research|thesis|dissertation|project|projects|resume|cv|portfolio|certification|certifications|credentials?|experience|education)\b/i.test(q);
+  if (isContextualPortfolioQuery) return true;
+
+  // 4. Contact or hiring inquiries specifically targeting Dhruv
+  const isHireOrContact =
+    /\b(hire|contact|reach|email)\b/i.test(q) &&
+    /\b(dhruv|him|candidate|portfolio|nsut)\b/i.test(q);
+  if (isHireOrContact) return true;
+
+  return false;
 }
 
 export function checkIfGeneralInquiry(userMessage: string): boolean {
@@ -44,7 +65,19 @@ export function checkIfGeneralInquiry(userMessage: string): boolean {
   if (checkIfPortfolioQuery(userMessage)) return false;
 
   const generalPattern = /^(what is|what are|explain|how does|how do|why is|difference between|compare|which|write|code|solve|calculate|what)\b/i;
-  return generalPattern.test(q) || q.includes("transformer") || q.includes("chatgpt") || q.includes("llm") || q.includes("binary search") || q.includes("quicksort") || q.includes("docker") || q.includes("react");
+  return (
+    generalPattern.test(q) ||
+    q.includes("transformer") ||
+    q.includes("chatgpt") ||
+    q.includes("llm") ||
+    q.includes("binary search") ||
+    q.includes("quicksort") ||
+    q.includes("docker") ||
+    q.includes("react") ||
+    q.includes("photosynthesis") ||
+    q.includes("capital of") ||
+    q.includes("quantum")
+  );
 }
 
 export function routeUserQuery(userMessage: string, context?: string): {

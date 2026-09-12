@@ -30,7 +30,7 @@ export function getConversationalResponse(q: string): string | null {
     query.includes("how were you built") ||
     query.includes("what is your architecture")
   ) {
-    return `I am **Dhruv AI**, powered by the **\`dev-mtech-router\`** engine configured with an automated cascading fallback strategy and real-time token compression.
+    return `I am powered by the **\`dev-mtech-router\`** engine configured with an automated cascading fallback strategy and real-time token compression.
 
 ### ⚡ **dev-mtech-router Architecture & Cascade Tiers:**
 
@@ -41,60 +41,60 @@ export function getConversationalResponse(q: string): string | null {
 3. **Tier 3 (Final Reliability Fallback):**
    - **OpenAI GPT-4o-mini** (\`gpt-4o-mini\`) — High reliability fallback tier for mission-critical continuity.
 4. **Tier 4 (Autonomous Omniroute Knowledge & RAG Engine):**
-   - Built-in deterministic semantic engine grounded in **Dhruv Upadhyay's M.Tech research at NSUT Delhi** (Ad-Hoc Wireless Networks, Kinematic LET equations, RSSI Kalman smoothing), projects (**WorkVibe, SkillXchange, Travel World**), and core CS/AI domain knowledge with 100% uptime and zero API reliance.
+   - Built-in deterministic semantic engine grounded in core CS/AI domain knowledge, algorithms, and verified research with 100% uptime and zero API reliance.
 
 🚀 **Token Compression:** Active (strips redundant prompt whitespace and optimizes multi-turn conversational context before provider dispatch).
 
-Feel free to ask me anything about computer science, algorithms, systems design, or explore Dhruv's research and credentials!`;
+I can answer any general question, write code, solve math problems, discuss science, or chat naturally on any topic!`;
   }
 
   // 2. Greetings & Warm Openers
   if (/^(hi|hello|hey|hey there|greetings|howdy|good morning|good afternoon|good evening|yo|sup|hiya)\b/i.test(query)) {
     const greetings = [
-      "Hello! Great to connect with you. I am Dhruv AI, ready to assist with tech discussions, AI and cloud systems, coding questions, or anything about Dhruv's research and software projects. What's on your mind today?",
-      "Hey there! Welcome. How can I help you today? Whether you'd like to explore ad-hoc wireless systems, solve a coding problem, or just have a general conversation, I'm all ears!",
-      "Hi! Glad you stopped by. Feel free to ask me general questions about computer science, AI, cloud architecture, and math, or dive into Dhruv's M.Tech research at NSUT Delhi."
+      "Hello! How can I help you today? Whether you have questions about coding, math, science, systems design, or any general topic, feel free to ask.",
+      "Hey there! Welcome. How can I assist you today? I'm ready to write code, solve problems, or chat about any global topic.",
+      "Hi! Glad you stopped by. Feel free to ask me general questions about computer science, AI, science, mathematics, or anything else you'd like to explore."
     ];
     return greetings[Math.floor(Math.random() * greetings.length)];
   }
 
   // 3. Wellness & Small Talk
   if (/^(how are you|how r u|how are you doing|how's it going|how is it going|wassup|what's up|how's everything)\b/i.test(query)) {
-    return "I'm doing fantastic, thank you for asking! I'm fully tuned and ready to chat about software engineering, cloud architectures, wireless networks, coding, or general technology topics. How has your day been?";
+    return "I'm doing fantastic, thank you for asking! I'm fully ready to help with coding, science, mathematics, software architecture, or general conversations. How can I assist you today?";
   }
 
   // 4. Identity & Persona
   if (/^(who are you|what are you|what is your name|who made you|who created you|tell me about yourself|introduce yourself)\b/i.test(query)) {
-    return `I am **Dhruv AI** — an intelligent, conversational portfolio agent representing **Dhruv Upadhyay**, an M.Tech researcher in Computer Science & Engineering (Information Security) at **Netaji Subhas University of Technology (NSUT), New Delhi**, AWS practitioner, and software engineer.
+    return `I am a versatile, intelligent AI assistant powered by the **\`dev-mtech-router\`** engine. I can answer any general question, write code, solve math problems, discuss science, and chat naturally about any global topic.
 
-I can converse naturally on general topics in computer science, software architecture, programming, and AI, as well as provide deep insights into Dhruv's research in ad-hoc link predictability, full-stack platforms like WorkVibe & SkillXchange, and cloud credentials.`;
+If you are interested in exploring Dhruv Upadhyay's M.Tech research at NSUT Delhi, his software projects (like WorkVibe and SyncScribe), or cloud certifications, I can also provide detailed insights upon request!`;
   }
 
   // 5. Humor & Programmer Jokes
   if (/^(tell me a joke|make me laugh|got any jokes|tell a joke|give me a joke)\b/i.test(query)) {
     const jokes = [
-      "Why do programmers prefer dark mode? Because light attracts bugs! 😄 Speaking of debugging, Dhruv's link predictability models preemptively eliminate routing bugs before routes fail.",
+      "Why do programmers prefer dark mode? Because light attracts bugs! 😄",
       "There are 10 types of people in the world: those who understand binary, and those who don't! 💻",
-      "Why did the Wi-Fi router break up with the ad-hoc node? Because it had too many dynamic connection issues and zero predictability! 📶",
+      "Why do Java developers wear glasses? Because they don't C#! 👓",
       "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?' 🍺",
-      "Why do Java developers wear glasses? Because they don't C#! 👓"
+      "Why did the developer go broke? Because they used up all their cache! 💰"
     ];
     return jokes[Math.floor(Math.random() * jokes.length)];
   }
 
   // 6. Gratitude
   if (/^(thanks|thank you|thx|cheers|appreciate it|much appreciated|thank you so much)\b/i.test(query)) {
-    return "You're very welcome! Always happy to help. Let me know if there's anything else you'd like to explore, whether it's software engineering, cloud concepts, coding, or Dhruv's research.";
+    return "You're very welcome! Always happy to help. Let me know if there's anything else you'd like to explore or solve.";
   }
 
   // 7. Compliments
   if (/(you are awesome|you're cool|nice work|good job|smart|great bot|impressive|well done)\b/i.test(query)) {
-    return "Thank you so much! I aim to be as helpful, accurate, and insightful as possible. If you'd like to test my knowledge on distributed systems, wireless networks, algorithms, or Dhruv's AWS projects, feel free to ask!";
+    return "Thank you so much! I aim to be as helpful, accurate, and insightful as possible. Let me know what we should work on next!";
   }
 
   // 8. Goodbyes
   if (/^(bye|goodbye|see you|cya|take care|have a good day|good night|farewell)\b/i.test(query)) {
-    return "Goodbye! It was a pleasure chatting with you. Have a great day ahead, and feel free to return anytime or connect with Dhruv directly via email or GitHub!";
+    return "Goodbye! It was a pleasure chatting with you. Have a wonderful day ahead!";
   }
 
   return null;
@@ -205,14 +205,13 @@ print(is_palindrome("race a car"))                      # False
 
   const topicHint = words.slice(0, 3).join(" ");
 
-  return `### **Insights on ${topicHint ? `"${topicHint}"` : "your question"}:**
+  return `### **Analysis & Insights on ${topicHint ? `"${topicHint}"` : "your question"}:**
 
 ${q.endsWith("?") ? `Regarding **"${q}"**:` : `Regarding **${q}**:`}
 
-• **Core Principle:** In modern computer science and engineering, breaking down complex systems into modular, well-defined components is essential for scalability, performance, and maintainability.
-• **System Perspective:** From distributed architectures to optimized algorithms, considering trade-offs between latency, throughput, and consistency is key.
+• **Core Principle:** In modern computing, science, and systems engineering, breaking down problems into structured, modular components enables optimal efficiency, clarity, and performance.
+• **Key Considerations:** Evaluating trade-offs between speed, scalability, precision, and simplicity leads to the most robust and elegant solutions.
 
----
-*I am **Dhruv AI**, equipped to assist with general technical explanations, code implementations, or specific inquiries into Dhruv Upadhyay's research at NSUT Delhi.* How can I assist you further on this?`;
+Let me know if you would like to explore this topic further or dive into specific examples!`;
 }
 

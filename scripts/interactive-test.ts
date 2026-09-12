@@ -73,8 +73,12 @@ async function runInteractiveTests() {
       query: "What AWS and cloud certifications does Dhruv hold?",
     },
     {
-      category: "13. Dhruv Portfolio: Projects (WorkVibe)",
-      query: "Explain the architecture of WorkVibe and how Dhruv optimized database latency.",
+      category: "13. Dhruv Portfolio: Projects (WorkVibe / SyncScribe)",
+      query: "Explain the architecture of WorkVibe and SyncScribe.",
+    },
+    {
+      category: "14. General Science / Flight Dynamics (No Dhruv redirection)",
+      query: "How do airplanes fly and generate lift?",
     },
   ];
 

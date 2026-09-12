@@ -5,7 +5,9 @@ import {
   getDynamicConversationalFallback,
 } from "./general-knowledge";
 
-export const DHRUV_AI_SYSTEM_PROMPT = `You are Dhruv AI, an interactive, highly intelligent, and conversational personal AI agent representing Dhruv (an M.Tech / researcher in ad-hoc wireless systems at NSUT Delhi, cloud/AWS practitioner, and software engineer).
+export const DHRUV_AI_SYSTEM_PROMPT = `You are a versatile, intelligent AI assistant behaving identically to ChatGPT and Gemini. You can answer any general question, write code, solve math problems, discuss science, and chat naturally about any global topic.
+
+Routing Rule: Only reference Dhruv's M.Tech research, resume, or projects if the user explicitly asks about Dhruv, NSUT, or his specific projects (like SyncScribe or WorkVibe). For all other questions (e.g., science, general knowledge, coding, identity, or general AI queries), answer them directly, comprehensively, and intelligently using your general LLM capabilities without deflecting or redirecting.
 
 ### dev-mtech-router Configuration
 You operate under the 'dev-mtech-router' multi-tier routing combo with automated fallback and token compression:
@@ -15,20 +17,17 @@ You operate under the 'dev-mtech-router' multi-tier routing combo with automated
 - Tier 4 (Autonomous Knowledge Engine): Local Semantic RAG & CS/AI engine.
 - Token Compression: Enabled to reduce redundant prompt overhead.
 
-### Personality & Tone
-- **Conversational & Human-like:** Speak naturally, fluently, and warmly like ChatGPT or Gemini. Format responses with clean Markdown, bullet points, and code blocks where helpful.
-- **Adaptive Knowledge:**
-  1. For casual chat, respond naturally and warmly.
-  2. For general knowledge queries (coding, math, science, algorithms, tech, world facts), answer them accurately, comprehensively, and clearly like a top-tier AI assistant.
-  3. If asked about AI models or routers ("which AI model do you use", "what router do you use", "dev-mtech-router", "what model are you"), explain your dev-mtech-router configuration with Google Gemini 2.0 Flash, Groq LLaMA 3.3 70B, OpenAI GPT-4o-mini, and token compression.
-  4. For questions about Dhruv, draw upon verified facts:
-     - **M.Tech in CSE (Information Security)** at Netaji Subhas University of Technology (NSUT), New Delhi.
-     - **B.Tech in CSE** from Acropolis Institute of Technology and Research (AITR), Indore.
-     - **Research:** Link Predictability in Ad-Hoc Networks (MANET/VANET) for Secure & Robust Communications. Kinematic Link Expiration Time (LET) formula, Exponential RSSI smoothing, Kalman filtering, lightweight AEAD cryptography, and behavioral trust scoring. 61% route break overhead reduction.
-     - **Projects:** Adaptive MANET Simulator (C++/Python), WorkVibe (mentorship network with sub-15ms search latency), SkillXchange (peer marketplace), Travel World (responsive travel booking).
-     - **Certifications:** 2x AWS Academy Graduate (Cloud Architecting & Cloud Foundations), Google Cybersecurity Professional Certificate, Google Cloud Digital Training.
-     - **Skills:** C++, Python, JavaScript, TypeScript, Next.js, React, Node.js, Express, MongoDB, MySQL, Redis, AWS (VPC, IAM, EC2, S3), Docker, Linux, Git.
-     - **Contact:** dhruvupadhyay708937@gmail.com, NSUT: dhruv.upadhyay.pg26@nsut.ac.in, Phone: +91 7489221051, GitHub: github.com/Dhruvdev-Codes.`;
+### Personality & Operating Guidelines
+- **Intelligent & Versatile:** Respond directly, accurately, and comprehensively to any prompt—be it coding, math, science, algorithms, global trivia, or conversational chat.
+- **Direct Answers Without Unprompted References:** Do not redirect, deflect, or unpromptedly mention Dhruv, NSUT, or specific projects unless the user explicitly asks about them.
+- **If Asked About AI Model / Router Architecture:** Clearly explain the dev-mtech-router multi-tier cascade (Gemini 2.0 Flash -> Groq LLaMA 3.3 70B -> OpenAI GPT-4o-mini -> Autonomous Engine) and token compression.
+- **Dhruv / NSUT / Project Context (Only when explicitly asked by the user):**
+  - **Person:** Dhruv Upadhyay, M.Tech in CSE (Information Security) at Netaji Subhas University of Technology (NSUT), New Delhi; B.Tech in CSE from AITR Indore.
+  - **Research:** Link Predictability in Ad-Hoc Networks (MANET/VANET) for Secure & Robust Communications. Formulations: Kinematic Link Expiration Time (LET) formula, Exponential RSSI smoothing, Kalman filtering, lightweight AEAD cryptography, and continuous behavioral trust scoring. 61% route break reduction.
+  - **Projects:** Adaptive MANET Simulator (C++/Python), SyncScribe / WorkVibe (collaborative network with sub-15ms search latency), SkillXchange (peer marketplace), Travel World (tourism platform).
+  - **Certifications:** 2x AWS Academy Graduate (Cloud Architecting & Cloud Foundations), Google Cybersecurity Professional Certificate, Google Cloud Digital Training.
+  - **Skills:** C++, Python, JavaScript, TypeScript, Next.js, React, Node.js, Express, MongoDB, MySQL, Redis, AWS, Docker, Linux, Git.
+  - **Contact:** dhruvupadhyay708937@gmail.com, NSUT: dhruv.upadhyay.pg26@nsut.ac.in, GitHub: github.com/Dhruvdev-Codes.`;
 
 const GENERIC_STOP_WORDS = new Set([
   "what", "when", "where", "which", "with", "about", "tell", "does",
@@ -79,15 +78,14 @@ export function generateLocalRAGResponse(query: string, context?: string): strin
   const gkReply = getGeneralKnowledgeResponse(trimmed);
   if (gkReply) return gkReply;
 
-  // 3. Contact & Reach Out
+  // 3. Contact & Reach Out (only when explicitly asking about Dhruv/contacting)
   if (
-    q.includes("contact") ||
-    q.includes("email") ||
-    q.includes("phone") ||
-    q.includes("reach") ||
-    q.includes("hire") ||
-    q.includes("linkedin") ||
-    q.includes("github")
+    q.includes("contact dhruv") ||
+    q.includes("dhruv's contact") ||
+    q.includes("dhruv's email") ||
+    q.includes("hire dhruv") ||
+    ((q.includes("contact") || q.includes("reach") || q.includes("hire") || q.includes("email")) &&
+      (q.includes("dhruv") || q.includes("author") || q.includes("creator") || q.includes("developer")))
   ) {
     return `### **Get in Touch with Dhruv Upadhyay:**
 
@@ -100,19 +98,12 @@ export function generateLocalRAGResponse(query: string, context?: string): strin
 Dhruv is actively open to research collaborations, software engineering roles, and cloud systems engineering opportunities.`;
   }
 
-  // 4. Research & Mathematical Formulation
+  // 4. Research & Mathematical Formulation (only when explicitly asked about research at NSUT / LET formula / RSSI Kalman)
   if (
-    q.includes("research") ||
-    q.includes("thesis") ||
-    q.includes("dissertation") ||
+    ((q.includes("dhruv") || q.includes("nsut") || q.includes("his")) &&
+      (q.includes("research") || q.includes("thesis") || q.includes("dissertation") || q.includes("let formula") || q.includes("kalman") || q.includes("rssi") || q.includes("manet") || q.includes("vanet"))) ||
     q.includes("let formula") ||
-    q.includes("link predict") ||
-    q.includes("exponential smoothing") ||
-    q.includes("rssi") ||
-    q.includes("aead") ||
-    q.includes("kalman") ||
-    q.includes("manet") ||
-    q.includes("vanet")
+    q.includes("link predictability in ad-hoc")
   ) {
     return `### **Dhruv's M.Tech Research — Ad-Hoc Link Predictability:**
 
@@ -141,16 +132,14 @@ Standard ad-hoc routing protocols (AODV, DSR) only trigger route repair *after* 
 - **p99 Latency:** Dropped from **94ms** down to **28ms**.`;
   }
 
-
-
-  // 5. Projects & Systems
+  // 5. Projects & Systems (only when explicitly asking about specific projects or Dhruv's projects)
   if (
-    q.includes("project") ||
     q.includes("workvibe") ||
+    q.includes("syncscribe") ||
     q.includes("skillxchange") ||
     q.includes("travel world") ||
-    q.includes("built") ||
-    q.includes("apps")
+    ((q.includes("dhruv") || q.includes("his") || q.includes("author")) &&
+      (q.includes("project") || q.includes("built") || q.includes("portfolio") || q.includes("apps")))
   ) {
     return `### **Key Engineering Projects Built by Dhruv:**
 
@@ -158,7 +147,7 @@ Standard ad-hoc routing protocols (AODV, DSR) only trigger route repair *after* 
    - Implements kinematic trajectory modeling, Kalman filtering, and proactive route pre-caching.
    - Reduced routing control overhead by **61%** with a **96.4% Packet Delivery Ratio**.
 
-2. **WorkVibe — Mentor-Mentee Collaborative Network:**
+2. **SyncScribe / WorkVibe — Mentor-Mentee Collaborative Network:**
    - Full-stack web application built with JavaScript, Node.js, Express, and MongoDB.
    - Features role-based access control and composite database indexing achieving **sub-15ms search latency**.
 
@@ -170,13 +159,10 @@ Standard ad-hoc routing protocols (AODV, DSR) only trigger route repair *after* 
    - Responsive tourism portal with normalized MySQL 3NF relational schema and a **99 Lighthouse performance score**.`;
   }
 
-  // 6. Certifications & Credentials
+  // 6. Certifications & Credentials (only when explicitly asking about Dhruv's credentials/certifications)
   if (
-    q.includes("certification") ||
-    q.includes("credentials") ||
-    q.includes("aws") ||
-    q.includes("google cybersecurity") ||
-    q.includes("badge")
+    (q.includes("dhruv") || q.includes("his") || q.includes("author")) &&
+    (q.includes("certification") || q.includes("credential") || q.includes("aws") || q.includes("badge") || q.includes("google cybersecurity"))
   ) {
     return `### **Professional Certifications & Credentials:**
 
@@ -190,14 +176,10 @@ Standard ad-hoc routing protocols (AODV, DSR) only trigger route repair *after* 
    - GCP infrastructure, big data services, and cloud compliance.`;
   }
 
-  // 7. Skills & Tech Stack
+  // 7. Skills & Tech Stack (only when explicitly asking about Dhruv's skills)
   if (
-    q.includes("skill") ||
-    q.includes("tech stack") ||
-    q.includes("languages") ||
-    q.includes("tools") ||
-    q.includes("c++") ||
-    q.includes("python")
+    (q.includes("dhruv") || q.includes("his") || q.includes("author")) &&
+    (q.includes("skill") || q.includes("tech stack") || q.includes("languages") || q.includes("stack") || q.includes("tools"))
   ) {
     return `### **Dhruv's Technical Skills Matrix:**
 
@@ -208,14 +190,12 @@ Standard ad-hoc routing protocols (AODV, DSR) only trigger route repair *after* 
 • **Systems & Research:** Ad-Hoc Routing (MANET/VANET), Lightweight AEAD Cryptography, Kalman Signal Filtering, Kinematic Trajectory Modeling`;
   }
 
-  // 8. Education & Academic Background
+  // 8. Education & Academic Background (only when asking about Dhruv's education/NSUT/AITR)
   if (
-    q.includes("education") ||
+    ((q.includes("dhruv") || q.includes("his") || q.includes("author")) &&
+      (q.includes("education") || q.includes("degree") || q.includes("college") || q.includes("university"))) ||
     q.includes("nsut") ||
-    q.includes("aitr") ||
-    q.includes("college") ||
-    q.includes("university") ||
-    q.includes("degree")
+    q.includes("aitr")
   ) {
     return `### **Dhruv Upadhyay's Education:**
 
