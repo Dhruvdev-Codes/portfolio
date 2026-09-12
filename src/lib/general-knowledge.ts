@@ -114,7 +114,7 @@ export function getGeneralKnowledgeResponse(q: string): string | null {
   if (query.includes("docker") || query.includes("kubernetes") || query.includes("k8s") || query.includes("container")) return CS_AI_TOPICS.docker_k8s;
   if (query.includes("rest vs graphql") || query.includes("graphql") || query.includes("grpc") || query.includes("websocket")) return CS_AI_TOPICS.apis;
   if (query.includes("sql vs nosql") || query.includes("cap theorem") || query.includes("mongodb") || query.includes("redis") || query.includes("acid")) return CS_AI_TOPICS.databases;
-  if (query.includes("quantum computing") || query.includes("qubit") || query.includes("superposition") || query.includes("entanglement")) return CS_AI_TOPICS.quantum;
+  if (query.includes("quantum") || query.includes("qubit") || query.includes("superposition") || query.includes("entanglement")) return CS_AI_TOPICS.quantum;
   if (query.includes("photosynthesis") || query.includes("cellular respiration")) return CS_AI_TOPICS.photosynthesis;
   if (query.includes("airplane") || query.includes("how do airplanes fly") || query.includes("aerodynamics") || query.includes("flight")) return CS_AI_TOPICS.flight;
   if (query.includes("oop") || query.includes("object oriented") || query.includes("encapsulation") || query.includes("polymorphism") || query.includes("inheritance")) return CS_AI_TOPICS.oop;
@@ -122,6 +122,9 @@ export function getGeneralKnowledgeResponse(q: string): string | null {
   if (query.includes("tcp") || query.includes("udp") || query.includes("osi model") || query.includes("dns") || query.includes("how does internet work")) return CS_AI_TOPICS.networking;
   if (query.includes("process vs thread") || query.includes("deadlock") || query.includes("virtual memory") || query.includes("paging")) return CS_AI_TOPICS.os_kernel;
   if (query.includes("recursion") || query.includes("recursive") || query.includes("factorial") || query.includes("fibonacci")) return CS_AI_TOPICS.recursion;
+  if (query.includes("crypto") || query.includes("encryption") || query.includes("rsa") || query.includes("aes") || query.includes("sha-256") || query.includes("hashing")) return CS_AI_TOPICS.cryptography;
+  if (query.includes("react") || query.includes("next.js") || query.includes("nextjs") || query.includes("virtual dom") || query.includes("server component")) return CS_AI_TOPICS.react_nextjs;
+  if (query.includes("data structure") || query.includes("linked list") || query.includes("hash map") || query.includes("binary tree") || query.includes("heap")) return CS_AI_TOPICS.data_structures;
 
   // Check World Capitals
   if (query.includes("capital of") || query.includes("what is the capital")) {

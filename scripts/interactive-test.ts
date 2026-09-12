@@ -88,6 +88,18 @@ async function runInteractiveTests() {
       category: "14. General Science / Flight Dynamics (No Dhruv redirection)",
       query: "How do airplanes fly and generate lift?",
     },
+    {
+      category: "15. General AI/Physics: User Case 'Explain quantum computing'",
+      query: "Explain quantum computing",
+    },
+    {
+      category: "16. General Security: 'Explain AES vs RSA encryption'",
+      query: "Explain AES vs RSA encryption",
+    },
+    {
+      category: "17. General Web Dev: 'How does React Virtual DOM work?'",
+      query: "How does React Virtual DOM work?",
+    },
   ];
 
   for (let i = 0; i < testCases.length; i++) {

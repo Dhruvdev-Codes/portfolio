@@ -33,7 +33,15 @@ const GENERIC_STOP_WORDS = new Set([
   "what", "when", "where", "which", "with", "about", "tell", "does",
   "have", "from", "this", "that", "your", "could", "would", "should",
   "model", "models", "used", "uses", "using", "make", "made", "good",
-  "best", "work", "works", "system", "systems", "give", "help", "like"
+  "best", "work", "works", "system", "systems", "give", "help", "like",
+  "explain", "overview", "definition", "science", "computing", "technology"
+]);
+
+const PORTFOLIO_CORE_KEYWORDS = new Set([
+  "dhruv", "upadhyay", "nsut", "aitr", "syncscribe", "workvibe",
+  "skillxchange", "travel world", "let", "kalman", "rssi", "manet",
+  "vanet", "aead", "thesis", "dissertation", "kinematic", "mentor", "mentee",
+  "marketplace", "tourism", "itinerary", "ad-hoc"
 ]);
 
 export function searchLocalKnowledge(query: string): string {
@@ -44,6 +52,10 @@ export function searchLocalKnowledge(query: string): string {
     .filter((w) => w.length > 2 && !GENERIC_STOP_WORDS.has(w));
 
   if (words.length === 0) return "";
+
+  // Only run search if query contains at least one portfolio-relevant term
+  const hasPortfolioKeyword = words.some((w) => PORTFOLIO_CORE_KEYWORDS.has(w));
+  if (!hasPortfolioKeyword) return "";
 
   const scored = knowledgeData.map((doc) => {
     const docFull = `${doc.title} ${doc.content} ${doc.category}`.toLowerCase();
@@ -237,9 +249,27 @@ Standard ad-hoc routing protocols (AODV, DSR) only trigger route repair *after* 
    - Strong foundational focus: Data Structures & Algorithms, Operating Systems, Database Management, Computer Networks.`;
   }
 
-  // 9. If high-confidence context was retrieved
-  if (context && context.trim().length > 0) {
-    return `Here is what I found in Dhruv's technical knowledge base regarding your question:\n\n${context.trim()}\n\nIs there a specific detail or architectural aspect you'd like to dive deeper into?`;
+  // 9. If high-confidence context was retrieved (only if portfolio context is relevant)
+  if (
+    context &&
+    context.trim().length > 0 &&
+    (q.includes("dhruv") ||
+      q.includes("nsut") ||
+      q.includes("aitr") ||
+      q.includes("syncscribe") ||
+      q.includes("workvibe") ||
+      q.includes("skillxchange") ||
+      q.includes("travel world") ||
+      q.includes("let formula") ||
+      q.includes("kalman") ||
+      q.includes("manet") ||
+      q.includes("vanet") ||
+      q.includes("his") ||
+      q.includes("author") ||
+      q.includes("candidate") ||
+      q.includes("portfolio"))
+  ) {
+    return `### **Dhruv's Technical Knowledge Base:**\n\n${context.trim()}\n\nIs there a specific detail or architectural aspect you'd like to dive deeper into?`;
   }
 
   // 10. Dynamic Synthesizer Fallback

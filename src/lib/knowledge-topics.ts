@@ -132,15 +132,25 @@ A distributed system can satisfy at most two of three guarantees:
 - **Availability ($A$):** Every non-failing node returns a response.
 - **Partition Tolerance ($P$):** System continues operating despite network packet drops.`,
 
-  quantum: `### **Quantum Computing Fundamentals:**
+  quantum: `### **Quantum Computing — Principles & Overview:**
 
-Quantum computing uses quantum mechanical principles for exponential computational speedups:
+Quantum computing harnesses the laws of **quantum mechanics** to solve complex computational problems exponentially faster than classical supercomputers.
 
-1. **Qubits & Superposition:**
-   - Unlike classical bits ($0$ or $1$), a qubit exists in a superposition:
-     $$|\\psi\\rangle = \\alpha |0\\rangle + \\beta |1\\rangle, \\quad \\text{with } |\\alpha|^2 + |\\beta|^2 = 1$$
-2. **Entanglement:** Correlation where observing one qubit instantly determines the state of its entangled pair.
-3. **Algorithms:** Shor's algorithm for prime factorization in polynomial time; Grover's algorithm for quadratic unstructured search speedup $\\mathcal{O}(\\sqrt{N})$.`,
+#### 1. **Core Fundamental Principles:**
+- **Qubits (Quantum Bits):** Unlike classical bits that are deterministically either $0$ or $1$, a qubit exists in a linear superposition of states:
+  $$|\\psi\\rangle = \\alpha |0\\rangle + \\beta |1\\rangle \\quad \\text{where } |\\alpha|^2 + |\\beta|^2 = 1$$
+- **Superposition:** Allows an $n$-qubit quantum register to represent $2^n$ computational states simultaneously.
+- **Quantum Entanglement:** Quantum correlation where the state of one qubit instantaneously determines the state of another, regardless of physical distance.
+- **Quantum Interference:** Amplifies probabilities of constructive (correct) computational paths while cancelling destructive (incorrect) states.
+
+#### 2. **Key Quantum Algorithms:**
+- **Shor's Algorithm:** Factors large integers in polynomial time $\\mathcal{O}((\\log N)^3)$, exponentially breaking standard RSA cryptography.
+- **Grover's Algorithm:** Searches unsorted databases of size $N$ with a quadratic speedup in $\\mathcal{O}(\\sqrt{N})$ iterations.
+- **VQE (Variational Quantum Eigensolver):** Hybrid quantum-classical algorithm for molecular simulation and quantum chemistry.
+
+#### 3. **Applications & Challenges:**
+- **Applications:** Cryptanalysis, drug discovery, material science simulation, portfolio optimization, and complex supply chain logistics.
+- **Current Challenges:** Quantum decoherence, thermal noise, high error rates, and the need for fault-tolerant Quantum Error Correction (QEC).`,
 
   photosynthesis: `### **Photosynthesis & Energy Conversion:**
 
@@ -209,6 +219,33 @@ def fib(n: int, memo: dict = {}) -> int:
 \`\`\`
 
 • **Key Rule:** Every recursive solution must have a well-defined base case to avoid a \`StackOverflowError\` / recursion limit.`,
+
+  cryptography: `### **Cryptography & Security Fundamentals:**
+
+1. **Symmetric vs. Asymmetric Encryption:**
+   - **Symmetric (AES-GCM, ChaCha20):** Same shared secret key used for encryption & decryption. Extremely fast, ideal for bulk data transport.
+   - **Asymmetric (RSA, ECC, Ed25519):** Public key encrypts / verifies signatures; Private key decrypts / signs. Used for key exchange (ECDH) and digital signatures.
+2. **Cryptographic Hash Functions (SHA-256, BLAKE3):**
+   - Deterministic, pre-image resistant, second pre-image resistant, and collision resistant.
+3. **AEAD (Authenticated Encryption with Associated Data):**
+   - Simultaneously guarantees confidentiality, integrity, and authenticity in a single cryptographic pass.`,
+
+  react_nextjs: `### **React & Next.js Architecture:**
+
+- **React Virtual DOM:** In-memory representation of real DOM; reconciles changes using a diffing algorithm (Fiber) to minimize expensive DOM reflows.
+- **Next.js App Router & Server Components (RSC):**
+  - **Server Components (Default):** Rendered on the server with zero client-side JavaScript bundle footprint; direct backend/DB access.
+  - **Client Components (\`"use client"\`):** Hydrated on the browser for interactivity, state (\`useState\`), and DOM event listeners.
+- **Rendering Modes:** SSR (Server-Side Rendering), SSG (Static Site Generation), and ISR (Incremental Static Regeneration).`,
+
+  data_structures: `### **Core Data Structures Overview:**
+
+1. **Arrays / Dynamic Arrays:** Contiguous memory, $\\mathcal{O}(1)$ random access, $\\mathcal{O}(n)$ insert/delete.
+2. **Linked Lists:** Node-pointer chain, $\\mathcal{O}(1)$ insert/delete at head, $\\mathcal{O}(n)$ access.
+3. **Hash Maps / Dictionaries:** Key-value pairs via hash function, average $\\mathcal{O}(1)$ lookup/insert with collision resolution (chaining/open addressing).
+4. **Binary Search Trees (BST / AVL / Red-Black):** Self-balancing trees guaranteeing $\\mathcal{O}(\\log n)$ search, insert, and delete.
+5. **Heaps / Priority Queues:** Complete binary tree with min/max heap property; $\\mathcal{O}(1)$ peek, $\\mathcal{O}(\\log n)$ push/pop.
+6. **Graphs:** Set of vertices and edges represented via Adjacency List or Matrix; traversed via BFS (queues) and DFS (stacks/recursion).`,
 };
 
 export const WORLD_CAPITALS: Record<string, string> = {
