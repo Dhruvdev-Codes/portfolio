@@ -7,7 +7,7 @@ import { CS_AI_TOPICS, WORLD_CAPITALS } from "./knowledge-topics";
 export function getConversationalResponse(q: string): string | null {
   const query = q.trim().toLowerCase();
 
-  // 1. AI Model & Architecture Inquiries
+  // 1. AI Model, Router & Architecture Inquiries
   if (
     query.includes("which ai model") ||
     query.includes("what ai model") ||
@@ -19,6 +19,10 @@ export function getConversationalResponse(q: string): string | null {
     query.includes("which model") ||
     query.includes("what llm") ||
     query.includes("which llm") ||
+    query.includes("router") ||
+    query.includes("dev-mtech-router") ||
+    query.includes("fallback") ||
+    query.includes("token compression") ||
     query.includes("are you chatgpt") ||
     query.includes("are you gemini") ||
     query.includes("are you gpt") ||
@@ -26,21 +30,22 @@ export function getConversationalResponse(q: string): string | null {
     query.includes("how were you built") ||
     query.includes("what is your architecture")
   ) {
-    return `I am **Dhruv AI** — an interactive agent engineered with a hybrid LLM & RAG architecture.
+    return `I am **Dhruv AI**, powered by the **\`dev-mtech-router\`** engine configured with an automated cascading fallback strategy and real-time token compression.
 
-### My Core Architecture:
-1. **Multi-Model Intelligence Engine:**
-   - Powered by state-of-the-art LLM backends (supporting **Google Gemini 1.5/2.0 Flash**, **OpenAI GPT-4o-mini**, and **Groq LLaMA 3.3 70B**).
-   - Real-time token streaming and conversational reasoning.
+### ⚡ **dev-mtech-router Architecture & Cascade Tiers:**
 
-2. **Domain-Specific RAG Knowledge Base:**
-   - Grounded in Dhruv Upadhyay's research at **NSUT Delhi** (Ad-Hoc Wireless Link Predictability, Kinematic LET models, and RSSI smoothing).
-   - Real-time access to Dhruv's full-stack applications (**WorkVibe**, **SkillXchange**, **Travel World**), cloud credentials (**AWS Cloud Architecting**), and engineering competencies.
+1. **Tier 1 (Primary — High-Speed Generation):**
+   - **Google Gemini 2.0 Flash** (\`gemini-2.0-flash\`) — Low-latency reasoning, general inquiries, and rapid code generation.
+2. **Tier 2 (High-Throughput Backup Cascade):**
+   - **Groq LLaMA 3.3 70B** (\`llama-3.3-70b-versatile\`) — Cascaded automatically if Gemini encounters rate limits (HTTP 429) or transient provider outages.
+3. **Tier 3 (Final Reliability Fallback):**
+   - **OpenAI GPT-4o-mini** (\`gpt-4o-mini\`) — High reliability fallback tier for mission-critical continuity.
+4. **Tier 4 (Autonomous Omniroute Knowledge & RAG Engine):**
+   - Built-in deterministic semantic engine grounded in **Dhruv Upadhyay's M.Tech research at NSUT Delhi** (Ad-Hoc Wireless Networks, Kinematic LET equations, RSSI Kalman smoothing), projects (**WorkVibe, SkillXchange, Travel World**), and core CS/AI domain knowledge with 100% uptime and zero API reliance.
 
-3. **Omniroute Semantic Agent:**
-   - Real-time intent classification to handle casual small talk, CS/AI engineering concepts, live coding questions, or specific portfolio inquiries.
+🚀 **Token Compression:** Active (strips redundant prompt whitespace and optimizes multi-turn conversational context before provider dispatch).
 
-Feel free to ask me anything about computer science, AI, systems architecture, or dive into Dhruv's research and projects!`;
+Feel free to ask me anything about computer science, algorithms, systems design, or explore Dhruv's research and credentials!`;
   }
 
   // 2. Greetings & Warm Openers

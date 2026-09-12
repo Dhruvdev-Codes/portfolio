@@ -1,34 +1,55 @@
 import { searchLocalKnowledge, generateLocalRAGResponse } from "../src/lib/rag-helper";
 import { handleChatRequest, checkIfGreeting, checkIfGeneralInquiry, checkIfPortfolioQuery } from "../src/lib/omniroute-agent";
+import { executeDevMtechRouter } from "../src/lib/dev-mtech-router";
+import { compressPromptContext } from "../src/lib/token-compression";
 
 async function runInteractiveTests() {
+  console.log("================================================================================");
+  console.log("         DHRUV AI AGENT & DEV-MTECH-ROUTER TEST SUITE                           ");
+  console.log("================================================================================\n");
+
+  // 1. Test Token Compression Engine
+  console.log("[TEST 0] Token Compression Engine Validation:");
+  const sampleSystemPrompt = `You are Dhruv AI, an interactive personal AI assistant.\n\n\n\n### Personality\n- Warm\n- Conversational\n\n`;
+  const sampleHistory = [
+    { role: "user", content: "Hello   there!   How are you?   \n\n\n" },
+    { role: "assistant", content: "I am doing   great! How can I help?  " },
+  ];
+  const sampleQuery = "  What   models does dev-mtech-router use?   ";
+
+  const compressionResult = compressPromptContext(sampleSystemPrompt, sampleHistory, sampleQuery);
+  console.log(`  • Original Chars: ${compressionResult.stats.originalChars}`);
+  console.log(`  • Compressed Chars: ${compressionResult.stats.compressedChars}`);
+  console.log(`  • Savings: ${compressionResult.stats.savingsPercent}%`);
+  console.log(`  • Est. Tokens Before: ${compressionResult.stats.originalTokensEst} -> After: ${compressionResult.stats.compressedTokensEst}`);
+
   const testCases = [
     {
-      category: "1. AI Model Architecture Inquiry (User screenshot issue)",
+      category: "1. Router Combo Inquiry (dev-mtech-router)",
+      query: "which ai model do you use and what is your routing strategy?",
+    },
+    {
+      category: "2. User Screenshot Case: Exact query 'which ai model do you use'",
       query: "which ai model do you use",
     },
     {
-      category: "2. Casual Chat & Small Talk",
+      category: "3. Router Strategy & Fallback Cascade",
+      query: "Configure a routing combo named dev-mtech-router with an automated fallback strategy.",
+    },
+    {
+      category: "4. Casual Chat & Small Talk",
       query: "Hi, how are you doing today?",
     },
     {
-      category: "3. Identity / Persona",
+      category: "5. Identity / Persona",
       query: "Who are you and what can you help me with?",
-    },
-    {
-      category: "4. Programmer Humor",
-      query: "Tell me a joke!",
-    },
-    {
-      category: "5. General Knowledge: ChatGPT & LLMs",
-      query: "What is ChatGPT and how do LLMs work?",
     },
     {
       category: "6. Coding Request: Binary Search",
       query: "Explain and write binary search in python",
     },
     {
-      category: "7. Coding Request: Palindrome",
+      category: "7. Coding Request: Palindrome Checker",
       query: "Write a python function to check if a string is a palindrome",
     },
     {
@@ -57,29 +78,27 @@ async function runInteractiveTests() {
     },
   ];
 
-  console.log("================================================================================");
-  console.log("            DHRUV AI AGENT — INTERACTIVE TEST SUITE RUNNER                      ");
-  console.log("================================================================================\n");
-
   for (let i = 0; i < testCases.length; i++) {
     const { category, query } = testCases[i];
     console.log(`\n--------------------------------------------------------------------------------`);
     console.log(`[TEST #${i + 1}] Category: ${category}`);
     console.log(`User Query: "${query}"`);
     console.log(`Classification Flags:`);
-    console.log(`  • isGreeting: ${checkIfGreeting(query)}`);
-    console.log(`  • isGeneral:  ${checkIfGeneralInquiry(query)}`);
-    console.log(`  • isPortfolio: ${checkIfPortfolioQuery(query)}`);
+    console.log(`  • isGreeting:   ${checkIfGreeting(query)}`);
+    console.log(`  • isGeneral:    ${checkIfGeneralInquiry(query)}`);
+    console.log(`  • isPortfolio:  ${checkIfPortfolioQuery(query)}`);
 
-    const chatResponse = await handleChatRequest(query);
-    console.log(`Routed Intent: ${chatResponse.intent}`);
+    const routerExecution = await executeDevMtechRouter(query);
+    console.log(`Router Combo: ${routerExecution.routerName}`);
+    console.log(`Active Tier:  ${routerExecution.tier} (${routerExecution.provider} - ${routerExecution.model})`);
+    console.log(`Token Saved:  ${routerExecution.compressionStats.savingsPercent}%`);
     console.log(`Agent Output:\n`);
-    console.log(chatResponse.text);
+    console.log(routerExecution.text);
     console.log(`--------------------------------------------------------------------------------`);
   }
 
   console.log("\n================================================================================");
-  console.log("            ALL INTERACTIVE TEST CASES COMPLETED SUCCESSFULLY                   ");
+  console.log("            ALL DEV-MTECH-ROUTER TESTS COMPLETED SUCCESSFULLY                   ");
   console.log("================================================================================\n");
 }
 

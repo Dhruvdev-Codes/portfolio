@@ -25,7 +25,11 @@ export function checkIfGreeting(userMessage: string): boolean {
     q.includes("what model are you") ||
     q.includes("which model are you") ||
     q.includes("what llm") ||
-    q.includes("which llm")
+    q.includes("which llm") ||
+    q.includes("dev-mtech-router") ||
+    q.includes("fallback strategy") ||
+    q.includes("token compression") ||
+    q.includes("router combo")
   );
 }
 

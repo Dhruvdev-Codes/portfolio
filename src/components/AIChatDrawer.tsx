@@ -24,9 +24,9 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
   } = useChatStream({ api: "/api/chat" });
 
   const promptSuggestions = [
+    "Which AI model and routing fallback strategy do you use?",
     "What is Dhruv's research topic and mathematical formulation?",
     "Explain the architecture of WorkVibe and SkillXchange.",
-    "What is ChatGPT and how do LLMs work?",
     "What are Dhruv's AWS and security credentials?",
   ];
 
@@ -54,6 +54,9 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
             <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
               <Terminal className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
               <span className="font-semibold text-slate-800 dark:text-slate-200">terminal@dhruv-mtech:~$</span>
+              <span className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] rounded bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 font-sans font-medium">
+                dev-mtech-router
+              </span>
             </div>
 
             <div className="flex items-center gap-2">
