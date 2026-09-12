@@ -32,7 +32,16 @@ async function callGemini(
     process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   if (!k) return null;
 
-  for (const m of ["gemini-2.0-flash", "gemini-2.0-flash-exp", "gemini-1.5-flash"]) {
+  const candidateModels = [
+    "gemini-3.6-flash",
+    "gemini-3.7-flash",
+    "gemini-flash-latest",
+    "gemini-2.5-flash-lite",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+  ];
+
+  for (const m of candidateModels) {
     try {
       const contents = hist.map((item) => ({
         role: item.role === "assistant" ? "model" : "user",
@@ -47,7 +56,10 @@ async function callGemini(
         `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${k}`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": k,
+          },
           body: JSON.stringify({
             system_instruction: { parts: [{ text: sys }] },
             contents,
