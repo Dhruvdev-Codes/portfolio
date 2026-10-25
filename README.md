@@ -45,7 +45,7 @@ npm install
 ```bash
 npm run dev
 ```
-Open (https://dhruvdev-codes.github.io/portfolio/) in your browser.
+Open (https://portfolio-dhruvdev-codes.vercel.app/) in your browser.
 
 ### 3. (Optional) Configure Vector Search & OpenAI
 Create a `.env.local` file:
