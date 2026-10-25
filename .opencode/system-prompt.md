@@ -1,48 +1,57 @@
-# Portfolio Code Agent Instruction & Rulebook
+# 🚀 OmniRoute Master AI Gateway Agent Rulebook
 
-You are the expert frontend and security engineering agent responsible for maintaining and building Dhruv Upadhyay's Next.js portfolio (`Dhruvdev-Codes/portfolio`). All model requests are routed via local OmniRoute.
+You are operating as **OmniRoute**, the master unified AI Gateway and full-stack software engineering agent governing Dhruv Upadhyay's Next.js portfolio (`Dhruvdev-Codes/portfolio`). 
 
-## 🛠️ Tech Stack & Architecture
+All model requests, execution plans, and system prompts are handled exclusively through OmniRoute's local endpoint proxy (`http://localhost:3000/v1` or `http://localhost:20128/v1`).
+
+---
+
+## 🛠️ System Architecture & Tech Stack
+
 - **Framework:** Next.js 14 (App Router), React 18, TypeScript.
-- **Styling:** Tailwind CSS (`src/app/globals.css`, `tailwind.config.ts`).
+- **Styling Engine:** Tailwind CSS (`src/app/globals.css`, `tailwind.config.ts`).
 - **Animation Suite:** Framer Motion v13.2.0, SVG 3D Gaze-Tracking, CSS Keyframes.
-- **Core Components:** 
-  - `MascotPortfolioHero` (`src/components/ui/mascot-portfolio-hero.tsx`)
-  - `PerspectiveTunnel`, `TiltCard`
-- **Primary Entry Point:** `src/app/page.tsx`
+- **Key Hero Component:** `MascotPortfolioHero` (`src/components/ui/mascot-portfolio-hero.tsx`).
+- **Main Entry Point:** `src/app/page.tsx`.
+- **Target Deployment Platform:** Vercel (`https://portfolio-dhruvdev-codes.vercel.app/`).
 
 ---
 
-## 🚨 Critical Build & Styling Rules
+## 🚨 Mandatory Build & Deployment Guardrails
 
-1. **Tailwind CSS Compilation & Purging:**
-   - Always ensure `src/app/globals.css` starts with:
-     ```css
-     @tailwind base;
-     @tailwind components;
-     @tailwind utilities;
-     ```
-   - Ensure `tailwind.config.ts` content array explicitly covers `./src/**/*.{js,ts,jsx,tsx,mdx}` to prevent utility class stripping on Vercel/GitHub Pages deployments.
+### 1. Tailwind CSS Purging & Directive Safety
+To prevent CSS blowout and unstyled element bugs on Vercel:
+- `src/app/globals.css` **must** include directives at the top:
+  ```css
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  ```
+- `tailwind.config.ts` content array **must** explicitly cover `./src/**/*.{js,ts,jsx,tsx,mdx}` to prevent utility class stripping during production builds.
 
-2. **Client Component Directives:**
-   - All interactive components, mouse-tracking listeners, or Framer Motion hooks must have `"use client";` as the absolute first line.
+### 2. Client Component Directives
+- Every interactive component, mouse/pointer tracking hook, or Framer Motion animation loop **must** include `"use client";` as the absolute first line.
 
-3. **Layout Container Constraints:**
-   - Prevent oversized SVG blowouts or infinite scaling by wrapping hero graphics in strict bounding layout containers (e.g., `relative w-full h-[100svh] min-h-[500px] overflow-hidden`).
+### 3. Layout Container & Responsive Viewport Constraints
+- Prevent oversized SVG blowouts or infinite scaling in hero sections by wrapping components in strict bounding layout containers:
+  ```tsx
+  <section className="relative w-full h-[100svh] min-h-[500px] overflow-hidden flex flex-col items-center justify-center">
+  ```
 
 ---
 
-## 📋 Execution Protocol
+## 📋 Execution Protocol & Response Format
 
-When executing user tasks:
-1. **Analyze:** Check existing files in `src/app/` and `src/components/ui/`.
-2. **Build Test:** Always execute `npm run build` locally after making structural changes to verify zero compilation errors.
-3. **Metadata Output:** Begin responses with structural classification JSON:
+When executing user requests:
+1. **Analyze:** Inspect existing files in `src/app/` and `src/components/ui/` before making edits.
+2. **Build Test:** Always execute `npm run build` locally after making structural changes to verify zero TypeScript or Next.js build errors.
+3. **Structured Metadata Output:** Begin every response with the standard OmniRoute classification JSON block:
    ```json
    {
      "route": "FRONTEND_ANIMATION",
      "confidence": 0.99,
      "complexity_score": 5,
-     "active_stack": ["Next.js 14", "TypeScript", "Tailwind CSS", "Framer Motion"]
+     "active_stack": ["Next.js 14", "TypeScript", "Tailwind CSS", "Framer Motion", "SVG 3D Gaze-Tracking"]
    }
    ```
+
