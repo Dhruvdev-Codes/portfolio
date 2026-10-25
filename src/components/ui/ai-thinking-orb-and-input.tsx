@@ -140,10 +140,13 @@ export default function MorphOrb({ onSubmit }: MorphOrbProps) {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto px-4 py-8">
+    <div className="w-full max-w-xl mx-auto px-4 py-8 flex justify-center">
       <motion.div 
+        drag
+        dragConstraints={{ left: -150, right: 150, top: -150, bottom: 150 }}
+        whileDrag={{ scale: 1.02 }}
         layout
-        className="relative bg-[#fdfbf7] border border-[#111111]/15 rounded-2xl shadow-[12px_12px_0px_rgba(17,17,17,0.1)] p-6 overflow-hidden"
+        className="relative bg-[#fdfbf7] border border-[#111111]/15 rounded-2xl shadow-[12px_12px_0px_rgba(17,17,17,0.1)] p-6 overflow-hidden cursor-grab active:cursor-grabbing w-full"
       >
         <div className="absolute right-[-20px] top-[-20px] pointer-events-none opacity-80">
           <canvas 
@@ -169,27 +172,29 @@ export default function MorphOrb({ onSubmit }: MorphOrbProps) {
                     <Sparkles className="w-5 h-5 text-[#b98158]" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-[#111111] font-mono">OmniRoute Gateway</h3>
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-[#111111] font-mono">AI AGENT</h3>
                     <p className="text-[10px] text-[#555555] font-bold">Multi-tier AI Research Intelligence</p>
                   </div>
                 </div>
 
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleRun()}
-                    placeholder={COPY.placeholder}
-                    className="flex-1 bg-[#ebebea] border border-[#111111]/10 rounded-xl px-4 py-3 text-sm text-[#111111] focus:outline-none focus:border-[#b98158] font-sans transition-colors"
-                  />
-                  <button
-                    onClick={handleRun}
-                    disabled={!query.trim()}
-                    className="bg-[#111111] text-[#fdfbf7] p-3 rounded-xl hover:bg-[#b98158] transition-colors disabled:opacity-30 cursor-pointer shadow-[3px_3px_0px_rgba(185,129,88,0.3)]"
-                  >
-                    <Send className="w-5 h-5" />
-                  </button>
+                <div className="p-[1px] bg-gradient-to-r from-[#b98158] via-[#e63946] to-[#b98158] rounded-xl shadow-sm">
+                  <div className="flex gap-2 bg-[#fdfbf7] p-1 rounded-xl">
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleRun()}
+                      placeholder={COPY.placeholder}
+                      className="flex-1 bg-[#ebebea] border border-[#111111]/10 rounded-lg px-4 py-3 text-sm text-[#111111] focus:outline-none focus:border-[#b98158] font-sans transition-colors"
+                    />
+                    <button
+                      onClick={handleRun}
+                      disabled={!query.trim()}
+                      className="bg-[#111111] text-[#fdfbf7] p-3 rounded-lg hover:bg-[#b98158] transition-colors disabled:opacity-30 cursor-pointer shadow-[2px_2px_0px_rgba(185,129,88,0.3)]"
+                    >
+                      <Send className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ) :
