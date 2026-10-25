@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import MorphOrb from "@/components/ui/ai-thinking-orb-and-input";
+
 
 /* ------------------------------------------------------------------ types */
 
@@ -526,6 +528,20 @@ export default function MascotPortfolioHero({
             <li key={s}>{s}</li>
           ))}
         </ul>
+        <div className="relative w-full flex justify-center items-center my-4 px-4 z-20">
+          <MorphOrb onSubmit={async (query) => {
+              // Direct integration with OmniRoute AI gateway endpoint
+              const res = await fetch("/api/agent", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ prompt: query }),
+              });
+              const data = await res.json();
+              return data.answer || `Analyzed: "${query}" via OmniRoute.`;
+            }}
+          />
+        </div>
+
 
         <button
           ref={charRef}

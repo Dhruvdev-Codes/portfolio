@@ -14,79 +14,80 @@ export function ProjectDetailsModal({ project, isOpen, onClose }: ProjectDetails
   if (!isOpen || !project) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl max-h-[90vh] bg-white dark:bg-[#12161f] border border-slate-200 dark:border-[#222e44] rounded-2xl shadow-2xl flex flex-col overflow-hidden font-sans text-slate-900 dark:text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#111111]/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-3xl max-h-[90vh] bg-[#fdfbf7] border border-[#111111]/20 rounded-xl shadow-[10px_10px_0px_rgba(17,17,17,0.15)] flex flex-col overflow-hidden font-mono text-[#111111]">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 bg-slate-100 dark:bg-[#161d2b] border-b border-slate-200 dark:border-[#222e44]">
+        <div className="flex items-center justify-between px-5 py-4 bg-[#ebebea] border-b border-[#111111]/15">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[11px] px-2.5 py-0.5 rounded bg-cyan-50 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 border border-cyan-500/40 font-semibold">
+            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#111111] text-[#fdfbf7] border border-[#111111] font-bold uppercase tracking-tighter">
               {project.category}
             </span>
-            <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white truncate max-w-[280px] sm:max-w-md">
+            <h3 className="font-black text-sm sm:text-base text-[#111111] truncate max-w-[280px] sm:max-w-md uppercase tracking-tight">
               {project.title}
             </h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer">
+          <button onClick={onClose} className="p-1 rounded-lg text-[#111111]/50 hover:text-[#111111] transition-colors cursor-pointer">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-5 text-xs font-sans">
+        <div className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6 text-xs font-mono">
           <div>
-            <p className="font-mono text-cyan-600 dark:text-cyan-400 font-semibold text-xs mb-1.5">{project.subtitle}</p>
-            <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-[13px]">{project.summary}</p>
+            <p className="font-bold text-[#b98158] text-[11px] uppercase tracking-wide mb-1.5">{project.subtitle}</p>
+            <p className="text-[#555555] font-sans leading-relaxed text-[13px]">{project.summary}</p>
           </div>
 
-          <div className="p-3.5 rounded-lg bg-slate-50 dark:bg-[#151c2a] border border-slate-200 dark:border-[#222e44]">
-            <h4 className="font-mono text-xs uppercase font-bold text-rose-600 dark:text-rose-400 mb-1">
+          <div className="p-4 rounded-lg bg-[#ebebea] border border-[#111111]/10">
+            <h4 className="font-bold text-[11px] uppercase text-[#111111] mb-1.5 flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#b98158]" />
               Core Engineering Problem
             </h4>
-            <p className="text-slate-700 dark:text-slate-300 leading-relaxed">{project.problem}</p>
+            <p className="text-[#555555] font-sans leading-relaxed">{project.problem}</p>
           </div>
 
           <div>
-            <h4 className="font-mono text-xs uppercase font-bold text-cyan-600 dark:text-cyan-400 mb-2">
+            <h4 className="font-bold text-[11px] uppercase text-[#b98158] mb-2 border-b border-[#111111]/10 pb-1">
               System Architecture & Pipeline
             </h4>
             <ul className="space-y-1.5">
               {project.architecture.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                  <span className="text-cyan-600 dark:text-cyan-400 font-mono font-bold">▸</span>
-                  <span>{item}</span>
+                <li key={idx} className="flex items-start gap-2 text-[#111111]">
+                  <span className="text-[#b98158] font-bold">0{idx + 1}.</span>
+                  <span className="font-sans text-[12.5px]">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="font-mono text-xs uppercase font-bold text-teal-600 dark:text-teal-400 mb-2">
+            <h4 className="font-bold text-[11px] uppercase text-[#111111] mb-2 border-b border-[#111111]/10 pb-1">
               Bottlenecks Solved
             </h4>
             <ul className="space-y-1.5">
               {project.bottlenecksSolved.map((item, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-slate-700 dark:text-slate-300">
-                  <CheckCircle2 className="w-4 h-4 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
-                  <span>{item}</span>
+                <li key={idx} className="flex items-start gap-2 text-[#555555]">
+                  <CheckCircle2 className="w-4 h-4 text-[#b98158] shrink-0 mt-0.5" />
+                  <span className="font-sans text-[12.5px]">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
             {project.metrics.map((m, idx) => (
-              <div key={idx} className="p-3 rounded-lg bg-slate-50 dark:bg-[#151c2a] border border-slate-200 dark:border-[#222e44] font-mono text-center">
-                <span className="text-[10px] text-slate-500 block truncate">{m.label}</span>
-                <span className="text-sm font-bold text-cyan-700 dark:text-cyan-300">{m.value}</span>
+              <div key={idx} className="p-3 rounded-lg bg-[#fdfbf7] border border-[#111111]/15 text-center shadow-sm">
+                <span className="text-[9px] text-[#555555] font-bold uppercase block truncate mb-1">{m.label}</span>
+                <span className="text-sm font-black text-[#111111] tracking-tighter">{m.value}</span>
               </div>
             ))}
           </div>
 
           <div>
-            <h4 className="font-mono text-[11px] uppercase font-bold text-slate-500 mb-1.5">Technology Stack</h4>
-            <div className="flex flex-wrap gap-1.5 font-mono text-[11px]">
+            <h4 className="text-[10px] uppercase font-black text-[#555555] mb-2 tracking-widest">Technology Stack</h4>
+            <div className="flex flex-wrap gap-1.5">
               {project.techStack.map((tech) => (
-                <span key={tech} className="px-2.5 py-1 rounded bg-slate-100 dark:bg-[#182132] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#222e44]">
+                <span key={tech} className="px-2.5 py-1 rounded bg-[#ebebea] text-[#111111] border border-[#111111]/10 text-[10px] font-bold">
                   {tech}
                 </span>
               ))}
@@ -95,21 +96,24 @@ export function ProjectDetailsModal({ project, isOpen, onClose }: ProjectDetails
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 bg-slate-100 dark:bg-[#161d2b] border-t border-slate-200 dark:border-[#222e44] flex items-center justify-between font-mono text-xs">
+        <div className="px-5 py-4 bg-[#ebebea] border-t border-[#111111]/15 flex items-center justify-between font-mono text-xs">
           {project.githubUrl ? (
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-cyan-600 dark:text-cyan-400 hover:underline"
+              className="flex items-center gap-1.5 text-[#111111] hover:text-[#b98158] transition-colors font-bold group"
             >
               <GithubIcon className="w-4 h-4" />
-              <span>Source Repository</span>
+              <span className="border-b border-[#111111] group-hover:border-[#b98158]">Source Repository</span>
             </a>
           ) : (
-            <span className="text-slate-500">Internal NSUT Project</span>
+            <span className="text-[#555555] font-bold italic">Internal NSUT Project</span>
           )}
-          <button onClick={onClose} className="px-3.5 py-1.5 rounded-lg bg-slate-200 dark:bg-[#1f2b40] font-semibold text-slate-800 dark:text-slate-200 cursor-pointer">
+          <button 
+            onClick={onClose} 
+            className="px-5 py-2 rounded-lg bg-[#111111] hover:bg-[#b98158] text-[#fdfbf7] font-bold transition-colors cursor-pointer shadow-[3px_3px_0px_rgba(185,129,88,0.4)]"
+          >
             Close
           </button>
         </div>

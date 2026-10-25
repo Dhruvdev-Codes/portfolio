@@ -87,10 +87,7 @@ export function NetworkBackground() {
     const init = () => {
       const isMobile = width < 768;
       const count = isMobile ? 28 : 55;
-      const isDark = document.documentElement.classList.contains("dark");
-      const darkColors = ["#06b6d4", "#14b8a6", "#38bdf8", "#22d3ee"];
-      const lightColors = ["#0284c7", "#0d9488", "#0369a1", "#0f766e"];
-      const activeColors = isDark ? darkColors : lightColors;
+      const editorialColors = ["#b98158", "#111111", "#555555", "#8c5830"];
 
       nodes = [];
       for (let i = 0; i < count; i++) {
@@ -100,7 +97,7 @@ export function NetworkBackground() {
           vx: (Math.random() - 0.5) * (isMobile ? 0.35 : 0.5),
           vy: (Math.random() - 0.5) * (isMobile ? 0.35 : 0.5),
           radius: Math.random() * 1.5 + (isMobile ? 1.2 : 1),
-          color: activeColors[Math.floor(Math.random() * activeColors.length)],
+          color: editorialColors[Math.floor(Math.random() * editorialColors.length)],
           alpha: Math.random() * 0.4 + 0.3,
         });
       }
@@ -162,8 +159,8 @@ export function NetworkBackground() {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(pointer.x, pointer.y);
-            ctx.strokeStyle = isDark ? "#06b6d4" : "#0284c7";
-            ctx.globalAlpha = (1 - md / 150) * (isDark ? 0.35 : 0.28);
+            ctx.strokeStyle = "#b98158";
+            ctx.globalAlpha = (1 - md / 150) * 0.25;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -188,11 +185,11 @@ export function NetworkBackground() {
   }, [resolvedTheme]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-slate-50 dark:bg-[#12161f] transition-colors duration-200">
-      {/* Ambient gradient glowing orbs with teal & cyan accents */}
-      <div className="absolute top-[-10%] left-[-10%] w-[320px] sm:w-[520px] h-[320px] sm:h-[520px] rounded-full bg-teal-500/5 dark:bg-teal-500/10 blur-[100px] sm:blur-[140px] animate-pulse pointer-events-none" />
-      <div className="absolute top-[35%] right-[-5%] w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] rounded-full bg-cyan-500/8 dark:bg-cyan-500/12 blur-[120px] sm:blur-[160px] animate-pulse [animation-duration:8s] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[10%] w-[380px] sm:w-[600px] h-[380px] sm:h-[600px] rounded-full bg-sky-600/6 dark:bg-sky-600/10 blur-[110px] sm:blur-[150px] animate-pulse [animation-duration:10s] pointer-events-none" />
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-[#ebebea] transition-colors duration-200">
+      {/* Ambient gradient glowing orbs with sienna & ink editorial accents */}
+      <div className="absolute top-[-10%] left-[-10%] w-[320px] sm:w-[520px] h-[320px] sm:h-[520px] rounded-full bg-[#b98158]/8 blur-[100px] sm:blur-[140px] animate-pulse pointer-events-none" />
+      <div className="absolute top-[35%] right-[-5%] w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] rounded-full bg-[#111111]/6 blur-[120px] sm:blur-[160px] animate-pulse [animation-duration:8s] pointer-events-none" />
+      <div className="absolute bottom-[-10%] left-[10%] w-[380px] sm:w-[600px] h-[380px] sm:h-[600px] rounded-full bg-[#b98158]/5 blur-[110px] sm:blur-[150px] animate-pulse [animation-duration:10s] pointer-events-none" />
 
       {/* Grid Pattern */}
       <div

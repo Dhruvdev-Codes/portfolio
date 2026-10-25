@@ -48,28 +48,28 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
       />
 
       <div className="fixed bottom-3 left-3 right-3 sm:left-auto sm:right-6 sm:bottom-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-200">
-        <div className="w-full sm:w-[460px] h-[78vh] sm:h-[540px] max-h-[620px] bg-white/98 dark:bg-[#12161f]/98 backdrop-blur-xl border border-slate-200 dark:border-[#222e44] rounded-xl flex flex-col shadow-2xl overflow-hidden font-mono">
+        <div className="w-full sm:w-[460px] h-[78vh] sm:h-[540px] max-h-[620px] bg-[#fdfbf7] border border-[#111111]/20 rounded-xl flex flex-col shadow-[10px_10px_0px_rgba(17,17,17,0.15)] overflow-hidden font-mono">
           {/* Terminal Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-slate-100 dark:bg-[#161d2b] border-b border-slate-200 dark:border-[#222e44]">
-            <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
-              <Terminal className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-              <span className="font-semibold text-slate-800 dark:text-slate-200">terminal@feat: add Gemini 3.x/2.5 flash model cascade support</span>
-              <span className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] rounded bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 font-sans font-medium">
+          <div className="flex items-center justify-between px-4 py-3.5 bg-[#ebebea] border-b border-[#111111]/15">
+            <div className="flex items-center gap-2 text-xs text-[#111111]">
+              <Terminal className="w-4 h-4 text-[#b98158]" />
+              <span className="font-black text-xs uppercase tracking-tight truncate max-w-[240px] sm:max-w-[280px]">terminal@feat: add Gemini 3.x/2.5 flash model cascade support</span>
+              <span className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] rounded bg-[#111111] text-[#fdfbf7] font-mono font-bold">
                 dev-mtech-router
               </span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setMessages([])}
-                className="p-1.5 rounded text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-[#1f2a3e] cursor-pointer transition-colors"
+                className="p-1.5 rounded text-[#111111]/60 hover:text-[#111111] hover:bg-[#ebebea] cursor-pointer transition-colors"
                 title="Reset session"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-[#1f2a3e] cursor-pointer transition-colors"
+                className="p-1.5 rounded text-[#111111]/60 hover:text-[#111111] hover:bg-[#ebebea] cursor-pointer transition-colors"
                 title="Close terminal"
               >
                 <X className="w-4 h-4" />
@@ -82,25 +82,25 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
           <div className="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
             {messages.length === 0 && (
               <div className="space-y-4 py-2">
-                <div className="p-3 rounded-lg bg-slate-50 dark:bg-[#161d2b] border border-slate-200 dark:border-[#222e44] text-slate-700 dark:text-slate-300 space-y-1.5">
-                  <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-semibold text-[11px]">
+                <div className="p-3.5 rounded-lg bg-[#ebebea] border border-[#111111]/15 text-[#111111] space-y-1.5 shadow-sm">
+                  <div className="flex items-center gap-2 text-[#b98158] font-black text-xs uppercase tracking-wide">
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>Dhruv Upadhyay AI Research Assistant</span>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed font-sans">
+                  <p className="text-[#555555] text-[11.5px] leading-relaxed font-sans">
                     Query M.Tech dissertation papers, systems architecture, or AWS credentials at NSUT Delhi.
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-[10px] uppercase font-bold mb-2">Suggested Queries:</p>
+                  <p className="text-[#555555] text-[10px] uppercase font-black mb-2 tracking-widest">Suggested Queries:</p>
                   <div className="space-y-1.5">
                     {promptSuggestions.map((prompt, idx) => (
                       <button
                         key={idx}
                         onClick={() => sendMessage(prompt)}
                         disabled={isLoading}
-                        className="w-full text-left p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 dark:bg-[#161d2b] dark:hover:bg-[#1d2738] text-slate-700 dark:text-slate-300 hover:text-cyan-700 dark:hover:text-cyan-300 border border-slate-200 dark:border-[#222e44] text-[11px] cursor-pointer transition-colors disabled:opacity-50"
+                        className="w-full text-left p-2.5 rounded-lg bg-[#ebebea] hover:bg-[#111111] hover:text-[#fdfbf7] text-[#111111] border border-[#111111]/15 text-[11px] font-bold cursor-pointer transition-all disabled:opacity-50 shadow-sm"
                       >
                         ▸ {prompt}
                       </button>
@@ -113,23 +113,23 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={`p-3 rounded-lg ${
+                className={`p-3.5 rounded-lg shadow-sm ${
                   m.role === "user"
-                    ? "bg-cyan-50 dark:bg-[#182131] text-slate-900 dark:text-slate-100 ml-4 sm:ml-6 border border-cyan-300 dark:border-cyan-500/40"
-                    : "bg-slate-50 dark:bg-[#141a26] border border-slate-200 dark:border-[#222e44] text-slate-800 dark:text-slate-200 mr-2 sm:mr-4"
+                    ? "bg-[#ebebea] text-[#111111] ml-4 sm:ml-6 border border-[#111111]/20 font-bold"
+                    : "bg-[#fdfbf7] border border-[#111111]/15 text-[#111111] mr-2 sm:mr-4 font-sans"
                 }`}
               >
-                <div className="text-[10px] text-slate-500 dark:text-slate-400 mb-1 flex items-center gap-1.5 font-bold">
-                  {m.role === "user" ? <User className="w-3 h-3 text-cyan-600 dark:text-cyan-400" /> : <Bot className="w-3 h-3 text-teal-600 dark:text-teal-400" />}
+                <div className="text-[10px] text-[#555555] mb-1 flex items-center gap-1.5 font-bold uppercase font-mono">
+                  {m.role === "user" ? <User className="w-3 h-3 text-[#b98158]" /> : <Bot className="w-3 h-3 text-[#111111]" />}
                   <span>{m.role === "user" ? "You" : "Dhruv AI Agent"}</span>
                 </div>
-                <div className="whitespace-pre-wrap leading-relaxed text-[11.5px] font-sans">{m.content}</div>
+                <div className="whitespace-pre-wrap leading-relaxed text-[12px]">{m.content}</div>
               </div>
             ))}
 
             {isLoading && (
-              <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400 animate-pulse text-xs py-1 font-mono">
-                <span className="w-2 h-2 rounded-full bg-cyan-600 dark:bg-cyan-400" />
+              <div className="flex items-center gap-2 text-[#b98158] animate-pulse text-xs py-1 font-mono font-bold">
+                <span className="w-2 h-2 rounded-full bg-[#b98158]" />
                 <span>Synthesizing response stream...</span>
               </div>
             )}
@@ -137,18 +137,18 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
           </div>
 
           {/* Input Form */}
-          <form onSubmit={handleSubmit} className="p-3 bg-slate-100 dark:bg-[#161d2b] border-t border-slate-200 dark:border-[#222e44] flex gap-2">
+          <form onSubmit={handleSubmit} className="p-3 bg-[#ebebea] border-t border-[#111111]/15 flex gap-2">
             <input
               ref={inputRef}
               value={input}
               onChange={handleInputChange}
               placeholder="Ask about AI, systems, AWS, or research..."
-              className="flex-1 bg-white dark:bg-[#111722] border border-slate-200 dark:border-[#222e44] rounded-lg px-3 py-2.5 text-xs text-slate-900 dark:text-slate-200 focus:outline-none focus:border-cyan-500 font-sans"
+              className="flex-1 bg-[#fdfbf7] border border-[#111111]/20 rounded-lg px-3.5 py-2.5 text-xs text-[#111111] focus:outline-none focus:border-[#b98158] font-sans shadow-inner"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="bg-gradient-to-r from-cyan-600 to-teal-600 dark:from-cyan-500 dark:to-teal-500 hover:from-cyan-500 hover:to-teal-500 disabled:opacity-50 text-white dark:text-slate-950 font-bold px-3.5 py-2.5 rounded-lg text-xs flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+              className="bg-[#111111] hover:bg-[#b98158] disabled:opacity-50 text-[#fdfbf7] font-bold px-4 py-2.5 rounded-lg text-xs flex items-center justify-center transition-colors cursor-pointer shadow-[2px_2px_0px_rgba(185,129,88,0.4)]"
             >
               <Send className="w-3.5 h-3.5" />
             </button>

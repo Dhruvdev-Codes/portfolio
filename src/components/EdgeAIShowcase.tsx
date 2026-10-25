@@ -88,15 +88,15 @@ export function EdgeAIShowcase() {
   const hasDegradingHop = links.some((l) => l.isDegrading);
 
   return (
-    <section id="simulations" className="py-16 md:py-24 border-t border-slate-200 dark:border-[#1e2738] relative">
+    <section id="simulations" className="py-16 md:py-24 border-t border-[#111111]/15 relative bg-[#ebebea]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
           <div>
-            <div className="flex items-center gap-2 font-mono text-xs text-cyan-600 dark:text-cyan-400 mb-2">
+            <div className="flex items-center gap-2 font-mono text-xs text-[#b98158] mb-2 font-bold">
               <Cpu className="w-4 h-4" />
               <span>03 // CLIENT-SIDE SIMULATION LAB</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#111111] tracking-tight">
               Dynamic Signal Smoothing & Ad-Hoc Mesh Simulation
             </h2>
           </div>
@@ -106,8 +106,8 @@ export function EdgeAIShowcase() {
               onClick={() => setActiveTab("signal")}
               className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
                 activeTab === "signal"
-                  ? "bg-cyan-50 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 border-cyan-500/60 font-bold"
-                  : "bg-white dark:bg-[#151c2a] text-slate-600 dark:text-slate-400 border-slate-200 dark:border-[#222e44]"
+                  ? "bg-[#111111] text-[#ebebea] border-[#111111] font-bold shadow-sm"
+                  : "bg-[#fdfbf7] text-[#111111] border-[#111111]/20 hover:border-[#111111]"
               }`}
             >
               Signal Smoothing (EMA)
@@ -116,8 +116,8 @@ export function EdgeAIShowcase() {
               onClick={() => setActiveTab("topology")}
               className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
                 activeTab === "topology"
-                  ? "bg-cyan-50 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 border-cyan-500/60 font-bold"
-                  : "bg-white dark:bg-[#151c2a] text-slate-600 dark:text-slate-400 border-slate-200 dark:border-[#222e44]"
+                  ? "bg-[#111111] text-[#ebebea] border-[#111111] font-bold shadow-sm"
+                  : "bg-[#fdfbf7] text-[#111111] border-[#111111]/20 hover:border-[#111111]"
               }`}
             >
               2D MANET Mesh Simulator
@@ -125,7 +125,7 @@ export function EdgeAIShowcase() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#151c2a] border border-slate-200 dark:border-[#222e44] rounded-xl p-6 shadow-md dark:shadow-xl">
+        <div className="bg-[#fdfbf7] border border-[#111111]/20 rounded-xl p-6 shadow-[5px_5px_0px_rgba(17,17,17,0.15)] text-[#111111]">
           {activeTab === "signal" ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-6 border-b border-slate-200 dark:border-[#222e44] font-mono text-xs">
