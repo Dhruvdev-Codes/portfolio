@@ -53,7 +53,7 @@ export function AIChatDrawer({ isOpen, onClose }: AIChatDrawerProps) {
           <div className="flex items-center justify-between px-4 py-3 bg-slate-100 dark:bg-[#161d2b] border-b border-slate-200 dark:border-[#222e44]">
             <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
               <Terminal className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-              <span className="font-semibold text-slate-800 dark:text-slate-200">terminal@dhruv-mtech:~$</span>
+              <span className="font-semibold text-slate-800 dark:text-slate-200">terminal@feat: add Gemini 3.x/2.5 flash model cascade support</span>
               <span className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] rounded bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 font-sans font-medium">
                 dev-mtech-router
               </span>
