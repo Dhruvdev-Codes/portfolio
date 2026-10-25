@@ -2,277 +2,166 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, RefreshCcw, Sparkles, Search, Brain, Cpu, MessageSquare, CheckCircle2 } from "lucide-react";
 
-type Phase = "idle" | "thinking" | "searching" | "analyzing" | "composing" | "done";
-
-interface MorphOrbProps {
-  onSubmit: (query: string) => Promise<string>;
+export interface MorphOrbProps {
+  onSubmit?: (text: string) => Promise<string> | string;
 }
 
-const COPY = {
-  placeholder: "Ask Dhruv's AI Agent…",
-  labels: {
-    thinking: "Thinking",
-    searching: "Searching",
-    analyzing: "Analyzing",
-    composing: "Composing",
-  },
-  done: "Done",
-  answerTitle: "Answer",
-  reset: "New question",
-  send: "Send",
-};
-
-class Dot {
-  x: number = 0;
-  y: number = 0;
-  z: number = 0;
-  px: number = 0;
-  py: number = 0;
-  size: number = 2;
-  color: string = "#b98158";
-  
-  constructor(index: number, total: number) {
-    const phi = Math.acos(-1 + (2 * index) / total);
-    const theta = Math.sqrt(total * Math.PI) * phi;
-    this.x = Math.cos(theta) * Math.sin(phi);
-    this.y = Math.sin(theta) * Math.sin(phi);
-    this.z = Math.cos(phi);
-  }
-
-  project(width: number, height: number, rotationX: number, rotationY: number, scale: number) {
-    const cosX = Math.cos(rotationX);
-    const sinX = Math.sin(rotationX);
-    const cosY = Math.cos(rotationY);
-    const sinY = Math.sin(rotationY);
-
-    const y1 = this.y * cosX - this.z * sinX;
-    const z1 = this.z * cosX + this.y * sinX;
-    const x2 = this.x * cosY - z1 * sinY;
-    const z2 = z1 * cosY + this.x * sinY;
-
-    const p = 400 / (400 + z2);
-    this.px = width / 2 + x2 * p * scale;
-    this.py = height / 2 + y1 * p * scale;
-    this.size = (z2 + 1.5) * 1.2;
-  }
-
-  draw(ctx: CanvasRenderingContext2D, opacity: number) {
-    ctx.beginPath();
-    ctx.arc(this.px, this.py, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(185, 129, 88, ${opacity * (this.size / 3)})`;
-    ctx.fill();
-  }
+interface Message {
+  id: string;
+  sender: "user" | "agent";
+  text: string;
 }
+
 export default function MorphOrb({ onSubmit }: MorphOrbProps) {
-  const [phase, setPhase] = useState<Phase>("idle");
-  const [query, setQuery] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [error, setError] = useState("");
-  
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rotation = useRef({ x: 0, y: 0 });
-  const frameId = useRef<number>();
-  const dots = useRef<Dot[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "welcome",
+      sender: "agent",
+      text: "Hi! Glad you stopped by. Feel free to ask me general questions about computer science, AI, security, or anything else you'd like to explore.",
+    },
+  ]);
+  const [inputVal, setInputVal] = useState("");
+  const [isThinking, setIsThinking] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    dots.current = Array.from({ length: 120 }, (_, i) => new Dot(i, 120));
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const speed = phase === "idle" ? 0.005 : phase === "done" ? 0.002 : 0.04;
-      const scale = phase === "idle" ? 40 : phase === "done" ? 30 : 50;
-      const opacity = phase === "idle" ? 0.4 : 1;
-
-      rotation.current.x += speed;
-      rotation.current.y += speed * 0.8;
-
-      dots.current.forEach(dot => {
-        dot.project(canvas.width, canvas.height, rotation.current.x, rotation.current.y, scale);
-        dot.draw(ctx, opacity);
-      });
-
-      frameId.current = requestAnimationFrame(render);
-    };
-
-    frameId.current = requestAnimationFrame(render);
-    return () => {
-      if (frameId.current) cancelAnimationFrame(frameId.current);
-    };
-  }, [phase]);
-
-  const handleRun = async () => {
-    if (!query.trim() || phase !== "idle") return;
-    
-    setError("");
-    setPhase("thinking");
-    
-    const steps: Phase[] = ["searching", "analyzing", "composing"];
-    for (const step of steps) {
-      await new Promise(r => setTimeout(r, 800 + Math.random() * 600));
-      setPhase(step);
+    if (isOpen) {
+      chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
+  }, [messages, isOpen]);
+
+  const handleSend = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const query = inputVal.trim();
+    if (!query || isThinking) return;
+
+    const userMsg: Message = { id: Date.now().toString(), sender: "user", text: query };
+    setMessages((prev) => [...prev, userMsg]);
+    setInputVal("");
+    setIsThinking(true);
 
     try {
-      const res = await onSubmit(query);
-      setAnswer(res);
-      setPhase("done");
+      const handler = onSubmit || (async (q) => `I have processed your request: "${q}".`);
+      const responseText = await handler(query);
+      const agentMsg: Message = {
+        id: (Date.now() + 1).toString(),
+        sender: "agent",
+        text: responseText,
+      };
+      setMessages((prev) => [...prev, agentMsg]);
     } catch {
-      setError("Routing error. Please try again.");
-      setPhase("idle");
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          sender: "agent",
+          text: "Sorry, I encountered an issue processing your request. Please try again.",
+        },
+      ]);
+    } finally {
+      setIsThinking(false);
     }
   };
 
-  const handleReset = () => {
-    setPhase("idle");
-    setQuery("");
-    setAnswer("");
-    setError("");
-  };
 
   return (
-    <div className="w-full max-w-xl mx-auto px-4 py-8 flex justify-center">
-      <motion.div 
-        drag
-        dragConstraints={{ left: -150, right: 150, top: -150, bottom: 150 }}
-        whileDrag={{ scale: 1.02 }}
-        layout
-        className="relative bg-[#fdfbf7] border border-[#111111]/15 rounded-2xl shadow-[12px_12px_0px_rgba(17,17,17,0.1)] p-6 overflow-hidden cursor-grab active:cursor-grabbing w-full"
-      >
-        <div className="absolute right-[-20px] top-[-20px] pointer-events-none opacity-80">
-          <canvas 
-            ref={canvasRef} 
-            width={160} 
-            height={160} 
-            className="w-40 h-40"
-          />
-        </div>
+    <>
+      {!isOpen && (
+        <motion.button
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#111111] text-[#ebebea] shadow-[4px_4px_0px_#b98158] hover:shadow-[6px_6px_0px_#b98158] transition-all cursor-pointer border border-[#111111]/20 font-mono text-xs uppercase tracking-wider"
+        >
+          <span className="w-2 h-2 rounded-full bg-[#b98158] animate-ping" />
+          <svg className="w-4 h-4 text-[#b98158]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+          </svg>
+          <span>AI Agent</span>
+        </motion.button>
+      )}
 
-        <div className="relative z-10">
-          <AnimatePresence mode="wait">
-            {phase === "idle" ? (
-              <motion.div
-                key="idle"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="space-y-4"
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            drag
+            dragConstraints={{ left: -500, right: 500, top: -300, bottom: 400 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[90vw] max-w-[480px] h-[520px] bg-[#fdfbf7] border border-[#111111]/20 rounded-2xl shadow-[10px_10px_0px_rgba(17,17,17,0.15)] flex flex-col overflow-hidden font-sans cursor-grab active:cursor-grabbing"
+          >
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#111111]/10 bg-[#ebebea]">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#b98158] animate-pulse" />
+                <span className="font-mono text-xs font-bold text-[#111111] uppercase tracking-wider">
+                  AI Agent
+                </span>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-7 h-7 rounded-full bg-[#111111]/5 hover:bg-[#111111] text-[#111111] hover:text-[#ebebea] transition-colors flex items-center justify-center font-bold text-sm cursor-pointer"
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="bg-[#b98158]/10 p-2 rounded-lg">
-                    <Sparkles className="w-5 h-5 text-[#b98158]" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold uppercase tracking-widest text-[#111111] font-mono">AI AGENT</h3>
-                    <p className="text-[10px] text-[#555555] font-bold">Multi-tier AI Research Intelligence</p>
-                  </div>
-                </div>
+                ✕
+              </button>
+            </div>
 
-                <div className="p-[1px] bg-gradient-to-r from-[#b98158] via-[#e63946] to-[#b98158] rounded-xl shadow-sm">
-                  <div className="flex gap-2 bg-[#fdfbf7] p-1 rounded-xl">
-                    <input
-                      type="text"
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleRun()}
-                      placeholder={COPY.placeholder}
-                      className="flex-1 bg-[#ebebea] border border-[#111111]/10 rounded-lg px-4 py-3 text-sm text-[#111111] focus:outline-none focus:border-[#b98158] font-sans transition-colors"
-                    />
-                    <button
-                      onClick={handleRun}
-                      disabled={!query.trim()}
-                      className="bg-[#111111] text-[#fdfbf7] p-3 rounded-lg hover:bg-[#b98158] transition-colors disabled:opacity-30 cursor-pointer shadow-[2px_2px_0px_rgba(185,129,88,0.3)]"
-                    >
-                      <Send className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ) :
-              phase === "done" ? (
-              <motion.div
-                key="done"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="space-y-4"
-              >
-                <div className="flex justify-between items-center border-b border-[#111111]/10 pb-3">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#b98158]" />
-                    <span className="text-[10px] font-bold uppercase font-mono text-[#555555]">Response Synthesized</span>
-                  </div>
-                  <button 
-                    onClick={handleReset}
-                    className="text-[10px] font-bold uppercase font-mono text-[#b98158] hover:underline flex items-center gap-1"
+            <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-[#fdfbf7]">
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[82%] px-4 py-2.5 rounded-2xl text-xs leading-relaxed ${
+                      msg.sender === "user"
+                        ? "bg-[#111111] text-[#ebebea] rounded-br-none"
+                        : "bg-[#ebebea] text-[#111111] border border-[#111111]/10 rounded-bl-none"
+                    }`}
                   >
-                    <RefreshCcw className="w-3 h-3" /> {COPY.reset}
-                  </button>
+                    {msg.text}
+                  </div>
                 </div>
-                
-                <div className="bg-[#ebebea] rounded-xl p-4 border border-[#111111]/5 max-h-[200px] overflow-y-auto">
-                  <p className="text-sm leading-relaxed text-[#111111] whitespace-pre-wrap">{answer}</p>
+              ))}
+
+              {isThinking && (
+                <div className="flex justify-start">
+                  <div className="bg-[#ebebea] text-[#111111] border border-[#111111]/10 px-4 py-2.5 rounded-2xl rounded-bl-none text-xs flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#b98158] animate-ping" />
+                    <span className="font-mono text-[11px] text-neutral-500">Thinking…</span>
+                  </div>
                 </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="loading"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="py-6 flex flex-col items-center justify-center space-y-6"
+              )}
+              <div ref={chatEndRef} />
+            </div>
+
+            <form onSubmit={handleSend} className="p-3 border-t border-[#111111]/10 bg-[#ebebea] flex items-center gap-2">
+              <input
+                type="text"
+                value={inputVal}
+                onChange={(e) => setInputVal(e.target.value)}
+                placeholder="Ask anything…"
+                disabled={isThinking}
+                className="flex-1 bg-[#fdfbf7] border border-[#111111]/20 rounded-xl px-4 py-2.5 text-xs text-[#111111] placeholder:text-neutral-400 outline-none focus:border-[#111111] transition-all disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={!inputVal.trim() || isThinking}
+                className="w-9 h-9 rounded-xl bg-[#111111] text-[#ebebea] flex items-center justify-center hover:bg-[#b98158] transition-colors disabled:opacity-40 disabled:hover:bg-[#111111] shrink-0 cursor-pointer"
               >
-                <div className="relative">
-                  <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#b98158]/30 animate-[spin_8s_linear_infinite]" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    {phase === "thinking" && <Brain className="w-6 h-6 text-[#b98158] animate-pulse" />}
-                    {phase === "searching" && <Search className="w-6 h-6 text-[#b98158] animate-pulse" />}
-                    {phase === "analyzing" && <Cpu className="w-6 h-6 text-[#b98158] animate-pulse" />}
-                    {phase === "composing" && <MessageSquare className="w-6 h-6 text-[#b98158] animate-pulse" />}
-                  </div>
-                </div>
-                
-                <div className="text-center">
-                  <div className="text-lg font-bold font-mono text-[#111111] flex items-center justify-center gap-2">
-                    <span className="animate-pulse">{COPY.labels[phase as keyof typeof COPY.labels]}</span>
-                    <span className="flex gap-1">
-                      <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
-                      <span className="animate-bounce" style={{ animationDelay: "200ms" }}>.</span>
-                      <span className="animate-bounce" style={{ animationDelay: "400ms" }}>.</span>
-                    </span>
-                  </div>
-                  <p className="text-[10px] uppercase font-bold text-[#555555] tracking-tighter mt-1 opacity-60">OmniRoute Processing...</p>
-                </div>
-
-                <div className="w-full max-w-[200px] bg-[#111111]/5 h-1 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: "0%" }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 4, ease: "linear" }}
-                    className="h-full bg-[#b98158]"
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {error && (
-          <p className="mt-4 text-xs font-bold text-red-600 bg-red-50 p-2 rounded border border-red-100 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
-            {error}
-          </p>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+              </button>
+            </form>
+          </motion.div>
         )}
-      </motion.div>
-    </div>
+      </AnimatePresence>
+    </>
   );
 }
 
