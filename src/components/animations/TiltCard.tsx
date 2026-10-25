@@ -27,14 +27,16 @@ export function TiltCard({
 
   const glareX = useSpring(useTransform(x, [0, 1], [0, 100]), springConfig);
   const glareY = useSpring(useTransform(y, [0, 1], [0, 100]), springConfig);
+  const glareBackground = useTransform(
+    [glareX, glareY],
+    ([latestX, latestY]) =>
+      `radial-gradient(circle at ${latestX}% ${latestY}%, rgba(255,255,255,0.15) 0%, transparent 50%)`
+  );
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
 
     const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
     const relX = (e.clientX - rect.left) / rect.width;
     const relY = (e.clientY - rect.top) / rect.height;
 
@@ -64,11 +66,7 @@ export function TiltCard({
         <motion.div
           className="absolute inset-0 pointer-events-none rounded-xl overflow-hidden"
           style={{
-            background: useTransform(
-              [glareX, glareY],
-              ([latestX, latestY]) =>
-                `radial-gradient(circle at ${latestX}% ${latestY}%, rgba(255,255,255,0.15) 0%, transparent 50%)`
-            ),
+            background: glareBackground,
           }}
         />
       )}
