@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
+import MascotPortfolioHero from "@/components/ui/mascot-portfolio-hero";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { ResearchSection } from "@/components/ResearchSection";
 import { EdgeAIShowcase } from "@/components/EdgeAIShowcase";
@@ -32,9 +32,31 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="relative z-10">
-        <Hero
-          onOpenTerminal={() => setIsTerminalOpen(true)}
-          onOpenResume={() => setIsResumeOpen(true)}
+        <MascotPortfolioHero
+          height="100svh"
+          index="08/01"
+          discipline="Systems & Security"
+          tagline="Make it secure"
+          collection={["Selected", "Works"]}
+          reel={["M.Tech Thesis @ 2026", "Security Engineering"]}
+          year="2026"
+          initials="DU"
+          badge="Hire me"
+          line2="Portfolio"
+          line3="Security"
+          word="Phish"
+          verticalTag="Guard"
+          bracketed="S"
+          seekingLabel="Seeking*"
+          seeking="Full-Stack / Sec"
+          services={["Security Engineering", "Full-Stack Dev", "Malware Sandbox", "AI Threat XAI"]}
+          skin="#f7cfb0"
+          beanie="#111827"
+          shirt="#18181a"
+          tag="#b98158"
+          accent="#06b6d4"
+          paper="#ebebea"
+          ink="#111111"
         />
         <ProjectsSection />
         <ResearchSection />
@@ -78,6 +100,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 
