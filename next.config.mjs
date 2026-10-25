@@ -9,15 +9,35 @@ const basePath =
     : (isProd ? defaultBasePath : "");
 
 const nextConfig = {
+  // Static export for GitHub Pages
   output: "export",
+  
+  // Image optimization disabled for static export
   images: {
     unoptimized: true,
   },
+  
+  // Base path configuration
   basePath: basePath,
   assetPrefix: basePath ? `${basePath}/` : undefined,
   trailingSlash: true,
+  
+  // Production optimizations
+  reactStrictMode: true,
+  swcMinify: true,
+  
+  // Compiler options for better performance
+  compiler: {
+    removeConsole: isProd ? { exclude: ["error", "warn"] } : false,
+  },
+  
+  // Vercel analytics and Web Vitals
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion"],
+  },
 };
 
 export default nextConfig;
+
 
 

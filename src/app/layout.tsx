@@ -18,6 +18,11 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
+    { media: "(prefers-color-scheme: dark)", color: "#12161f" },
+  ],
 };
 
 export const metadata: Metadata = {
@@ -38,11 +43,24 @@ export const metadata: Metadata = {
     "RAG Assistant",
   ],
   authors: [{ name: "Dhruv Upadhyay" }],
+  creator: "Dhruv Upadhyay",
+  publisher: "Dhruv Upadhyay",
   openGraph: {
     title: "Dhruv Upadhyay | M.Tech CSE Scholar | NSUT Delhi",
     description:
       "Interactive Technical Portfolio & RAG Assistant for Network Security & Distributed Systems Research.",
     type: "website",
+    siteName: "Dhruv Upadhyay Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dhruv Upadhyay | M.Tech CSE Scholar",
+    description:
+      "Interactive Technical Portfolio & RAG Assistant for Network Security & Distributed Systems Research.",
+  },
+  robots: "index, follow",
+  alternates: {
+    canonical: "https://dhruvdev-codes.github.io/portfolio/",
   },
 };
 
