@@ -13,23 +13,13 @@ interface NavbarProps {
 
 export function Navbar({ onOpenTerminal, onOpenResume }: NavbarProps) {
   const [latency, setLatency] = useState(22);
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setLatency(Math.floor(16 + Math.random() * 10));
     }, 4000);
-
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   const navLinks = [
@@ -43,13 +33,7 @@ export function Navbar({ onOpenTerminal, onOpenResume }: NavbarProps) {
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-200 ${
-        scrolled || mobileMenuOpen
-          ? "bg-[#ebebea]/95 backdrop-blur-md border-b border-[#111111]/15 shadow-sm"
-          : "bg-transparent border-b border-transparent"
-      }`}
-    >
+    <header className="sticky top-0 left-0 w-full z-50 bg-[#ebebea] border-b border-[#111111]/15 px-6 py-3 flex items-center justify-between shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo / Scholar Identity */}
         <a href="#" className="flex items-center gap-3 group">
