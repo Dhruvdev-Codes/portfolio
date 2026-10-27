@@ -18,6 +18,11 @@ import { Footer } from "@/components/Footer";
 export default function Home() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const [showSections, setShowSections] = useState(false);
+
+  const handleNavigate = () => {
+    setShowSections(true);
+  };
 
   return (
     <div className="relative min-h-screen bg-[#ebebea] text-[#111111] selection:bg-[#b98158]/30 selection:text-[#111111] antialiased overflow-x-hidden transition-colors duration-200 font-sans">
@@ -28,6 +33,7 @@ export default function Home() {
       <Navbar
         onOpenTerminal={() => setIsTerminalOpen(true)}
         onOpenResume={() => setIsResumeOpen(true)}
+        onNavigate={handleNavigate}
       />
 
       {/* Main Content */}
@@ -57,13 +63,18 @@ export default function Home() {
           accent="#06b6d4"
           paper="#ebebea"
           ink="#111111"
+          onExploreClick={handleNavigate}
         />
-        <ProjectsSection />
-        <ResearchSection />
-        <EdgeAIShowcase />
-        <SkillsMatrix />
-        <CertificationsSection />
-        <ContactSection />
+        {showSections && (
+          <>
+            <ProjectsSection />
+            <ResearchSection />
+            <EdgeAIShowcase />
+            <SkillsMatrix />
+            <CertificationsSection />
+            <ContactSection />
+          </>
+        )}
       </main>
 
       {/* Footer */}

@@ -35,6 +35,7 @@ export type MascotPortfolioHeroProps = {
   paper?: string
   ink?: string
   className?: string
+  onExploreClick?: () => void
 }
 
 const SANS_STACK = '"Inter","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif'
@@ -259,6 +260,7 @@ export default function MascotPortfolioHero({
   paper = "#ebebea",
   ink = "#111111",
   className,
+  onExploreClick,
 }: MascotPortfolioHeroProps) {
   const uid = React.useId().replace(/:/g, "")
   const id = (n: string) => n + uid
@@ -505,7 +507,14 @@ export default function MascotPortfolioHero({
 
         <div className="mph-pill">
           <span className="mph-pill-a">{seekingLabel}</span>
-          {href ? (
+          {onExploreClick ? (
+            <button
+              onClick={onExploreClick}
+              className="group relative inline-flex items-center rounded-full border-2 border-[#111111] bg-[#06b6d4] px-4 py-1.5 font-mono text-sm shadow-[4px_4px_0px_#111111] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_#111111] cursor-pointer"
+            >
+              <span className="font-bold text-[#111111]">About ↓</span>
+            </button>
+          ) : href ? (
             <a className="mph-pill-b" href={href}>
               {pillInner}
             </a>

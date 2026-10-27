@@ -9,9 +9,10 @@ import { PROFILE_DATA } from "@/data/profile";
 interface NavbarProps {
   onOpenTerminal: () => void;
   onOpenResume?: () => void;
+  onNavigate?: () => void;
 }
 
-export function Navbar({ onOpenTerminal, onOpenResume }: NavbarProps) {
+export function Navbar({ onOpenTerminal, onOpenResume, onNavigate }: NavbarProps) {
   const [latency, setLatency] = useState(22);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -61,7 +62,8 @@ export function Navbar({ onOpenTerminal, onOpenResume }: NavbarProps) {
             <a
               key={link.href}
               href={link.href}
-              className="hover:text-[#b98158] transition-colors py-1 font-medium"
+              onClick={onNavigate}
+              className="hover:text-[#b98158] transition-colors py-1 font-medium cursor-pointer"
             >
               {link.label}
             </a>
@@ -139,7 +141,10 @@ export function Navbar({ onOpenTerminal, onOpenResume }: NavbarProps) {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onNavigate?.();
+                }}
                 className="px-3 py-2.5 rounded-lg bg-[#ebebea] border border-[#111111]/20 text-xs font-semibold text-[#111111] hover:text-[#b98158] hover:border-[#111111]/40 transition-colors flex items-center justify-between"
               >
                 <span>{link.label}</span>
