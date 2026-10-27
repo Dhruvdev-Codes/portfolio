@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Activity, Mail, Sparkles, Menu, X, FileText } from "lucide-react";
+import { Activity, Mail, Sparkles, Menu, X, FileText, Sun, Moon } from "lucide-react";
 import { GithubIcon } from "@/components/GithubIcon";
 
 import { PROFILE_DATA } from "@/data/profile";
@@ -15,6 +15,30 @@ interface NavbarProps {
 export function Navbar({ onOpenTerminal, onOpenResume, onNavigate }: NavbarProps) {
   const [latency, setLatency] = useState(22);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  // Initialize theme from localStorage or system preference
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initialDark = savedTheme ? savedTheme === "dark" : prefersDark;
+    setIsDark(initialDark);
+    if (initialDark) {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  // Toggle theme and persist to localStorage
+  const toggleTheme = () => {
+    const newDark = !isDark;
+    setIsDark(newDark);
+    localStorage.setItem("theme", newDark ? "dark" : "light");
+    if (newDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -122,6 +146,16 @@ export function Navbar({ onOpenTerminal, onOpenResume, onNavigate }: NavbarProps
             <GithubIcon className="w-4 h-4" />
           </a>
 
+          {/* Theme Toggle Switcher */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg bg-[#fdfbf7] border border-[#111111]/20 text-[#111111] hover:bg-[#111111] hover:text-[#ebebea] transition-colors"
+            aria-label="Toggle theme"
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
+
           {/* Mobile Menu Hamburger Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -151,6 +185,16 @@ export function Navbar({ onOpenTerminal, onOpenResume, onNavigate }: NavbarProps
                 <span className="text-[#b98158] font-mono text-[10px]">→</span>
               </a>
             ))}
+
+            {/* Theme Toggle in Mobile Drawer */}
+            <button
+              onClick={toggleTheme}
+              className="px-3 py-2.5 rounded-lg bg-[#ebebea] border border-[#111111]/20 text-xs font-semibold text-[#111111] hover:text-[#b98158] hover:border-[#111111]/40 transition-colors flex items-center justify-between"
+              aria-label="Toggle theme"
+            >
+              <span>Theme: {isDark ? "Dark" : "Light"}</span>
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
           </div>
 
           <div className="pt-3 border-t border-[#111111]/20 space-y-3">

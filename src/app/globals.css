@@ -5,6 +5,21 @@
 :root {
   --background: #ebebea;
   --foreground: #111111;
+  --card-bg: #fdfbf7;
+  --card-border: #111111;
+  --accent-sienna: #b98158;
+  --accent-cyan: #00bcd4;
+  --muted: #555555;
+}
+
+.dark {
+  --background: #121212;
+  --foreground: #fdfbf7;
+  --card-bg: #1e1e1e;
+  --card-border: #ffffff;
+  --accent-sienna: #d4a574;
+  --accent-cyan: #00bcd4;
+  --muted: #a0a0a0;
 }
 
 html {
@@ -28,16 +43,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #ebebea;
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #111111;
+  background: var(--foreground);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #b98158;
+  background: var(--accent-sienna);
 }
 
 /* Touch optimization for mobile */
