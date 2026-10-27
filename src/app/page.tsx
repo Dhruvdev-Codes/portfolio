@@ -40,29 +40,7 @@ export default function Home() {
       <main className="relative z-10">
         <MascotPortfolioHero
           height="100svh"
-          index="08/01"
-          discipline="Systems & Security"
-          tagline="Make it secure"
-          collection={["Selected", "Works"]}
           reel={["MTECH (INFORMATION SECURITY)", "NETAJI SUBHASH UNIVERSITY OF TECHNOLOGY"]}
-          year="2026"
-          initials="DU"
-          badge="Hire me"
-          line2="Portfolio"
-          line3="Security"
-          word="Phish"
-          verticalTag="Guard"
-          bracketed="S"
-          seekingLabel="Seeking*"
-          seeking="Full-Stack / Sec"
-          services={["Security Engineering", "Full-Stack Dev", "Malware Sandbox", "AI Threat XAI"]}
-          skin="#f7cfb0"
-          beanie="#111827"
-          shirt="#18181a"
-          tag="#b98158"
-          accent="#06b6d4"
-          paper="#ebebea"
-          ink="#111111"
           onExploreClick={handleNavigate}
         />
         {showSections && (

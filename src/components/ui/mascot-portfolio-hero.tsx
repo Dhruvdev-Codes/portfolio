@@ -9,19 +9,7 @@ import MorphOrb from "@/components/ui/ai-thinking-orb-and-input";
 export type MascotPortfolioHeroProps = {
   height?: string
   minHeight?: string
-  index?: string
-  discipline?: string
-  tagline?: string
-  collection?: [string, string]
   reel?: [string, string]
-  year?: string
-  initials?: string
-  badge?: string
-  line2?: string
-  line3?: string
-  word?: string
-  verticalTag?: string
-  bracketed?: string
   seekingLabel?: string
   seeking?: string
   href?: string
@@ -234,10 +222,6 @@ const DEFAULT_GREETINGS = ["Hi there!", "Let's make something secure.", "Psst â€
 export default function MascotPortfolioHero({
   height = "100svh",
   minHeight = "440px",
-  index = "08/01",
-  discipline = "Systems & Security",
-  tagline = "Make it secure",
-  collection = ["Selected", "Works"],
   reel = ["M.Tech Thesis @ 2026", "Security Engineering"],
   seekingLabel = "Seeking*",
   seeking = "Full-Stack / Sec",
@@ -420,16 +404,6 @@ export default function MascotPortfolioHero({
 
       <div className="mph-stage">
         <header className="mph-top">
-          <span className="mph-index">
-            <b>{index}</b>
-            {discipline}
-          </span>
-          <span className="mph-tagline">{tagline}</span>
-          <span className="mph-brace">
-            {"{"}
-            {collection[0]}/{collection[1]}
-            {"}"}
-          </span>
           <span className="mph-reel">
             <i aria-hidden="true" />
             <span>
