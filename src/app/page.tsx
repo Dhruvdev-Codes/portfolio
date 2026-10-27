@@ -44,7 +44,7 @@ export default function Home() {
           discipline="Systems & Security"
           tagline="Make it secure"
           collection={["Selected", "Works"]}
-          reel={["M.Tech Thesis @ 2026", "Security Engineering"]}
+          reel={["MTECH (INFORMATION SECURITY)", "NETAJI SUBHASH UNIVERSITY OF TECHNOLOGY"]}
           year="2026"
           initials="DU"
           badge="Hire me"
