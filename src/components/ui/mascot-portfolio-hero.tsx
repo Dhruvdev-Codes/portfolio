@@ -239,14 +239,6 @@ export default function MascotPortfolioHero({
   tagline = "Make it secure",
   collection = ["Selected", "Works"],
   reel = ["M.Tech Thesis @ 2026", "Security Engineering"],
-  year = "2026",
-  initials = "DU",
-  badge = "Hire me",
-  line2 = "Portfolio",
-  line3 = "Security",
-  word = "Phish",
-  verticalTag = "Guard",
-  bracketed = "S",
   seekingLabel = "Seeking*",
   seeking = "Full-Stack / Sec",
   href,
@@ -389,9 +381,6 @@ export default function MascotPortfolioHero({
       </span>
     ))
 
-  const l3 = Array.from(line3)
-  const l3Head = l3.slice(0, -1).join("")
-  const l3Tail = l3[l3.length - 1] ?? ""
   const greeting = said >= 0 ? greetings[said % greetings.length] : greetings[0]
 
   const vars = {
@@ -454,56 +443,14 @@ export default function MascotPortfolioHero({
         <span className="mph-rule mph-rule-l" aria-hidden="true" />
         <span className="mph-rule mph-rule-r" aria-hidden="true" />
 
-        <h1 className="mph-h1" aria-label={[year, initials, line2, line3, word + bracketed].join(" ")}>
-          <span className="mph-line" aria-hidden="true">
-            {chars(year)}
-            <svg className="mph-arrow" viewBox="0 0 100 100">
-              <path d="M14 14 L84 84 M84 30 V84 H30" />
-            </svg>
-            {chars(initials)}
-            <span className="mph-badge">
-              {badge}
-              <sup>@</sup>
-            </span>
-          </span>
-          <span className="mph-line" aria-hidden="true">
-            {chars(line2)}
-          </span>
-          <span className="mph-line" aria-hidden="true">
-            {chars(l3Head)}
-            <span className="mph-swash">
-              <span className="mph-ch">{l3Tail}</span>
-              <svg viewBox="0 0 255 72" preserveAspectRatio="none">
-                <path
-                  pathLength={1}
-                  d="M6 44 C40 18 150 4 222 14 C262 20 258 48 214 58 C150 72 60 70 30 60 C10 53 20 40 60 34"
-                />
-              </svg>
-            </span>
-          </span>
-          <span className="mph-line mph-l4" aria-hidden="true">
-            {chars(word)}
-            <span className="mph-vtag">
-              <span>{verticalTag}</span>
-              <i />
-            </span>
-            <span className="mph-bracket">
-              <svg viewBox="0 0 100 120" preserveAspectRatio="none">
-                <path className="mph-arc-t" vectorEffect="non-scaling-stroke" d="M4 16 Q50 -8 96 16" />
-                <path className="mph-arc-b" vectorEffect="non-scaling-stroke" d="M4 104 Q50 128 96 104" />
-              </svg>
-              {bracketed}
-            </span>
-            <span className="mph-star">*</span>
-          </span>
+        <h1 className="mph-h1 text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-[#111111] leading-[0.85]" aria-label="DHRUV UPADHYAY PORTFOLIO">
+          <span className="block">{chars("DHRUV")}</span>
+          <span className="block">{chars("UPADHYAY")}</span>
+          <span className="block text-[#b98158]">{chars("PORTFOLIO")}</span>
+          <p className="mt-4 text-xs sm:text-sm font-mono text-[#555555] tracking-normal font-normal normal-case">
+            M.Tech Information Security • Systems & Security Researcher
+          </p>
         </h1>
-
-        <svg className="mph-curl" viewBox="0 0 100 100" aria-hidden="true">
-          <path
-            pathLength={1}
-            d="M92 8 C70 6 52 22 58 40 C63 56 84 52 80 36 C76 22 50 30 40 48 C32 62 26 74 16 84 M14 66 L14 86 L34 86"
-          />
-        </svg>
 
         <div className="mph-pill">
           <span className="mph-pill-a">{seekingLabel}</span>
